@@ -1,0 +1,27 @@
+@import "./../../../../assets/style/colors.scss";
+
+.btn {
+  padding: 12px 24px;
+  width: fit-content;
+  box-shadow: 1px 1px 3px $gray;
+  border-radius: 24px;
+  color: $white;
+  background-color: $blue;
+  border: 1px solid $blue;
+  font-size: 18px;
+  font-weight: 600;
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out,
+    border 300ms ease-in-out;
+  cursor: pointer;
+  &:not(:disabled):hover {
+    color: $blue;
+    background-color: $white;
+    border: 1px solid $white;
+  }
+  &:disabled {
+    background-color: $gray;
+    color: darken($gray, 20%);
+    border: 1px solid $gray;
+    cursor: default;
+  }
+}
