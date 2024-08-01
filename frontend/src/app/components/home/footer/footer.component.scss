@@ -1,0 +1,22 @@
+@import "./../../../../assets/style/colors.scss";
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 88px;
+  padding: 12px;
+  p {
+    padding: 0 36px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
