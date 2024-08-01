@@ -1,0 +1,27 @@
+<section>
+  <div class="headline">
+    <p>Movies, TV shows, and more</p>
+    <p>Watch whenever you want wherever you want</p>
+    <p>Enter your email to create or restart your subscription.</p>
+  </div>
+  <form
+    id="form"
+    class="register-form"
+    #taskForm="ngForm"
+    (ngSubmit)="onSubmit(taskForm)"
+    onsubmit="return false"
+  >
+    <input
+      type="mail"
+      id="mail"
+      name="mail"
+      #mail="ngModel"
+      placeholder="Email Address"
+      class="custom-input"
+      autocomplete="email"
+      [(ngModel)]="authData.mail"
+      required
+    />
+    <app-btn-large [value]="'Sign Up'"></app-btn-large>
+  </form>
+</section>
