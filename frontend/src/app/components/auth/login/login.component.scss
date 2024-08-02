@@ -1,4 +1,5 @@
 @import "./../../../../assets/style/colors.scss";
+@import "./../../../../assets/style/form.scss";
 
 section {
   display: flex;
@@ -26,6 +27,7 @@ section {
   padding: 43px 56px;
   border-radius: 48px;
   background-color: $white;
+  position: relative;
   .headline {
     font-size: 48px;
     font-weight: 700;
@@ -37,59 +39,48 @@ section {
   }
 }
 
-.error-msg {
+.checkbox {
   display: flex;
   align-items: center;
-  justify-content: center;
+  width: 90%;
   height: 24px;
-  padding: 6px;
-  width: 120%;
-  p {
-    color: $red;
-    font-size: 12px !important;
-    font-weight: 400 !important;
+  input {
+    width: 16px;
+    height: 16px;
+    margin: 12px;
   }
-  a {
-    color: $red;
-    text-decoration: underline;
-    cursor: pointer;
-    &:hover {
-      text-decoration: none;
-    }
+  label {
+    width: fit-content;
+    font-size: 16px;
+    font-weight: 400;
+    color: $black;
   }
 }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  input {
-    width: 90%;
-    padding: 12px 18px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    background: transparent;
-    color: $blue;
-    border: 1px solid $blue;
-    border-radius: 12px;
+.footer {
+  position: absolute;
+  bottom: 43px;
+  left: 0;
+  right: 0;
+  a {
     font-size: 18px;
-    font-weight: 400;
-    transition: background-color 250ms ease-in-out, color 250ms ease-in-out,
-      border-color 250ms ease-in-out;
-    &::placeholder {
-      color: rgba($blue, 0.6);
-    }
-    &:focus {
-      outline: none;
-      background-color: rgba($white, 0.1);
+    font-weight: 700;
+    color: $blue;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
     }
   }
-  .error-border {
-    border: 1px solid $red;
-    color: $red;
-    &::placeholder {
-      color: $red;
+  .footer-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    gap: 24px;
+    p {
+      font-size: 18px;
+      font-weight: 700;
+      color: $black;
     }
   }
 }

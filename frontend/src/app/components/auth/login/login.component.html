@@ -2,8 +2,6 @@
   <div class="content">
     <div class="headline">Log in</div>
     <form
-      id="form"
-      class="login-form"
       #loginForm="ngForm"
       (ngSubmit)="onSubmit(loginForm)"
       onsubmit="return false"
@@ -56,14 +54,32 @@
         <p>Password is too short, min 6 characters</p>
         } }
       </div>
+      <div class="checkbox">
+        <input
+          type="checkbox"
+          id="checkbox"
+          name="checkbox"
+          #checkbox
+          [(ngModel)]="authData.checkbox"
+        />
+        <label for="checkbox">Remember me</label>
+      </div>
       <app-btn-large
         [value]="'Log in'"
         [disabled]="
+          !checkbox.checked ||
           !authData.mail ||
           (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
           !password.valid
         "
       ></app-btn-large>
     </form>
+    <div class="footer">
+      <a routerLink="/forgot-password">Forgot password?</a>
+      <div class="footer-content">
+        <p>New to Videoflix?</p>
+        <a routerLink="/register">Sign Up now</a>
+      </div>
+    </div>
   </div>
 </section>

@@ -14,6 +14,7 @@ export class LoginComponent {
   authData = {
     mail: '',
     password: '',
+    checkbox: false,
     send: false,
   };
 

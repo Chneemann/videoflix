@@ -5,8 +5,6 @@
     <p>Enter your email to create or restart your subscription.</p>
   </div>
   <form
-    id="form"
-    class="register-form"
     #taskForm="ngForm"
     (ngSubmit)="onSubmit(taskForm, mail)"
     onsubmit="return false"
@@ -20,7 +18,12 @@
       class="custom-input"
       autocomplete="email"
       [(ngModel)]="authData.mail"
-      [ngClass]="{ 'error-border': mail.invalid && mail.touched }"
+      [class.error-border]="
+        (!mail.valid && mail.touched) ||
+        (mail.touched &&
+          !isUserEmailValid(authData.mail.toLowerCase()) &&
+          authData.mail.length > 0)
+      "
       required
     />
     <div class="error-msg">
