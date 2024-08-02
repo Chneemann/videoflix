@@ -1,9 +1,7 @@
 <section class="bg-home">
   <app-header></app-header>
-  @if (currentRoute === '') {
-  <app-auth></app-auth>
-  } @if (currentRoute === 'register') {
-  <app-register></app-register>
-  }
+  <app-auth *ngIf="currentRoute === ''"></app-auth>
+  <app-login *ngIf="currentRoute === 'login'"></app-login>
+  <app-register *ngIf="currentRoute === 'register'"></app-register>
   <app-footer></app-footer>
 </section>

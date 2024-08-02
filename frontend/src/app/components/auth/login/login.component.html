@@ -1,0 +1,67 @@
+<section>
+  <div class="content">
+    <div class="headline">Log in</div>
+    <form
+      id="form"
+      class="login-form"
+      #loginForm="ngForm"
+      (ngSubmit)="onSubmit(loginForm)"
+      onsubmit="return false"
+    >
+      <input
+        type="mail"
+        id="mail"
+        name="mail"
+        #mail="ngModel"
+        placeholder="Email Address"
+        autocomplete="email"
+        [(ngModel)]="authData.mail"
+        [class.error-border]="
+          (!mail.valid && mail.touched) ||
+          (mail.touched &&
+            !isUserEmailValid(authData.mail.toLowerCase()) &&
+            authData.mail.length > 0)
+        "
+        required
+      />
+      <div class="error-msg">
+        @if (!mail.valid && mail.touched) {
+        <p>Please enter your email</p>
+        } @else { @if (mail.touched && authData.mail.length > 0 &&
+        !isUserEmailValid(authData.mail.toLowerCase())) {
+        <p>This is not a valid email format</p>
+        }}
+      </div>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        #password="ngModel"
+        placeholder="Enter a password"
+        autocomplete="new-password"
+        [(ngModel)]="authData.password"
+        pattern="[^<>]*"
+        minlength="6"
+        [class.error-border]="
+          password.invalid && password.touched && authData.password.length > 0
+        "
+        required
+      />
+      <div class="error-msg">
+        @if (!password.valid && password.touched && authData.password.length <
+        1) {
+        <p>Please enter your password</p>
+        } @else { @if (authData.password.length < 6 && password.touched) {
+        <p>Password is too short, min 6 characters</p>
+        } }
+      </div>
+      <app-btn-large
+        [value]="'Log in'"
+        [disabled]="
+          (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
+          !password.valid
+        "
+      ></app-btn-large>
+    </form>
+  </div>
+</section>
