@@ -49,6 +49,14 @@ section {
     font-size: 12px !important;
     font-weight: 400 !important;
   }
+  a {
+    color: $red;
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 .register-form {
@@ -76,5 +84,8 @@ section {
       outline: none;
       background-color: rgba($white, 0.1);
     }
+  }
+  .error-border {
+    border: 1px solid red;
   }
 }
