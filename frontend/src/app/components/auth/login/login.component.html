@@ -43,7 +43,7 @@
         pattern="[^<>]*"
         minlength="6"
         [class.error-border]="
-          password.invalid && password.touched && authData.password.length > 0
+          password.invalid && password.touched && authData.password.length < 6
         "
         required
       />
@@ -51,13 +51,15 @@
         @if (!password.valid && password.touched && authData.password.length <
         1) {
         <p>Please enter your password</p>
-        } @else { @if (authData.password.length < 6 && password.touched) {
+        } @else { @if (authData.password && authData.password.length < 6 &&
+        password.touched) {
         <p>Password is too short, min 6 characters</p>
         } }
       </div>
       <app-btn-large
         [value]="'Log in'"
         [disabled]="
+          !authData.mail ||
           (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
           !password.valid
         "

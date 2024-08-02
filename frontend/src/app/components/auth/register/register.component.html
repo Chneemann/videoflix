@@ -34,14 +34,20 @@
         [(ngModel)]="authData.password"
         pattern="[^<>]*"
         minlength="6"
-        [class.error-border]="password.invalid && password.touched"
+        [class.error-border]="
+          password.invalid && password.touched && authData.password.length < 6
+        "
         [disabled]="!authData.params"
         required
       />
       <div class="error-msg">
-        @if (authData.password.length < 6 && password.touched) {
+        @if (!password.valid && password.touched && authData.password.length <
+        1) {
+        <p>Please enter a password</p>
+        } @else { @if (authData.password && authData.password.length < 6 &&
+        password.touched) {
         <p>Password is too short, min 6 characters</p>
-        }
+        } }
       </div>
       <input
         type="password"
@@ -70,7 +76,10 @@
         [value]="'Get Started'"
         [disabled]="
           (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
-          !authData.params
+          !authData.params ||
+          authData.password !== authData.passwordConfirm ||
+          !authData.password ||
+          !authData.passwordConfirm
         "
       ></app-btn-large>
     </form>

@@ -14,6 +14,7 @@ export class LoginComponent {
   authData = {
     mail: '',
     password: '',
+    send: false,
   };
 
   constructor() {}
@@ -26,8 +27,7 @@ export class LoginComponent {
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
       console.log(this.authData);
-      this.authData.mail = '';
-      this.authData.password = '';
+      ngForm.resetForm();
     }
   }
 }

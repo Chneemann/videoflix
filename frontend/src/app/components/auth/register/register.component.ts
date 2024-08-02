@@ -36,8 +36,10 @@ export class RegisterComponent {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      console.log(this.authData.mail);
-      this.authData.mail = '';
+      let mail = this.authData.mail;
+      console.log(this.authData);
+      ngForm.form.reset();
+      ngForm.form.patchValue({ mail: mail });
     }
   }
 }
