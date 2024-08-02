@@ -1,27 +1,49 @@
 <section>
-  <div class="headline">
-    <p>Movies, TV shows, and more</p>
-    <p>Watch whenever you want wherever you want</p>
-    <p>Enter your email to create or restart your subscription.</p>
+  <div class="content">
+    <div class="headline">Sign Up</div>
+    <form
+      id="form"
+      class="register-form"
+      #taskForm="ngForm"
+      (ngSubmit)="onSubmit(taskForm)"
+      onsubmit="return false"
+    >
+      <input
+        type="mail"
+        id="mail"
+        name="mail"
+        #mail="ngModel"
+        placeholder="Email Address"
+        autocomplete="email"
+        [(ngModel)]="authData.mail"
+        required
+      />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        #password="ngModel"
+        placeholder="Enter a password"
+        autocomplete="new-password"
+        [(ngModel)]="authData.password"
+        required
+      />
+      <input
+        type="password"
+        id="passwordConfirm"
+        name="passwordConfirm"
+        #passwordConfirm="ngModel"
+        placeholder="Confirm password"
+        autocomplete="new-password"
+        [(ngModel)]="authData.passwordConfirm"
+        required
+      />
+      <app-btn-large
+        [value]="'Get Started'"
+        [disabled]="
+          !isUserEmailValid(authData.mail) && authData.mail.length > 0
+        "
+      ></app-btn-large>
+    </form>
   </div>
-  <form
-    id="form"
-    class="register-form"
-    #taskForm="ngForm"
-    (ngSubmit)="onSubmit(taskForm)"
-    onsubmit="return false"
-  >
-    <input
-      type="mail"
-      id="mail"
-      name="mail"
-      #mail="ngModel"
-      placeholder="Email Address"
-      class="custom-input"
-      autocomplete="email"
-      [(ngModel)]="authData.mail"
-      required
-    />
-    <app-btn-large [value]="'Sign Up'"></app-btn-large>
-  </form>
 </section>

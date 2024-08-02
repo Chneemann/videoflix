@@ -12,11 +12,19 @@ import { FormsModule, NgForm } from '@angular/forms';
 export class RegisterComponent {
   authData = {
     mail: '',
+    password: '',
+    passwordConfirm: '',
   };
+
+  isUserEmailValid(emailValue: string) {
+    const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(emailValue);
+  }
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      console.log('pass');
+      console.log(this.authData.mail);
+      this.authData.mail = '';
     }
   }
 }

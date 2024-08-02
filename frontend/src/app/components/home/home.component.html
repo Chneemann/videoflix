@@ -1,5 +1,9 @@
 <section class="bg-home">
   <app-header></app-header>
+  @if (currentRoute === '') {
   <app-auth></app-auth>
+  } @if (currentRoute === 'register') {
+  <app-register></app-register>
+  }
   <app-footer></app-footer>
 </section>
