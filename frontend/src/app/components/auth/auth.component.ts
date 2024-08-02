@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { BtnLargeComponent } from '../../shared/components/btn-large/btn-large.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -14,6 +15,8 @@ export class AuthComponent {
     mail: '',
   };
 
+  constructor(private router: Router) {}
+
   isUserEmailValid(emailValue: string) {
     const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(emailValue);
@@ -21,8 +24,9 @@ export class AuthComponent {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      console.log(this.authData.mail);
-      this.authData.mail = '';
+      const queryParams = { mail: this.authData.mail };
+      this.router.navigate(['/register'], { queryParams });
+      ngForm.form.reset();
     }
   }
 }

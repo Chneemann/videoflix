@@ -16,13 +16,21 @@
         placeholder="Email Address"
         autocomplete="email"
         [(ngModel)]="authData.mail"
-        disabled
+        [class.error-border]="
+          (!mail.valid && mail.touched) ||
+          (mail.touched &&
+            !isUserEmailValid(authData.mail.toLowerCase()) &&
+            authData.mail.length > 0)
+        "
         required
       />
       <div class="error-msg">
-        @if (!authData.params) {
-        <p>Click <a routerLink="">here</a> to resend the registration email.</p>
-        }
+        @if (!mail.valid && mail.touched) {
+        <p>Please enter your email</p>
+        } @else { @if (mail.touched && authData.mail.length > 0 &&
+        !isUserEmailValid(authData.mail.toLowerCase())) {
+        <p>This is not a valid email format</p>
+        }}
       </div>
       <input
         type="password"
@@ -37,7 +45,6 @@
         [class.error-border]="
           password.invalid && password.touched && authData.password.length < 6
         "
-        [disabled]="!authData.params"
         required
       />
       <div class="error-msg">
@@ -63,7 +70,6 @@
           authData.password !== authData.passwordConfirm &&
           passwordConfirm.touched
         "
-        [disabled]="!authData.params"
         required
       />
       <div class="error-msg">
@@ -75,8 +81,9 @@
       <app-btn-large
         [value]="'Get Started'"
         [disabled]="
-          (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
-          !authData.params ||
+          (!isUserEmailValid(authData.mail) &&
+            authData.mail &&
+            authData.mail.length > 0) ||
           authData.password !== authData.passwordConfirm ||
           !authData.password ||
           !authData.passwordConfirm

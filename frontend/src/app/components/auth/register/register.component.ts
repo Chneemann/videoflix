@@ -13,7 +13,6 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 export class RegisterComponent {
   authData = {
     mail: '',
-    params: false,
     password: '',
     passwordConfirm: '',
   };
@@ -23,9 +22,6 @@ export class RegisterComponent {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.authData.mail = params['mail'] || '';
-      this.authData.mail
-        ? (this.authData.params = true)
-        : (this.authData.params = false);
     });
   }
 
@@ -36,10 +32,8 @@ export class RegisterComponent {
 
   onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      let mail = this.authData.mail;
       console.log(this.authData);
       ngForm.form.reset();
-      ngForm.form.patchValue({ mail: mail });
     }
   }
 }
