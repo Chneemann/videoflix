@@ -16,8 +16,10 @@
         placeholder="Email Address"
         autocomplete="email"
         [(ngModel)]="authData.mail"
+        disabled
         required
       />
+      <div class="error-msg"></div>
       <input
         type="password"
         id="password"
@@ -26,8 +28,15 @@
         placeholder="Enter a password"
         autocomplete="new-password"
         [(ngModel)]="authData.password"
+        pattern="[^<>]*"
+        minlength="6"
         required
       />
+      <div class="error-msg">
+        @if (authData.password.length < 6 && password.touched) {
+        <p>Password is too short, min 6 characters</p>
+        }
+      </div>
       <input
         type="password"
         id="passwordConfirm"
@@ -36,8 +45,16 @@
         placeholder="Confirm password"
         autocomplete="new-password"
         [(ngModel)]="authData.passwordConfirm"
+        pattern="[^<>]*"
+        minlength="6"
         required
       />
+      <div class="error-msg">
+        @if (authData.password !== authData.passwordConfirm &&
+        passwordConfirm.touched) {
+        <p>The passwords do not match</p>
+        }
+      </div>
       <app-btn-large
         [value]="'Get Started'"
         [disabled]="

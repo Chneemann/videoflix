@@ -11,7 +11,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class RegisterComponent {
   authData = {
-    mail: '',
+    mail: 'test@test.de',
     password: '',
     passwordConfirm: '',
   };
