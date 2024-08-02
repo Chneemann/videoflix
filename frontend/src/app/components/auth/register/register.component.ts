@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [BtnLargeComponent, FormsModule, RouterLink],
+  imports: [CommonModule, BtnLargeComponent, FormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -16,6 +17,8 @@ export class RegisterComponent {
     password: '',
     passwordConfirm: '',
   };
+
+  registrationSuccess: boolean = false;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -34,6 +37,7 @@ export class RegisterComponent {
     if (ngForm.submitted && ngForm.form.valid) {
       console.log(this.authData);
       ngForm.form.reset();
+      this.registrationSuccess = true;
     }
   }
 }

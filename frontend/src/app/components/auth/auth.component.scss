@@ -42,6 +42,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   width: 500px;
   padding: 24px;
   input {
@@ -63,5 +64,28 @@ section {
       outline: none;
       background-color: rgba($white, 0.1);
     }
+  }
+  .error-border {
+    border: 2px solid $red;
+    color: $red;
+    &::placeholder {
+      color: $red;
+    }
+  }
+}
+
+.error-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  height: 24px;
+  padding: 6px;
+  width: 62%;
+  p {
+    color: $red;
+    font-size: 12px !important;
+    font-weight: 400 !important;
   }
 }

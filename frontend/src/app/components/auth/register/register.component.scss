@@ -37,6 +37,25 @@ section {
   }
 }
 
+.reg-success {
+  p {
+    color: $black;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 36px 0 24px 0;
+  }
+  a {
+    font-size: 18px;
+    font-weight: 700;
+    color: $blue;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .error-msg {
   display: flex;
   align-items: center;
@@ -48,14 +67,6 @@ section {
     color: $red;
     font-size: 12px !important;
     font-weight: 400 !important;
-  }
-  a {
-    color: $red;
-    text-decoration: underline;
-    cursor: pointer;
-    &:hover {
-      text-decoration: none;
-    }
   }
 }
 

@@ -1,6 +1,18 @@
 <section>
-  <div class="content">
+  <div
+    class="content"
+    [ngStyle]="{ height: registrationSuccess ? '200px' : '492px' }"
+  >
     <div class="headline">Sign Up</div>
+    @if (registrationSuccess) {
+    <div class="reg-success">
+      <p>
+        Please check your email to confirm your email address and complete the
+        registration process.
+      </p>
+      <a href="/login">To the login</a>
+    </div>
+    } @else {
     <form
       id="form"
       class="register-form"
@@ -90,5 +102,6 @@
         "
       ></app-btn-large>
     </form>
+    }
   </div>
 </section>

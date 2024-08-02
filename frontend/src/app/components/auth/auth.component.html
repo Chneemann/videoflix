@@ -8,7 +8,7 @@
     id="form"
     class="register-form"
     #taskForm="ngForm"
-    (ngSubmit)="onSubmit(taskForm)"
+    (ngSubmit)="onSubmit(taskForm, mail)"
     onsubmit="return false"
   >
     <input
@@ -20,8 +20,17 @@
       class="custom-input"
       autocomplete="email"
       [(ngModel)]="authData.mail"
+      [ngClass]="{ 'error-border': mail.invalid && mail.touched }"
       required
     />
+    <div class="error-msg">
+      @if (!mail.valid && mail.touched) {
+      <p>Please enter your email</p>
+      } @else { @if (mail.touched && authData.mail.length > 0 &&
+      !isUserEmailValid(authData.mail.toLowerCase())) {
+      <p>This is not a valid email format</p>
+      }}
+    </div>
     <app-btn-large
       [value]="'Sign Up'"
       [disabled]="!isUserEmailValid(authData.mail) && authData.mail.length > 0"
