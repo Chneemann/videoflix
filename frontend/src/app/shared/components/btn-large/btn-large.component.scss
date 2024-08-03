@@ -21,7 +21,7 @@
   &:disabled {
     background-color: $light-blue;
     color: darken($white, 10%);
-    border: 1px solid $gray;
+    border: 1px solid $light-blue;
     cursor: default;
   }
 }

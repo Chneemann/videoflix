@@ -85,6 +85,20 @@
         <p>The passwords do not match</p>
         }
       </div>
+      <div class="checkbox">
+        <input
+          type="checkbox"
+          id="checkbox"
+          name="checkbox"
+          #checkbox
+          [(ngModel)]="authData.privacyPolicy"
+        />
+        <label for="checkbox"
+          >I agree to the
+          <a routerLink="/privacy-policy" target="_blank">Privacy policy</a
+          >.</label
+        >
+      </div>
       <app-btn-large
         [value]="'Get Started'"
         [disabled]="
@@ -93,7 +107,8 @@
             authData.mail.length > 0) ||
           authData.password !== authData.passwordConfirm ||
           !authData.password ||
-          !authData.passwordConfirm
+          !authData.passwordConfirm ||
+          !authData.privacyPolicy
         "
       ></app-btn-large>
     </form>

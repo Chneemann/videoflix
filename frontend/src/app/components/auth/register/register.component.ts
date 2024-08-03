@@ -16,6 +16,7 @@ export class RegisterComponent {
     mail: '',
     password: '',
     passwordConfirm: '',
+    privacyPolicy: false,
   };
 
   registrationSuccess: boolean = false;

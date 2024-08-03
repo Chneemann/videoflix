@@ -6,3 +6,32 @@ section {
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
     url(./../../../../assets/img/backgrounds/register.png);
 }
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  width: 90%;
+  height: 24px;
+  margin-bottom: 24px;
+  input {
+    width: 16px;
+    height: 16px;
+    margin: 12px;
+  }
+  label {
+    width: fit-content;
+    font-size: 16px;
+    font-weight: 400;
+    color: $black;
+    a {
+      font-size: 16px;
+      font-weight: 400;
+      color: $blue;
+      text-decoration: none;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

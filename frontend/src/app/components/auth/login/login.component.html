@@ -67,7 +67,6 @@
       <app-btn-large
         [value]="'Log in'"
         [disabled]="
-          !checkbox.checked ||
           !authData.mail ||
           (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
           !password.valid
