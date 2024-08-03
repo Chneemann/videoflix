@@ -20,6 +20,13 @@ section {
   z-index: 1000;
   overflow: hidden; /* Verhindert, dass das Video aus dem Overlay herausragt */
   position: relative;
+  video {
+    width: 100%;
+    height: 100%;
+  }
+  &:hover .video-header {
+    opacity: 1;
+  }
 }
 
 .video-header {
@@ -35,10 +42,6 @@ section {
   z-index: 1001;
   opacity: 0;
   transition: opacity 300ms ease-in-out;
-}
-
-.video-overlay:hover .video-header {
-  opacity: 1;
 }
 
 .back-button {
@@ -62,9 +65,4 @@ section {
 .logo img {
   width: 32px;
   height: auto;
-}
-
-.video-overlay video {
-  width: 100%;
-  height: 100%;
 }
