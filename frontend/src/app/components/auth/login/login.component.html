@@ -55,14 +55,17 @@
         } }
       </div>
       <div class="checkbox">
-        <input
-          type="checkbox"
-          id="checkbox"
-          name="checkbox"
-          #checkbox
-          [(ngModel)]="authData.checkbox"
-        />
-        <label for="checkbox">Remember me</label>
+        <label class="container"
+          >Remember me
+          <input
+            type="checkbox"
+            id="checkbox"
+            name="checkbox"
+            #checkbox
+            [(ngModel)]="authData.checkbox"
+          />
+          <span class="checkmark"></span>
+        </label>
       </div>
       <app-btn-large
         [value]="'Log in'"
