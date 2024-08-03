@@ -3,6 +3,7 @@
   <app-hero-banner [currentMovie]="currentMovie"></app-hero-banner>
   <app-categories
     [movies]="movies"
+    [currentMovie]="currentMovie[0].id"
     (currentMovieId)="currentMovieId($event)"
   ></app-categories>
 </section>

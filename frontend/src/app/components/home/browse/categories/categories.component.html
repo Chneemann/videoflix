@@ -1,10 +1,12 @@
 <section class="hide-scrollbar">
+  <!-- Column for films of the last 7 days -->
   <div class="category">
-    <p>New Releases</p>
+    <p>Added in the last 7 days</p>
     <div class="movies">
-      @for (movie of movies; track movie) {
+      @for (movie of recentMovies(); track movie) {
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
+          [ngClass]="{ selected: movie.id === currentMovie }"
           src="./../../../../../assets/movies/banner/{{ movie.imgPath }}"
           alt=""
         />
@@ -12,19 +14,23 @@
       }
     </div>
   </div>
+  <!-- Genre columns -->
+  @for (filmGenre of filmGenres; track filmGenre) {
+  <!-- Movie available in genre -->
+  @if (allMovies(filmGenre).length > 0) {
   <div class="category">
-    <p>Continue Watching</p>
+    <p>{{ filmGenre }}</p>
+    <div class="movies">
+      @for (movie of allMovies(filmGenre); track movie) {
+      <div class="movie" (click)="openCurrentMovie(movie.id)">
+        <img
+          [ngClass]="{ selected: movie.id === currentMovie }"
+          src="./../../../../../assets/movies/banner/{{ movie.imgPath }}"
+          alt=""
+        />
+      </div>
+      }
+    </div>
   </div>
-  <div class="category">
-    <p>Action & Adventure</p>
-  </div>
-  <div class="category">
-    <p>Science Fiction & Fantasy</p>
-  </div>
-  <div class="category">
-    <p>Drama & Romance</p>
-  </div>
-  <div class="category">
-    <p>All Other Categories</p>
-  </div>
+  } }
 </section>
