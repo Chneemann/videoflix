@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
 import { BtnLargeComponent } from '../btn-large/btn-large.component';
 import { RouterLink } from '@angular/router';
 
@@ -9,4 +9,6 @@ import { RouterLink } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  @Input() browse: boolean = false;
+}

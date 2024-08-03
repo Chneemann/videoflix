@@ -7,6 +7,7 @@ import { RegisterComponent } from '../auth/register/register.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from '../auth/login/login.component';
 import { ForgotPasswordComponent } from '../auth/forgot-password/forgot-password.component';
+import { BrowseComponent } from './browse/browse.component';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,7 @@ import { ForgotPasswordComponent } from '../auth/forgot-password/forgot-password
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    BrowseComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
