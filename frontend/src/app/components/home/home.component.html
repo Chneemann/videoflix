@@ -3,5 +3,8 @@
   <app-auth *ngIf="currentRoute === ''"></app-auth>
   <app-login *ngIf="currentRoute === 'login'"></app-login>
   <app-register *ngIf="currentRoute === 'register'"></app-register>
+  <app-forgot-password
+    *ngIf="currentRoute === 'forgot-password'"
+  ></app-forgot-password>
   <app-footer></app-footer>
 </section>

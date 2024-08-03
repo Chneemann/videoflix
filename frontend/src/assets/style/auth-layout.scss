@@ -18,7 +18,7 @@ section {
 
 .content {
   width: 520px;
-  height: 492px;
+  height: fit-content;
   padding: 43px 56px;
   border-radius: 48px;
   background-color: $white;
@@ -28,7 +28,23 @@ section {
     color: $blue;
     margin-bottom: 24px;
   }
-  app-btn-large {
-    margin-top: 36px;
+}
+
+.note {
+  p {
+    color: $black;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 36px 0 24px 0;
+  }
+  a {
+    font-size: 18px;
+    font-weight: 700;
+    color: $blue;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

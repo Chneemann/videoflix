@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RegisterComponent } from '../auth/register/register.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from '../auth/login/login.component';
+import { ForgotPasswordComponent } from '../auth/forgot-password/forgot-password.component';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ import { LoginComponent } from '../auth/login/login.component';
     AuthComponent,
     RegisterComponent,
     LoginComponent,
+    ForgotPasswordComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

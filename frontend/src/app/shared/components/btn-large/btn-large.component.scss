@@ -16,11 +16,11 @@
   &:not(:disabled):hover {
     color: $blue;
     background-color: $white;
-    border: 1px solid $white;
+    border: 1px solid $blue;
   }
   &:disabled {
-    background-color: $gray;
-    color: darken($gray, 20%);
+    background-color: $light-blue;
+    color: darken($white, 10%);
     border: 1px solid $gray;
     cursor: default;
   }

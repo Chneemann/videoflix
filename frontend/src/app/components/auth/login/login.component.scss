@@ -16,6 +16,7 @@ section {
   align-items: center;
   width: 90%;
   height: 24px;
+  margin-bottom: 24px;
   input {
     width: 16px;
     height: 16px;
@@ -30,10 +31,7 @@ section {
 }
 
 .footer {
-  position: absolute;
-  bottom: 43px;
-  left: 0;
-  right: 0;
+  margin-top: 36px;
   a {
     font-size: 18px;
     font-weight: 700;
