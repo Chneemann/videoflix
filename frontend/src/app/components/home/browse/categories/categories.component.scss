@@ -1,0 +1,44 @@
+@import "./../../../../../assets/style/colors.scss";
+
+section {
+  height: 60%;
+  padding: 0 48px;
+}
+
+.category {
+  height: 165px;
+  p {
+    font-size: 22px;
+    font-weight: 700;
+  }
+}
+
+.movie {
+  width: 213px;
+  height: 120px;
+  padding: 6px 6px 6px 0;
+  img {
+    width: 213px;
+    height: 120px;
+    transition: scale 300ms ease-in-out;
+    border: 2px solid rgba($black, 0);
+    cursor: pointer;
+    &:hover {
+      scale: 1.02;
+      border: 2px solid $blue;
+    }
+  }
+}
+
+// Hide scrollbar
+
+.hide-scrollbar {
+  overflow: scroll;
+  height: 60%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0px;
+}

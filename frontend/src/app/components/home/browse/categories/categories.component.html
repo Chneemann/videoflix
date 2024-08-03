@@ -1,0 +1,28 @@
+<section class="hide-scrollbar">
+  <div class="category">
+    <p>New Releases</p>
+    @for (movie of movies; track movie) {
+    <div class="movie" (click)="openCurrentMovie(movie.id)">
+      <img
+        src="./../../../../../assets/movies/banner/{{ movie.imgPath }}"
+        alt=""
+      />
+    </div>
+    }
+  </div>
+  <div class="category">
+    <p>Continue Watching</p>
+  </div>
+  <div class="category">
+    <p>Action & Adventure</p>
+  </div>
+  <div class="category">
+    <p>Science Fiction & Fantasy</p>
+  </div>
+  <div class="category">
+    <p>Drama & Romance</p>
+  </div>
+  <div class="category">
+    <p>All Other Categories</p>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+<section
+  class="movie-banner"
+  [style.backgroundImage]="'url(' + getImagePath() + ')'"
+>
+  @if (currentMovie.length > 0) {
+  <div class="content">
+    <div class="title">{{ currentMovie[0].title }}</div>
+    <div class="description">
+      {{ currentMovie[0].description }}
+    </div>
+    <app-btn-large [value]="'Play'"></app-btn-large>
+  </div>
+  }
+</section>
