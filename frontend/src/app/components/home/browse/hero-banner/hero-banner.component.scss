@@ -27,19 +27,18 @@ section {
 .title {
   font-size: 5vw;
   font-weight: 700;
+  text-shadow: 1px 1px 2px $black;
 }
 
 .description {
-  font-size: 1.2vw;
+  font-size: 18px;
   font-weight: 400;
-  overflow: scroll;
-  height: 40%;
+  overflow: hidden;
+  max-height: 145px;
+  height: fit-content;
   margin-bottom: 24px;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
+  text-shadow: 1px 1px 2px $black;
+  position: relative;
 }
 
 .movie-banner {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { BtnLargeComponent } from '../../../../shared/components/btn-large/btn-large.component';
 
 @Component({
@@ -12,7 +12,23 @@ import { BtnLargeComponent } from '../../../../shared/components/btn-large/btn-l
 export class HeroBannerComponent {
   @Input() currentMovie: any[] = [];
 
+  constructor(private el: ElementRef) {}
+
+  ngAfterViewInit() {
+    this.truncateText();
+  }
   getImagePath(): string {
     return `./../../../../../assets/movies/banner/${this.currentMovie[0]?.imgPath}`;
+  }
+
+  truncateText() {
+    const descriptionEl = this.el.nativeElement.querySelector('.description');
+    const maxHeight = descriptionEl.offsetHeight;
+    let text = descriptionEl.innerText;
+
+    while (descriptionEl.scrollHeight > maxHeight) {
+      text = text.slice(0, -1);
+      descriptionEl.innerText = text + '...';
+    }
   }
 }

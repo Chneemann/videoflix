@@ -1,14 +1,16 @@
 <section class="hide-scrollbar">
   <div class="category">
     <p>New Releases</p>
-    @for (movie of movies; track movie) {
-    <div class="movie" (click)="openCurrentMovie(movie.id)">
-      <img
-        src="./../../../../../assets/movies/banner/{{ movie.imgPath }}"
-        alt=""
-      />
+    <div class="movies">
+      @for (movie of movies; track movie) {
+      <div class="movie" (click)="openCurrentMovie(movie.id)">
+        <img
+          src="./../../../../../assets/movies/banner/{{ movie.imgPath }}"
+          alt=""
+        />
+      </div>
+      }
     </div>
-    }
   </div>
   <div class="category">
     <p>Continue Watching</p>

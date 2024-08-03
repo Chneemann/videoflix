@@ -21,6 +21,15 @@ export class BrowseComponent implements OnInit {
       imgPath: 'galaxy.png',
       videoPath: 'galaxy.mp4',
     },
+    {
+      id: 2,
+      title: 'Star Trek',
+      description:
+        'Join Captain Kirk and the crew of the starship USS Enterprise as they embark on thrilling adventures across the universe. "Star Trek" is a legendary sci-fi saga that explores the final frontier, filled with action, exploration, and unforgettable encounters with alien species. This epic journey showcases the spirit of discovery and the unwavering courage of the Starfleet members as they confront the unknown and protect the galaxy from various threats.',
+      category: 'sci-fi',
+      imgPath: 'star-trek.png',
+      videoPath: 'star-trek.mp4',
+    },
   ];
   currentMovie: any[] = [];
 
