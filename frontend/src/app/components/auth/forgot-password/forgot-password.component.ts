@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,11 +18,11 @@ export class ForgotPasswordComponent {
     passwordConfirm: '',
   };
 
-  sendSuccess: boolean = false;
+  sendMailSuccess: boolean = false;
   queryEmail: boolean = false;
   queryEmailSuccess: boolean = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -40,7 +40,7 @@ export class ForgotPasswordComponent {
     if (ngForm.submitted && ngForm.form.valid) {
       if (mailInput.name === 'mail') {
         ngForm.form.reset();
-        this.sendSuccess = true;
+        this.sendMailSuccess = true;
       } else if (mailInput.name === 'password') {
         ngForm.form.reset();
         this.queryEmail = false;

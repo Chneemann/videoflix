@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
+import { BtnLargeComponent } from '../btn-large/btn-large.component';
 import { RouterLink } from '@angular/router';
 
 @Component({
