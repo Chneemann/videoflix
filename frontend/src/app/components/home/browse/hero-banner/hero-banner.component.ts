@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { BtnLargeComponent } from '../../../../shared/components/btn-large/btn-large.component';
 
 @Component({
@@ -11,12 +17,18 @@ import { BtnLargeComponent } from '../../../../shared/components/btn-large/btn-l
 })
 export class HeroBannerComponent {
   @Input() currentMovie: any[] = [];
+  @Output() playMovie = new EventEmitter<string>();
 
   constructor(private el: ElementRef) {}
 
   ngAfterViewInit() {
     this.truncateText();
   }
+
+  playMovieId(videoPath: string) {
+    this.playMovie.emit(videoPath);
+  }
+
   getImagePath(): string {
     return `./../../../../../assets/movies/banner/${this.currentMovie[0]?.imgPath}`;
   }

@@ -35,9 +35,18 @@ export class BrowseComponent implements OnInit {
   ];
 
   currentMovie: any[] = [];
+  playMovie: string = '';
 
   ngOnInit(): void {
     this.currentMovie.length === 0 ? this.loadRandomMovie() : null;
+  }
+
+  closeVideo(): void {
+    this.playMovie = '';
+  }
+
+  playVideo(videoPath: string) {
+    this.playMovie = videoPath;
   }
 
   loadRandomMovie(): void {
