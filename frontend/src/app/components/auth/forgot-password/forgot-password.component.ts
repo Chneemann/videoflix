@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,9 +14,22 @@ import { RouterLink } from '@angular/router';
 export class ForgotPasswordComponent {
   authData = {
     mail: '',
+    password: '',
+    passwordConfirm: '',
   };
 
   sendSuccess: boolean = false;
+  queryEmail: boolean = false;
+  queryEmailSuccess: boolean = false;
+
+  constructor(private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.authData.mail = params['mail'] || '';
+      this.queryEmailSuccess = params['pw-change'] || '';
+    });
+  }
 
   isUserEmailValid(emailValue: string) {
     const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
@@ -25,9 +38,15 @@ export class ForgotPasswordComponent {
 
   onSubmit(ngForm: NgForm, mailInput: any) {
     if (ngForm.submitted && ngForm.form.valid) {
+      if (mailInput.name === 'mail') {
+        ngForm.form.reset();
+        this.sendSuccess = true;
+      } else if (mailInput.name === 'password') {
+        ngForm.form.reset();
+        this.queryEmail = false;
+        this.queryEmailSuccess = true;
+      }
       console.log(this.authData);
-      ngForm.form.reset();
-      this.sendSuccess = true;
     } else {
       mailInput.control.markAsTouched();
     }
