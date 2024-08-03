@@ -8,7 +8,11 @@
     <div class="description">
       {{ currentMovie[0].description }}
     </div>
-    <app-btn-large [value]="'Play'"></app-btn-large>
+    <app-btn-large
+      [value]="'Play'"
+      [imgPath]="'play'"
+      [imgReverse]="true"
+    ></app-btn-large>
   </div>
   }
 </section>

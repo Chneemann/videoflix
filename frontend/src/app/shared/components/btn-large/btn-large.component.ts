@@ -11,5 +11,7 @@ import { Component, Input } from '@angular/core';
 export class BtnLargeComponent {
   @Input() type: string = '';
   @Input() value: string = '';
+  @Input() imgPath: string = '';
+  @Input() imgReverse: boolean = false;
   @Input() disabled: boolean = false;
 }

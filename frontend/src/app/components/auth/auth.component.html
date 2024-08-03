@@ -36,6 +36,9 @@
     </div>
     <app-btn-large
       [value]="'Sign Up'"
+      [imgPath]="'play'"
+      [imgPath]="'arrow_right'"
+      [imgReverse]="true"
       [disabled]="!isUserEmailValid(authData.mail) && authData.mail.length > 0"
     ></app-btn-large>
   </form>

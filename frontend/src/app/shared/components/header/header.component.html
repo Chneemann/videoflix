@@ -4,7 +4,11 @@
     <img src="./../../../../assets/img/logo_ci.svg" alt="" />
   </div>
   <div class="btn">
-    <app-btn-large [value]="'Log Out'" routerLink="/logout"></app-btn-large>
+    <app-btn-large
+      [value]="'Log Out'"
+      [imgPath]="'logout'"
+      routerLink="/logout"
+    ></app-btn-large>
   </div>
   } @else {
   <div class="logo" routerLink="/">

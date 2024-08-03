@@ -1,3 +1,13 @@
-<button class="btn" type="{{ type }}" [disabled]="disabled">
-  {{ value }}
+<button
+  class="btn"
+  type="{{ type }}"
+  [disabled]="disabled"
+  [ngClass]="{ reverse: imgReverse }"
+>
+  <img
+    src="./../../../../assets/img/{{ imgPath }}.svg"
+    alt="{{ imgPath }}"
+    class="icon"
+  />
+  <p>{{ value }}</p>
 </button>
