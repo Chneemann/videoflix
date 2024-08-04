@@ -4,19 +4,20 @@ from .forms import CustomUserCreationForm
 from django.contrib.auth.admin import UserAdmin
 
 @admin.register(CustomUser)
-class CustomUserAdmin(admin.ModelAdmin):    
-  add_form = CustomUserCreationForm    
+class CustomUserAdmin(UserAdmin):    
+  add_form = CustomUserCreationForm
   
-  fieldsets = (        
-    *UserAdmin.fieldsets,        
-    (            
-      'Individual data',            
-      {                
-        'fields': (                    
-          'custom',                    
-          'phone',                    
-          'address',                
-        )            
-      }        
-    )    
-  )
+  fieldsets = (
+    *UserAdmin.fieldsets,
+    (
+      'Individual data',
+      {
+        'fields': (
+          'custom',
+          'phone',
+          'address',
+          )
+       }
+     )
+   )
+  

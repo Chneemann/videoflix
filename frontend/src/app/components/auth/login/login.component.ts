@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { ErrorService } from '../../../services/error.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [BtnLargeComponent, FormsModule, RouterLink],
+  imports: [BtnLargeComponent, CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -18,17 +22,35 @@ export class LoginComponent {
     send: false,
   };
 
-  constructor() {}
+  constructor(
+    private authService: AuthService,
+    public errorService: ErrorService,
+    private router: Router
+  ) {}
 
   isUserEmailValid(emailValue: string) {
     const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(emailValue);
   }
 
-  onSubmit(ngForm: NgForm) {
+  async onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      console.log(this.authData);
-      ngForm.resetForm();
+      const body = {
+        email: this.authData.mail,
+        password: this.authData.password,
+      };
+      try {
+        await this.authService.login(body);
+        ngForm.resetForm();
+        this.router.navigate(['/browse/']);
+        this.errorService.clearError();
+      } catch (error) {
+        if (error instanceof HttpErrorResponse) {
+          this.errorService.setError(error.error.detail);
+        } else {
+          this.errorService.setError('An unknown error has occurred.');
+        }
+      }
     }
   }
 }
