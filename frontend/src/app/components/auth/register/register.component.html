@@ -14,6 +14,7 @@
       #registerForm="ngForm"
       (ngSubmit)="onSubmit(registerForm)"
       onsubmit="return false"
+      (input)="this.errorService.clearError()"
     >
       <input
         type="mail"

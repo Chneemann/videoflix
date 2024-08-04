@@ -1,15 +1,32 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export interface ErrorDetail {
+  type: string;
+  message: string;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorService {
-  private errorSubject = new BehaviorSubject<string | null>(null);
-  error$ = this.errorSubject.asObservable();
+  private errorSubject = new BehaviorSubject<ErrorDetail | null>(null);
 
-  setError(message: string | null) {
-    this.errorSubject.next(message);
+  error$: Observable<{ [key: string]: string } | null> = this.errorSubject
+    .asObservable()
+    .pipe(
+      map((errorDetail) => {
+        if (errorDetail) {
+          return { [errorDetail.type]: errorDetail.message };
+        }
+        return null;
+      })
+    );
+
+  setError(type: string, message: string) {
+    const errorDetail: ErrorDetail = { type, message };
+    this.errorSubject.next(errorDetail);
   }
 
   clearError() {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -45,12 +45,21 @@ export class LoginComponent {
         this.router.navigate(['/browse/']);
         this.errorService.clearError();
       } catch (error) {
-        if (error instanceof HttpErrorResponse) {
-          this.errorService.setError(error.error.detail);
-        } else {
-          this.errorService.setError('An unknown error has occurred.');
+        this.errorMsg(error);
+      }
+    }
+  }
+
+  errorMsg(error: any) {
+    if (error instanceof HttpErrorResponse) {
+      const errorTypes = ['mail', 'password'];
+      for (const type of errorTypes) {
+        if (error.error[type]) {
+          this.errorService.setError(type, error.error[type]);
+          return;
         }
       }
+      this.errorService.clearError();
     }
   }
 }
