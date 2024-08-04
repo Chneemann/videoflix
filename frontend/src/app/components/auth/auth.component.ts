@@ -15,7 +15,6 @@ export class AuthComponent {
   authData = {
     mail: '',
   };
-
   constructor(private router: Router) {}
 
   isUserEmailValid(emailValue: string) {
