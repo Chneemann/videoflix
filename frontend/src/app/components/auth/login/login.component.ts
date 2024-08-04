@@ -40,7 +40,7 @@ export class LoginComponent {
         password: this.authData.password,
       };
       try {
-        await this.authService.login(body);
+        await this.authService.login(body, this.authData.checkbox);
         ngForm.resetForm();
         this.router.navigate(['/browse/']);
         this.errorService.clearError();

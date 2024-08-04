@@ -1,12 +1,7 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { environment } from '../environments/environment.development';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,25 +9,24 @@ import { Router } from '@angular/router';
 export class AuthService {
   errorMsg: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
-  async login(body: any): Promise<void> {
+  async login(body: any, storage: boolean): Promise<void> {
     const data = await lastValueFrom(
       this.http.post<any>(`${environment.baseUrl}/auth/login/`, body)
     );
-    const authToken = data.toString();
-    localStorage.setItem('authToken', authToken);
+    this.storeAuthToken(data, storage);
   }
 
-  getAllUsers(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get('http://127.0.0.1:8000/users/', { headers });
+  storeAuthToken(data: any, storage: boolean) {
+    storage
+      ? localStorage.setItem('authToken', data.toString())
+      : sessionStorage.setItem('authToken', data.toString());
   }
 
-  private getAuthHeaders(): HttpHeaders {
-    const authToken = localStorage.getItem('authToken');
-    return new HttpHeaders({
-      Authorization: `token ${authToken}`,
-    });
+  async register(body: any): Promise<void> {
+    await lastValueFrom(
+      this.http.post<any>(`${environment.baseUrl}/auth/register/`, body)
+    );
   }
 }

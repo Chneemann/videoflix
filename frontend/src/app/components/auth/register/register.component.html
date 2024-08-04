@@ -37,7 +37,9 @@
         } @else { @if (mail.touched && authData.mail.length > 0 &&
         !isUserEmailValid(authData.mail.toLowerCase())) {
         <p>This is not a valid email format</p>
-        }}
+        }} @if ((errorService.error$ | async)) {
+        <p>{{ errorService.error$ | async }}</p>
+        }
       </div>
       <input
         type="password"

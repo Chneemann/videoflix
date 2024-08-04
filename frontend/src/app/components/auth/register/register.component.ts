@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
+import { ErrorService } from '../../../services/error.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -21,7 +24,12 @@ export class RegisterComponent {
 
   registrationSuccess: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    public errorService: ErrorService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -34,11 +42,25 @@ export class RegisterComponent {
     return emailRegex.test(emailValue);
   }
 
-  onSubmit(ngForm: NgForm) {
+  async onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
-      console.log(this.authData);
-      ngForm.form.reset();
-      this.registrationSuccess = true;
+      const body = {
+        email: this.authData.mail,
+        username: this.authData.mail.split('@')[0],
+        password: this.authData.password,
+      };
+      try {
+        await this.authService.register(body);
+        ngForm.resetForm();
+        this.registrationSuccess = true;
+        this.errorService.clearError();
+      } catch (error) {
+        if (error instanceof HttpErrorResponse) {
+          this.errorService.setError(error.error.detail);
+        } else {
+          this.errorService.setError('An unknown error has occurred.');
+        }
+      }
     }
   }
 }

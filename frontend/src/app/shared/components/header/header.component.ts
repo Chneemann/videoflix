@@ -1,6 +1,6 @@
 import { Component, Input, input } from '@angular/core';
 import { BtnLargeComponent } from '../btn-large/btn-large.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,4 +11,12 @@ import { RouterLink } from '@angular/router';
 })
 export class HeaderComponent {
   @Input() browse: boolean = false;
+
+  constructor(private router: Router) {}
+
+  logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.router.navigate(['/']);
+  }
 }
