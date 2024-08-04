@@ -144,4 +144,4 @@ GitHub.sublime-settings
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
-videoflix/user/migrations
+videoflix/users/migrations
