@@ -13,9 +13,7 @@ class CustomUserAdmin(UserAdmin):
       'Individual data',
       {
         'fields': (
-          'custom',
-          'phone',
-          'address',
+          'verify_email',
           )
        }
      )

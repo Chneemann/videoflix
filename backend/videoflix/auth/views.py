@@ -53,7 +53,9 @@ class RegisterView(APIView):
 
     def send_email(self, user):
         merge_data = {
-            'name': user.username
+            'name': user.username,
+            'email': user.email,
+            'token': user.verify_email
         }
         html_body = render_to_string("mail.html", merge_data)
 
@@ -65,3 +67,7 @@ class RegisterView(APIView):
         )
         message.attach_alternative(html_body, "text/html")
         message.send(fail_silently=False)
+        
+class VerifyEmailView(APIView):
+    def post(self, request):
+        pass
