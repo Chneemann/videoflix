@@ -11,11 +11,17 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  async login(body: any, storage: boolean): Promise<void> {
+  async login(body: any, storage: boolean) {
     const data = await lastValueFrom(
-      this.http.post<any>(`${environment.baseUrl}/auth/login/`, body)
+      this.http.post(`${environment.baseUrl}/auth/login/`, body)
     );
     this.storeAuthToken(data, storage);
+  }
+
+  async verifyEmail(body: any) {
+    await lastValueFrom(
+      this.http.post(`${environment.baseUrl}/auth/verify-email/`, body)
+    );
   }
 
   storeAuthToken(data: any, storage: boolean) {
@@ -24,9 +30,9 @@ export class AuthService {
       : sessionStorage.setItem('authToken', data.toString());
   }
 
-  async register(body: any): Promise<void> {
+  async register(body: any) {
     await lastValueFrom(
-      this.http.post<any>(`${environment.baseUrl}/auth/register/`, body)
+      this.http.post(`${environment.baseUrl}/auth/register/`, body)
     );
   }
 }

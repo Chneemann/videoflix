@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { LoginComponent } from '../auth/login/login.component';
 import { ForgotPasswordComponent } from '../auth/forgot-password/forgot-password.component';
 import { BrowseComponent } from './browse/browse.component';
+import { VerifyEmailComponent } from '../auth/verify-email/verify-email.component';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ import { BrowseComponent } from './browse/browse.component';
     RegisterComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    VerifyEmailComponent,
     BrowseComponent,
   ],
   templateUrl: './home.component.html',

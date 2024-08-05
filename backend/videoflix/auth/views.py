@@ -9,6 +9,7 @@ from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from users.models import CustomUser
+from django.db.models import Q
 
 class LoginView(APIView):
     serializer_class = LoginSerializer
@@ -55,7 +56,7 @@ class RegisterView(APIView):
         merge_data = {
             'name': user.username,
             'email': user.email,
-            'token': user.verify_email
+            'token': user.verify_email_token
         }
         html_body = render_to_string("mail.html", merge_data)
 
@@ -70,4 +71,19 @@ class RegisterView(APIView):
         
 class VerifyEmailView(APIView):
     def post(self, request):
-        pass
+        email = request.data.get('email')
+        token = request.data.get('token')
+
+        if not email or not token:
+            return Response({"error": "Email and token are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = CustomUser.objects.filter(Q(email=email) & Q(verify_email_token=token)).first()
+        if user:
+            if user.is_active:
+                return Response({"error": "User has already been activated"}, status=status.HTTP_409_CONFLICT)
+            
+            user.is_active = True
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Invalid email or token."}, status=status.HTTP_400_BAD_REQUEST)

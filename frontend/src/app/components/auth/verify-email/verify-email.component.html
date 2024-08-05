@@ -1,0 +1,21 @@
+<section>
+  <div class="content">
+    <div class="headline">Verify Email</div>
+    <div class="note">
+      @if (verified) {
+      <p>Your email has been successfully verified! You can now log in.</p>
+      <a routerLink="/login">To the login</a>
+      } @else {
+      <p>
+        There was an issue verifying your email.<br />Please try again or
+        contact support for assistance.
+      </p>
+      }
+    </div>
+    <div *ngIf="errorService.error$ | async as errors">
+      <div *ngIf="errors?.['error']" class="error-msg">
+        <p>{{ errors["error"] }}</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -9,6 +9,7 @@ export const routes: Routes = [
   { path: 'login', component: HomeComponent },
   { path: 'register', component: HomeComponent },
   { path: 'forgot-password', component: HomeComponent },
+  { path: 'verify-email', component: HomeComponent },
   { path: 'imprint', component: ImprintComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
   { path: 'browse', component: BrowseComponent },

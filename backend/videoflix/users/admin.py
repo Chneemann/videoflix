@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
       'Individual data',
       {
         'fields': (
-          'verify_email',
+          'verify_email_token',
           )
        }
      )

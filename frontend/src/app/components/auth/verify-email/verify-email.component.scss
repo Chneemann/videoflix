@@ -1,0 +1,8 @@
+@import "./../../../../assets/style/colors.scss";
+@import "./../../../../assets/style/form.scss";
+@import "./../../../../assets/style/auth-layout.scss";
+
+section {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url(./../../../../assets/img/backgrounds/login.png);
+}
