@@ -59,7 +59,7 @@ class RegisterView(APIView):
             'email': user.email,
             'token': user.verify_email_token
         }
-        html_body = render_to_string("mail.html", merge_data)
+        html_body = render_to_string("register_mail.html", merge_data)
 
         message = EmailMultiAlternatives(
             subject='Confirm your email',
@@ -85,6 +85,52 @@ class VerifyEmailView(APIView):
             
             user.is_active = True
             user.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Invalid email or token."}, status=status.HTTP_400_BAD_REQUEST)
+        
+class ForgotPasswordView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({"error": "Email required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            user = CustomUser.objects.get(email=email)
+            user.verify_email_token = CustomUser.generate_verification_token()
+            user.save()
+            self.send_email(user)
+        except CustomUser.DoesNotExist:
+            pass
+        return Response(status=status.HTTP_200_OK)
+    
+    def send_email(self, user):
+        merge_data = {
+            'name': user.username,
+            'email': user.email,
+            'token': user.verify_email_token
+        }
+        html_body = render_to_string("forgot_password_mail.html", merge_data)
+
+        message = EmailMultiAlternatives(
+            subject='Reset your Password',
+            body=strip_tags(html_body),  # Plain text fallback
+            from_email='noreply@videoflix.com',
+            to=['andre.kempf.dev@gmail.com']
+        )
+        message.attach_alternative(html_body, "text/html")
+        message.send(fail_silently=False)
+
+class ChangePasswordView(APIView):                
+    def post(self, request):
+        email = request.data.get('email')
+        token = request.data.get('token')
+
+        if not email or not token:
+            return Response({"error": "Email and token are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = CustomUser.objects.filter(Q(email=email) & Q(verify_email_token=token)).first()
+        if user:
             return Response(status=status.HTTP_200_OK)
         else:
             return Response({"error": "Invalid email or token."}, status=status.HTTP_400_BAD_REQUEST)

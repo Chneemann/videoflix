@@ -3,6 +3,9 @@ import { Component } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { ErrorService } from '../../../services/error.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,6 +17,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 export class ForgotPasswordComponent {
   authData = {
     mail: '',
+    token: '',
     password: '',
     passwordConfirm: '',
   };
@@ -22,13 +26,21 @@ export class ForgotPasswordComponent {
   queryEmail: boolean = false;
   queryEmailSuccess: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    public errorService: ErrorService
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.authData.mail = params['mail'] || '';
+      this.authData.mail = params['email'] || '';
+      this.authData.token = params['token'] || '';
       this.queryEmailSuccess = params['pw-change'] || '';
     });
+    if (this.authData.mail && this.authData.token) {
+      this.queryEmail = true;
+    }
   }
 
   isUserEmailValid(emailValue: string) {
@@ -39,16 +51,44 @@ export class ForgotPasswordComponent {
   onSubmit(ngForm: NgForm, mailInput: any) {
     if (ngForm.submitted && ngForm.form.valid) {
       if (mailInput.name === 'mail') {
-        ngForm.form.reset();
-        this.sendMailSuccess = true;
+        try {
+          this.verifyEmail();
+          ngForm.form.reset();
+        } catch {}
       } else if (mailInput.name === 'password') {
         ngForm.form.reset();
         this.queryEmail = false;
         this.queryEmailSuccess = true;
       }
-      console.log(this.authData);
     } else {
       mailInput.control.markAsTouched();
+    }
+  }
+
+  async verifyEmail() {
+    const body = {
+      email: this.authData.mail,
+    };
+    try {
+      await this.authService.forgotPassword(body);
+      this.sendMailSuccess = true;
+      this.errorService.clearError();
+    } catch (error) {
+      this.sendMailSuccess = false;
+      this.errorMsg(error);
+    }
+  }
+
+  errorMsg(error: any) {
+    if (error instanceof HttpErrorResponse) {
+      const errorTypes = ['error'];
+      for (const type of errorTypes) {
+        if (error.error[type]) {
+          this.errorService.setError(type, error.error[type]);
+          return;
+        }
+      }
+      this.errorService.clearError();
     }
   }
 }
