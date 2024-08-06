@@ -56,9 +56,10 @@ export class ForgotPasswordComponent {
           ngForm.form.reset();
         } catch {}
       } else if (mailInput.name === 'password') {
-        ngForm.form.reset();
-        this.queryEmail = false;
-        this.queryEmailSuccess = true;
+        try {
+          this.changePassword();
+          ngForm.form.reset();
+        } catch {}
       }
     } else {
       mailInput.control.markAsTouched();
@@ -75,6 +76,24 @@ export class ForgotPasswordComponent {
       this.errorService.clearError();
     } catch (error) {
       this.sendMailSuccess = false;
+      this.errorMsg(error);
+    }
+  }
+
+  async changePassword() {
+    const body = {
+      email: this.authData.mail,
+      token: this.authData.token,
+      new_password: this.authData.password,
+    };
+    console.log(body);
+
+    try {
+      await this.authService.changePassword(body);
+      this.queryEmail = false;
+      this.queryEmailSuccess = true;
+      this.errorService.clearError();
+    } catch (error) {
       this.errorMsg(error);
     }
   }

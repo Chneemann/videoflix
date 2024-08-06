@@ -36,6 +36,12 @@ export class AuthService {
     );
   }
 
+  async changePassword(body: any) {
+    await lastValueFrom(
+      this.http.post(`${environment.baseUrl}/auth/change-password/`, body)
+    );
+  }
+
   storeAuthToken(data: any, storage: boolean) {
     storage
       ? localStorage.setItem('authToken', data.toString())

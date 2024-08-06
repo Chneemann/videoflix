@@ -27,7 +27,7 @@ class LoginView(APIView):
                 if not user.is_active:
                     return Response({'password': 'Account is inactive, please check your mails'}, status=status.HTTP_403_FORBIDDEN)
                 return self._create_token_response(user)
-            return Response({'detail': 'Unable to login with provided credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'mail': 'Unable to login with provided credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
           
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -125,12 +125,15 @@ class ChangePasswordView(APIView):
     def post(self, request):
         email = request.data.get('email')
         token = request.data.get('token')
+        new_password = request.data.get('new_password')
 
         if not email or not token:
             return Response({"error": "Email and token are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         user = CustomUser.objects.filter(Q(email=email) & Q(verify_email_token=token)).first()
         if user:
+            user.set_password(new_password)
+            user.save()
             return Response(status=status.HTTP_200_OK)
         else:
             return Response({"error": "Invalid email or token."}, status=status.HTTP_400_BAD_REQUEST)
