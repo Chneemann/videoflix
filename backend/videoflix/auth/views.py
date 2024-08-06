@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, authentication
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from django.contrib.auth import authenticate
 from .serializer import LoginSerializer
 from users.serializer import UserSerializer
@@ -32,7 +33,7 @@ class LoginView(APIView):
 
     def _create_token_response(self, user):
         token, created = Token.objects.get_or_create(user=user)
-        return Response({'token': token.key}, status=status.HTTP_200_OK)
+        return Response({token.key}, status=status.HTTP_200_OK)
 
 class RegisterView(APIView):
     def post(self, request):
@@ -87,3 +88,11 @@ class VerifyEmailView(APIView):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response({"error": "Invalid email or token."}, status=status.HTTP_400_BAD_REQUEST)
+
+class AuthView(ObtainAuthToken):
+    authentication_classes = [authentication.TokenAuthentication]
+  
+    def get(self, request):
+        if request.user.is_authenticated:
+            return Response(request.user.id, status=status.HTTP_200_OK)
+        return Response({"error": "User is not logged in"}, status=status.HTTP_401_UNAUTHORIZED)

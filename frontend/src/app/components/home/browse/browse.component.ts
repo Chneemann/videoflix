@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-browse',
@@ -33,6 +34,8 @@ export class BrowseComponent implements OnInit {
       create: '08.02.2024',
     },
   ];
+
+  constructor(private authService: AuthService) {}
 
   currentMovie: any[] = [];
   playMovie: string = '';
