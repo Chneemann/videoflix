@@ -40,7 +40,7 @@ class RegisterView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
         if CustomUser.objects.filter(email=email).exists():
-            return Response({'detail': 'A user with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'mail': 'A user with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
         serialized = UserSerializer(data=request.data)
         if serialized.is_valid():
@@ -81,7 +81,7 @@ class VerifyEmailView(APIView):
         user = CustomUser.objects.filter(Q(email=email) & Q(verify_email_token=token)).first()
         if user:
             if user.is_active:
-                return Response({"error": "User has already been activated"}, status=status.HTTP_409_CONFLICT)
+                return Response({"error": "User has already been activated."}, status=status.HTTP_409_CONFLICT)
             
             user.is_active = True
             user.save()
@@ -93,7 +93,7 @@ class ForgotPasswordView(APIView):
     def post(self, request):
         email = request.data.get('email')
         if not email:
-            return Response({"error": "Email required."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"mail": "Email required."}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user = CustomUser.objects.get(email=email)
@@ -101,7 +101,7 @@ class ForgotPasswordView(APIView):
             user.save()
             self.send_email(user)
         except CustomUser.DoesNotExist:
-            pass
+            return Response({"mail": "This email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
     
     def send_email(self, user):

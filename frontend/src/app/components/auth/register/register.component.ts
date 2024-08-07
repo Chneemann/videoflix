@@ -55,11 +55,7 @@ export class RegisterComponent {
         this.registrationSuccess = true;
         this.errorService.clearError();
       } catch (error) {
-        // if (error instanceof HttpErrorResponse) {
-        //   this.errorService.setError(error.error.detail);
-        // } else {
-        //   this.errorService.setError('An unknown error has occurred.');
-        // }
+        this.errorService.errorMsg(error);
       }
     }
   }

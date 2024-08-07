@@ -48,16 +48,16 @@ export class ForgotPasswordComponent {
     return emailRegex.test(emailValue);
   }
 
-  onSubmit(ngForm: NgForm, mailInput: any) {
+  async onSubmit(ngForm: NgForm, mailInput: any) {
     if (ngForm.submitted && ngForm.form.valid) {
       if (mailInput.name === 'mail') {
         try {
-          this.verifyEmail();
+          await this.verifyEmail();
           ngForm.form.reset();
         } catch {}
       } else if (mailInput.name === 'password') {
         try {
-          this.changePassword();
+          await this.changePassword();
           ngForm.form.reset();
         } catch {}
       }
@@ -76,7 +76,7 @@ export class ForgotPasswordComponent {
       this.errorService.clearError();
     } catch (error) {
       this.sendMailSuccess = false;
-      this.errorMsg(error);
+      this.errorService.errorMsg(error);
     }
   }
 
@@ -94,20 +94,7 @@ export class ForgotPasswordComponent {
       this.queryEmailSuccess = true;
       this.errorService.clearError();
     } catch (error) {
-      this.errorMsg(error);
-    }
-  }
-
-  errorMsg(error: any) {
-    if (error instanceof HttpErrorResponse) {
-      const errorTypes = ['error'];
-      for (const type of errorTypes) {
-        if (error.error[type]) {
-          this.errorService.setError(type, error.error[type]);
-          return;
-        }
-      }
-      this.errorService.clearError();
+      this.errorService.errorMsg(error);
     }
   }
 }

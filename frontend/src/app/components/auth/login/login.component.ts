@@ -45,21 +45,8 @@ export class LoginComponent {
         this.router.navigate(['/browse/']);
         this.errorService.clearError();
       } catch (error) {
-        this.errorMsg(error);
+        this.errorService.errorMsg(error);
       }
-    }
-  }
-
-  errorMsg(error: any) {
-    if (error instanceof HttpErrorResponse) {
-      const errorTypes = ['mail', 'password'];
-      for (const type of errorTypes) {
-        if (error.error[type]) {
-          this.errorService.setError(type, error.error[type]);
-          return;
-        }
-      }
-      this.errorService.clearError();
     }
   }
 }

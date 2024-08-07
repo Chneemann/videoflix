@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -31,5 +32,18 @@ export class ErrorService {
 
   clearError() {
     this.errorSubject.next(null);
+  }
+
+  errorMsg(error: any) {
+    if (error instanceof HttpErrorResponse) {
+      const errorTypes = ['mail', 'password', 'error'];
+      for (const type of errorTypes) {
+        if (error.error[type]) {
+          this.setError(type, error.error[type]);
+          return;
+        }
+      }
+      this.clearError();
+    }
   }
 }
