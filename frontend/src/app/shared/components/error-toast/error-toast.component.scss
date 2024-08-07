@@ -3,14 +3,14 @@
 section {
   position: relative;
   width: 615px;
-  height: 80px;
-  padding: 24px 32px;
+  height: fit-content;
+  padding: 12px 32px;
   border-radius: 20px;
-  opacity: 0px;
   background-color: $purple;
+  box-shadow: 1px 1px 3px rgba($black, 0.5);
 }
 
-.red {
+.left {
   position: absolute;
   top: 0;
   left: 0;
@@ -20,4 +20,47 @@ section {
   border-bottom-left-radius: 20px;
   background-color: $red;
   z-index: 2;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  width: 82%;
+  margin-left: 24px;
+  p {
+    font-size: 18px;
+    font-weight: 400;
+    padding-left: 12px;
+    max-height: 72px;
+    overflow: hidden;
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 48px;
+  width: 38px;
+  height: 100%;
+  .line {
+    height: 40%;
+    padding: 1px;
+    background-color: $white;
+  }
+  .img {
+    padding: 24px;
+    width: 24px;
+    height: 24px;
+    img {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      &:hover {
+        filter: brightness(0) saturate(100%) invert(13%) sepia(90%)
+          saturate(7329%) hue-rotate(344deg) brightness(105%) contrast(117%);
+      }
+    }
+  }
 }
