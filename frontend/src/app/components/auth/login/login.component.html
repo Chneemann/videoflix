@@ -30,12 +30,6 @@
         !isUserEmailValid(authData.mail.toLowerCase())) {
         <p>This is not a valid email format</p>
         }}
-        <!-- Backend error handling -->
-        <!-- <div *ngIf="errorService.error$ | async as errors">
-          <div *ngIf="errors?.['mail']">
-            <p>{{ errors["mail"] }}</p>
-          </div>
-        </div> -->
       </div>
       <input
         type="password"
@@ -60,12 +54,6 @@
         password.touched) {
         <p>Password is too short, min 6 characters</p>
         } }
-        <!-- Backend error handling -->
-        <!-- <div *ngIf="errorService.error$ | async as errors">
-          <div *ngIf="errors?.['password']">
-            <p>{{ errors["password"] }}</p>
-          </div>
-        </div> -->
       </div>
       <div class="checkbox">
         <label class="container"
