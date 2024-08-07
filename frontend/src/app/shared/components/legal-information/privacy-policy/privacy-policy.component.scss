@@ -1,22 +1,45 @@
+@import "./../../../../../assets/style/colors.scss";
+
 section {
   display: flex;
-  justify-content: center;
-  padding: 24px;
+  flex-direction: column;
+  align-items: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url(./../../../../../assets/img/backgrounds/home.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: $black;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88px;
+  padding: 10px 96px;
+  width: calc(100% - 192px);
+}
+
+.back-button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: filter 300ms ease-in-out;
+  img {
+    width: 32px;
+    height: 32px;
+    &:hover {
+      filter: brightness(0) saturate(100%) invert(26%) sepia(77%)
+        saturate(2342%) hue-rotate(228deg) brightness(83%) contrast(115%);
+    }
+  }
 }
 
 .content {
   max-width: 1024px;
 }
 
-.header {
+.headline {
   display: flex;
   justify-content: center;
   margin-bottom: 32px;

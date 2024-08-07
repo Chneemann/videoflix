@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-privacy-policy',
@@ -8,4 +8,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './privacy-policy.component.html',
   styleUrl: './privacy-policy.component.scss',
 })
-export class PrivacyPolicyComponent {}
+export class PrivacyPolicyComponent {
+  constructor(private location: Location) {}
+
+  backClicked() {
+    this.location.back();
+  }
+}
