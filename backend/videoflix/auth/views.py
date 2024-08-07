@@ -145,3 +145,9 @@ class AuthView(ObtainAuthToken):
         if request.user.is_authenticated:
             return Response(request.user.id, status=status.HTTP_200_OK)
         return Response({"error": "User is not logged in"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    def post(self, request):
+        email = request.data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            return Response({'mail': 'A user with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_200_OK)

@@ -3,6 +3,8 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { BtnLargeComponent } from '../../shared/components/btn-large/btn-large.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ErrorService } from '../../services/error.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,20 +17,36 @@ export class AuthComponent {
   authData = {
     mail: '',
   };
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    public errorService: ErrorService,
+    private authService: AuthService
+  ) {}
 
   isUserEmailValid(emailValue: string) {
     const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(emailValue);
   }
 
-  onSubmit(ngForm: NgForm, mailInput: any) {
+  async onSubmit(ngForm: NgForm, mailInput: any) {
     if (ngForm.submitted && ngForm.form.valid) {
-      const queryParams = { mail: this.authData.mail };
-      this.router.navigate(['/register'], { queryParams });
-      ngForm.form.reset();
+      await this.checkDuplicatesEmail();
     } else {
       mailInput.control.markAsTouched();
+    }
+  }
+
+  async checkDuplicatesEmail() {
+    const body = {
+      email: this.authData.mail,
+    };
+    try {
+      await this.authService.checkAuthUserMail(body);
+      const queryParams = { mail: this.authData.mail };
+      this.router.navigate(['/register'], { queryParams });
+      this.errorService.clearError();
+    } catch (error) {
+      this.errorService.errorMsg(error);
     }
   }
 }

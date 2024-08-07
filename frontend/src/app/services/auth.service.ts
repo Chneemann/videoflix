@@ -56,6 +56,10 @@ export class AuthService {
     );
   }
 
+  async checkAuthUserMail(body: any) {
+    await lastValueFrom(this.http.post(`${environment.baseUrl}/auth/`, body));
+  }
+
   private getAuthHeaders(): HttpHeaders {
     let authToken = localStorage.getItem('authToken');
     if (!authToken) {
