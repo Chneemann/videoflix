@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from '../../services/error.service';
 import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',
@@ -46,7 +47,7 @@ export class AuthComponent {
       this.router.navigate(['/register'], { queryParams });
       this.errorService.clearError();
     } catch (error) {
-      this.errorService.errorMsg(error);
+      this.errorService.handleError(error);
     }
   }
 }

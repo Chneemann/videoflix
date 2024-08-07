@@ -1,49 +1,31 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-export interface ErrorDetail {
-  type: string;
-  message: string;
-}
+import { BehaviorSubject } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorService {
-  private errorSubject = new BehaviorSubject<ErrorDetail | null>(null);
+  private errorSubject = new BehaviorSubject<string>('');
+  errorText$ = this.errorSubject.asObservable();
+  displayError = false;
 
-  error$: Observable<{ [key: string]: string } | null> = this.errorSubject
-    .asObservable()
-    .pipe(
-      map((errorDetail) => {
-        if (errorDetail) {
-          return { [errorDetail.type]: errorDetail.message };
-        }
-        return null;
-      })
-    );
-
-  setError(type: string, message: string) {
-    const errorDetail: ErrorDetail = { type, message };
-    this.errorSubject.next(errorDetail);
+  errorMsg(message: string) {
+    this.errorSubject.next(message);
+    this.displayError = true;
   }
 
   clearError() {
-    this.errorSubject.next(null);
+    this.errorSubject.next('');
+    this.displayError = false;
   }
 
-  errorMsg(error: any) {
+  handleError(error: unknown) {
     if (error instanceof HttpErrorResponse) {
-      const errorTypes = ['mail', 'password', 'error'];
-      for (const type of errorTypes) {
-        if (error.error[type]) {
-          this.setError(type, error.error[type]);
-          return;
-        }
-      }
-      this.clearError();
+      const errorMessage = error.error.error || 'An unknown error occurred';
+      this.errorMsg(errorMessage);
+    } else {
+      this.errorMsg('An unexpected error occurred');
     }
   }
 }

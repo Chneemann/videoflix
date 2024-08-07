@@ -55,7 +55,9 @@ export class RegisterComponent {
         this.registrationSuccess = true;
         this.errorService.clearError();
       } catch (error) {
-        this.errorService.errorMsg(error);
+        const errorMessage =
+          error instanceof Error ? error.message : 'An unknown error occurred';
+        this.errorService.errorMsg(errorMessage);
       }
     }
   }

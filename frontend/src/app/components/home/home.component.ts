@@ -9,6 +9,8 @@ import { LoginComponent } from '../auth/login/login.component';
 import { ForgotPasswordComponent } from '../auth/forgot-password/forgot-password.component';
 import { BrowseComponent } from './browse/browse.component';
 import { VerifyEmailComponent } from '../auth/verify-email/verify-email.component';
+import { ErrorToastComponent } from '../../shared/components/error-toast/error-toast.component';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
   selector: 'app-home',
@@ -23,14 +25,19 @@ import { VerifyEmailComponent } from '../auth/verify-email/verify-email.componen
     ForgotPasswordComponent,
     VerifyEmailComponent,
     BrowseComponent,
+    ErrorToastComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   currentRoute: any;
+  displayErrorToast: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    public errorService: ErrorService
+  ) {}
 
   ngOnInit(): void {
     this.route.url.subscribe((url) => {

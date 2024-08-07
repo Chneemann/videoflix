@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ErrorService } from '../../../services/error.service';
 
 @Component({
   selector: 'app-error-toast',
@@ -7,6 +8,18 @@ import { Component, Input } from '@angular/core';
   templateUrl: './error-toast.component.html',
   styleUrl: './error-toast.component.scss',
 })
-export class ErrorToastComponent {
-  @Input() errorText: string = '';
+export class ErrorToastComponent implements OnInit {
+  errorText: string = '';
+
+  constructor(private errorService: ErrorService) {}
+
+  ngOnInit(): void {
+    this.errorService.errorText$.subscribe((message: string) => {
+      this.errorText = message;
+    });
+  }
+
+  closeError() {
+    this.errorService.clearError();
+  }
 }

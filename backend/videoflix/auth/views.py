@@ -25,9 +25,9 @@ class LoginView(APIView):
             
             if user:
                 if not user.is_active:
-                    return Response({'password': 'Account is inactive, please check your mails'}, status=status.HTTP_403_FORBIDDEN)
+                    return Response({'error': 'Account is inactive, please check your mails'}, status=status.HTTP_403_FORBIDDEN)
                 return self._create_token_response(user)
-            return Response({'mail': 'Unable to login with provided credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'Unable to login with provided credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
           
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -40,7 +40,7 @@ class RegisterView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
         if CustomUser.objects.filter(email=email).exists():
-            return Response({'mail': 'A user with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'A user with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
         serialized = UserSerializer(data=request.data)
         if serialized.is_valid():
@@ -93,7 +93,7 @@ class ForgotPasswordView(APIView):
     def post(self, request):
         email = request.data.get('email')
         if not email:
-            return Response({"mail": "Email required."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Email required."}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user = CustomUser.objects.get(email=email)
@@ -101,7 +101,7 @@ class ForgotPasswordView(APIView):
             user.save()
             self.send_email(user)
         except CustomUser.DoesNotExist:
-            return Response({"mail": "This email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "This email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
     
     def send_email(self, user):
@@ -149,5 +149,5 @@ class AuthView(ObtainAuthToken):
     def post(self, request):
         email = request.data.get('email')
         if CustomUser.objects.filter(email=email).exists():
-            return Response({'mail': 'A user with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'A user with this email already exists.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)

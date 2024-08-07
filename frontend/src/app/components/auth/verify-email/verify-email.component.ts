@@ -45,20 +45,9 @@ export class VerifyEmailComponent {
       this.errorService.clearError();
     } catch (error) {
       this.verified = false;
-      this.errorMsg(error);
-    }
-  }
-
-  errorMsg(error: any) {
-    if (error instanceof HttpErrorResponse) {
-      const errorTypes = ['error'];
-      for (const type of errorTypes) {
-        if (error.error[type]) {
-          this.errorService.setError(type, error.error[type]);
-          return;
-        }
-      }
-      this.errorService.clearError();
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred';
+      this.errorService.errorMsg(errorMessage);
     }
   }
 }

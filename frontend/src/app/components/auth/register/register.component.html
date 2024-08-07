@@ -39,11 +39,11 @@
         !isUserEmailValid(authData.mail.toLowerCase())) {
         <p>This is not a valid email format</p>
         }}
-        <div *ngIf="errorService.error$ | async as errors">
+        <!-- <div *ngIf="errorService.error$ | async as errors">
           <div *ngIf="errors?.['mail']" class="error-msg">
             <p>{{ errors["mail"] }}</p>
           </div>
-        </div>
+        </div> -->
       </div>
       <input
         type="password"
