@@ -1,0 +1,23 @@
+@import "./../../../../assets/style/colors.scss";
+
+section {
+  position: relative;
+  width: 615px;
+  height: 80px;
+  padding: 24px 32px;
+  border-radius: 20px;
+  opacity: 0px;
+  background-color: $purple;
+}
+
+.red {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 38px;
+  height: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: $red;
+  z-index: 2;
+}
