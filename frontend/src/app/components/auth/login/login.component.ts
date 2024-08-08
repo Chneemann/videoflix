@@ -45,9 +45,7 @@ export class LoginComponent {
         this.router.navigate(['/browse/']);
         this.errorService.clearError();
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : 'An unknown error occurred';
-        this.errorService.errorMsg(errorMessage);
+        this.errorService.handleError(error);
       }
     }
   }

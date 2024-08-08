@@ -33,11 +33,6 @@
       !isUserEmailValid(authData.mail.toLowerCase())) {
       <p>This is not a valid email format</p>
       }}
-      <!-- <div *ngIf="errorService.error$ | async as errors">
-        <div *ngIf="errors?.['mail']">
-          <p>{{ errors["mail"] }}</p>
-        </div>
-      </div> -->
     </div>
     <app-btn-large
       [value]="'Sign Up'"
