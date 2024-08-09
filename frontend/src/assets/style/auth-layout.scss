@@ -48,3 +48,17 @@ section {
     }
   }
 }
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 660px) {
+  .content {
+    padding: 43px 24px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .content {
+    width: 80%;
+  }
+}

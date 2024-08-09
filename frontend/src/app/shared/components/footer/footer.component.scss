@@ -22,3 +22,13 @@ footer {
     }
   }
 }
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 350px) {
+  footer {
+    a {
+      padding: 0 24px;
+    }
+  }
+}

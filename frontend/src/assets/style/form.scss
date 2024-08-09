@@ -44,3 +44,13 @@ form {
     font-weight: 400 !important;
   }
 }
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 600px) {
+  form {
+    input {
+      width: 100%;
+    }
+  }
+}

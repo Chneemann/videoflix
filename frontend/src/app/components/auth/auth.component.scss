@@ -53,3 +53,22 @@ form {
   padding: 6px;
   width: 57%;
 }
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 550px) {
+  form {
+    flex-direction: column;
+    width: 90%;
+    input {
+      width: 100%;
+    }
+  }
+
+  .error-msg {
+    position: relative;
+    padding: 0;
+    height: 12px;
+    margin-bottom: 8px;
+  }
+}
