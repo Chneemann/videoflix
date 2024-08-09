@@ -32,7 +32,6 @@ import { ErrorService } from '../../services/error.service';
 })
 export class HomeComponent implements OnInit {
   currentRoute: any;
-  displayErrorToast: boolean = false;
 
   constructor(
     private route: ActivatedRoute,

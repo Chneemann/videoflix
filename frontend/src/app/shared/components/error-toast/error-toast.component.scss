@@ -3,6 +3,7 @@
 section {
   position: relative;
   width: 615px;
+  max-width: 80%;
   height: fit-content;
   padding: 12px 32px;
   border-radius: 20px;
@@ -90,4 +91,38 @@ section {
   justify-content: center;
   align-items: center;
   z-index: 999;
+}
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 600px) {
+  section {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: fit-content;
+    min-height: 120px;
+    max-width: 90%;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .left {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 0;
+  }
+
+  .right {
+    top: 12px;
+    right: 60px;
+    .line {
+      display: none;
+    }
+  }
+
+  .content {
+    margin-top: 48px;
+  }
 }
