@@ -1,5 +1,5 @@
-<div class="overlay">
-  <section class="slide-in-right">
+<div class="overlay" (click)="closeError()">
+  <section class="slide-in-right" (click)="stopPropagation($event)">
     <div class="left"></div>
     <div class="content">
       <img src="./../../../../assets/img/attention.svg" alt="" />

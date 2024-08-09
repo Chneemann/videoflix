@@ -19,6 +19,10 @@ export class ErrorToastComponent implements OnInit {
     });
   }
 
+  stopPropagation(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
   closeError() {
     this.errorService.clearError();
   }
