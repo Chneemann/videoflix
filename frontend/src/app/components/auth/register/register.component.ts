@@ -26,7 +26,7 @@ export class RegisterComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private authService: AuthService,
+    public authService: AuthService,
     public errorService: ErrorService,
     private router: Router
   ) {}

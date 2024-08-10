@@ -8,8 +8,23 @@ import { environment } from '../environments/environment.development';
 })
 export class AuthService {
   errorMsg: string | null = null;
+  passwordFieldType: string = 'password';
+  passwordIcon: string = './../../../assets/img/close-eye.svg';
 
   constructor(private http: HttpClient) {}
+
+  togglePasswordVisibility() {
+    this.passwordFieldType =
+      this.passwordFieldType === 'password' ? 'text' : 'password';
+    this.toggleIcon();
+  }
+
+  toggleIcon() {
+    this.passwordIcon =
+      this.passwordIcon === './../../../assets/img/close-eye.svg'
+        ? './../../../assets/img/open-eye.svg'
+        : './../../../assets/img/close-eye.svg';
+  }
 
   async register(body: any) {
     await lastValueFrom(

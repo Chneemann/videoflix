@@ -22,8 +22,10 @@ export class LoginComponent {
     send: false,
   };
 
+  showPassword: boolean = false;
+
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     public errorService: ErrorService,
     private router: Router
   ) {}

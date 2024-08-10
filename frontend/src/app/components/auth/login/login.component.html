@@ -31,21 +31,29 @@
         <p>This is not a valid email format</p>
         }}
       </div>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        #password="ngModel"
-        placeholder="Enter a password"
-        autocomplete="new-password"
-        [(ngModel)]="authData.password"
-        pattern="[^<>]*"
-        minlength="6"
-        [class.error-border]="
-          password.invalid && password.touched && authData.password.length < 6
-        "
-        required
-      />
+      <div class="password-field">
+        <input
+          [type]="authService.passwordFieldType"
+          id="password"
+          name="password"
+          class="password-input"
+          #password="ngModel"
+          placeholder="Enter a password"
+          autocomplete="new-password"
+          [(ngModel)]="authData.password"
+          pattern="[^<>]*"
+          minlength="6"
+          [class.error-border]="
+            password.invalid && password.touched && authData.password.length < 6
+          "
+          required
+        />
+        <img
+          class="passwordEye"
+          (click)="authService.togglePasswordVisibility()"
+          [src]="authService.passwordIcon"
+        />
+      </div>
       <div class="error-msg">
         @if (!password.valid && password.touched && authData.password.length <
         1) {

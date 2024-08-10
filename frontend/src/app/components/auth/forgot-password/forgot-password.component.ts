@@ -28,7 +28,7 @@ export class ForgotPasswordComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private authService: AuthService,
+    public authService: AuthService,
     public errorService: ErrorService
   ) {}
 

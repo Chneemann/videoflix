@@ -45,6 +45,23 @@ form {
   }
 }
 
+// Show / Hide Password
+
+.password-field {
+  position: relative;
+  width: 100%;
+}
+
+.passwordEye {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  filter: brightness(0) saturate(100%) invert(16%) sepia(77%) saturate(7494%)
+    hue-rotate(241deg) brightness(93%) contrast(88%);
+}
+
 /*------------- RESPONSIVE -------------*/
 
 @media screen and (max-width: 600px) {
@@ -52,5 +69,9 @@ form {
     input {
       width: 100%;
     }
+  }
+
+  .passwordEye {
+    right: 18px;
   }
 }
