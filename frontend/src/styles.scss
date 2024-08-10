@@ -1,3 +1,5 @@
+@import "./assets/style/colors.scss";
+
 * {
   margin: 0;
   scroll-behavior: smooth;
@@ -5,7 +7,28 @@
   color: #fff;
 }
 
-// Fonts
+/*------------- SCROLLBAR -------------*/
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color: $white;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: $white;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+  background-color: $gray;
+}
+
+/*------------- FONTS -------------*/
+
 /* dm-sans-100 - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
