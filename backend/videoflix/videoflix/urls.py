@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from users import views
 from auth.views import LoginView, RegisterView, VerifyEmailView, AuthView, ForgotPasswordView,ChangePasswordView
 
@@ -28,6 +30,5 @@ urlpatterns = [
     path('auth/register/', RegisterView.as_view()),
     path('auth/verify-email/', VerifyEmailView.as_view()),
     path('auth/forgot-password/', ForgotPasswordView.as_view()),
-    path('auth/change-password/', ChangePasswordView.as_view()),
-        
-]
+    path('auth/change-password/', ChangePasswordView.as_view()), 
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
