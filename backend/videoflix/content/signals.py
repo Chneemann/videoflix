@@ -22,7 +22,7 @@ def video_post_save(sender, instance, created, **kwargs):
             os.makedirs(thumbnail_dir)
 
         try:
-            ffmpeg.input(video_file_path, ss=1).output(absolute_thumbnail_path, vframes=1).run(overwrite_output=True)
+            ffmpeg.input(video_file_path, ss=1).output(absolute_thumbnail_path, vf='scale=300:-1', vframes=1).run(overwrite_output=True)
             instance.thumbnail = os.path.relpath(thumbnail_path, start=settings.MEDIA_ROOT)
             instance.save()
 

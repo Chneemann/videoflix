@@ -7,6 +7,8 @@ import {
   Output,
 } from '@angular/core';
 import { BtnLargeComponent } from '../../../../shared/components/btn-large/btn-large.component';
+import { MovieService } from '../../../../services/movie.service';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-hero-banner',
@@ -19,28 +21,15 @@ export class HeroBannerComponent {
   @Input() currentMovie: any[] = [];
   @Output() playMovie = new EventEmitter<string>();
 
-  constructor(private el: ElementRef) {}
+  environmentBaseUrl: string = environment.baseUrl.slice(0, -1);
 
-  ngAfterViewInit() {
-    this.truncateText();
-  }
+  constructor(private el: ElementRef, private movieService: MovieService) {}
 
   playMovieId(videoPath: string) {
     this.playMovie.emit(videoPath);
   }
 
-  getImagePath(): string {
-    return `./../../../../../assets/movies/banner/${this.currentMovie[0]?.imgPath}`;
-  }
-
-  truncateText() {
-    const descriptionEl = this.el.nativeElement.querySelector('.description');
-    const maxHeight = descriptionEl.offsetHeight;
-    let text = descriptionEl.innerText;
-
-    while (descriptionEl.scrollHeight > maxHeight) {
-      text = text.slice(0, -1);
-      descriptionEl.innerText = text + '...';
-    }
+  getImagePath(): any {
+    return '123';
   }
 }

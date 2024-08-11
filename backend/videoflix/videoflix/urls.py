@@ -15,20 +15,35 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from users import views
-from auth.views import LoginView, RegisterView, VerifyEmailView, AuthView, ForgotPasswordView,ChangePasswordView
+from users import views as user_views
+from auth.views import (
+    LoginView,
+    RegisterView,
+    VerifyEmailView,
+    AuthView,
+    ForgotPasswordView,
+    ChangePasswordView
+)
+from content import views as content_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', views.user_list),
-    path('users/<int:id>/', views.user_detail),
+    
+    # Content URLs
+    path('content/', content_views.video_list),
+
+    # Users URLs
+    path('users/', user_views.user_list),
+    path('users/<int:id>/', user_views.user_detail),
+
+    # Authentication URLs
     path('auth/', AuthView.as_view()),
     path('auth/login/', LoginView.as_view()),
     path('auth/register/', RegisterView.as_view()),
     path('auth/verify-email/', VerifyEmailView.as_view()),
     path('auth/forgot-password/', ForgotPasswordView.as_view()),
-    path('auth/change-password/', ChangePasswordView.as_view()), 
-] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    path('auth/change-password/', ChangePasswordView.as_view()),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

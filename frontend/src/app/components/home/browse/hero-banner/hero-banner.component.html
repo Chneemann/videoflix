@@ -1,18 +1,21 @@
 <section
   class="movie-banner"
-  [style.backgroundImage]="'url(' + getImagePath() + ')'"
+  [ngStyle]="{
+    'background-image':
+      'url(' + environmentBaseUrl + currentMovie[0]?.thumbnail + ')'
+  }"
 >
   @if (currentMovie.length > 0) {
   <div class="content">
-    <div class="title">{{ currentMovie[0].title }}</div>
+    <div class="title">{{ currentMovie[0]?.title }}</div>
     <div class="description">
-      {{ currentMovie[0].description }}
+      {{ currentMovie[0]?.description }}
     </div>
     <app-btn-large
       [value]="'Play'"
       [imgPath]="'play'"
       [imgReverse]="true"
-      (click)="playMovieId(currentMovie[0].videoPath)"
+      (click)="playMovieId(environmentBaseUrl + currentMovie[0]?.video_file)"
     ></app-btn-large>
   </div>
   }

@@ -1,13 +1,13 @@
-<section class="hide-scrollbar">
+<section *ngIf="movies.length > 0" class="hide-scrollbar">
   <!-- Column for films of the last 7 days -->
-  <div class="category">
+  <div *ngIf="recentMovies().length > 0" class="category">
     <p>Added in the last 7 days</p>
     <div class="movies">
       @for (movie of recentMovies(); track movie) {
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
-          src="./../../../../../assets/movies/banner/{{ movie.imgPath }}"
+          src="{{ environmentBaseUrl + movie.thumbnail }}"
           alt=""
         />
       </div>
@@ -25,7 +25,7 @@
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
-          src="./../../../../../assets/movies/banner/{{ movie.imgPath }}"
+          src="{{ environmentBaseUrl + movie.thumbnail }}"
           alt=""
         />
       </div>
