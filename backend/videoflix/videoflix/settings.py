@@ -85,6 +85,7 @@ TEMPLATES = [
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/img')
 MEDIA_URL = '/media/'
 
 WSGI_APPLICATION = 'videoflix.wsgi.application'
