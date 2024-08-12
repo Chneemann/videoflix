@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'debug_toolbar',
+    'django_rq',
     'content.apps.ContentConfig',
     'users',
 ]
@@ -102,10 +103,20 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'PASSWORD': 'foobared',
+        'DEFAULT_TIMEOUT': 360,
+    }
+}
+
 CACHE_TTL = 60 * 15
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/img')
+THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/thumbnails')
 MEDIA_URL = '/media/'
 
 WSGI_APPLICATION = 'videoflix.wsgi.application'
