@@ -28,7 +28,7 @@ section {
 }
 
 .content {
-  position: absolute;
+  position: relative;
   width: 40%;
   height: 40%;
   top: 140px;
@@ -38,12 +38,13 @@ section {
 }
 
 .title {
-  font-size: 5vw;
+  font-size: 54px;
   font-weight: 700;
   text-shadow: 1px 1px 2px $black;
 }
 
 .description {
+  position: relative;
   font-size: 18px;
   font-weight: 400;
   overflow: hidden;
@@ -51,7 +52,12 @@ section {
   height: fit-content;
   margin-bottom: 24px;
   text-shadow: 1px 1px 2px $black;
-  position: relative;
+}
+
+app-btn-large {
+  position: absolute;
+  bottom: -60px;
+  left: 0;
 }
 
 .movie-banner {
