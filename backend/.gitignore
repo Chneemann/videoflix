@@ -145,3 +145,6 @@ GitHub.sublime-settings
 !**/migrations
 !**/migrations/__init__.py
 videoflix/users/migrations
+
+# Statics
+videoflix/staticfiles

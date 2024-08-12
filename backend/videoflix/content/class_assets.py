@@ -1,0 +1,18 @@
+FILM_GENRES = [
+    ('action', 'Action'),
+    ('adventure', 'Adventure'),
+    ('comedy', 'Comedy'),
+    ('drama', 'Drama'),
+    ('horror', 'Horror'),
+    ('science_fiction', 'Science Fiction'),
+    ('fantasy', 'Fantasy'),
+    ('romance', 'Romance'),
+    ('thriller', 'Thriller'),
+    ('mystery', 'Mystery'),
+    ('crime', 'Crime'),
+    ('animation', 'Animation'),
+    ('documentary', 'Documentary'),
+    ('musical', 'Musical'),
+    ('war', 'War'),
+    ('western', 'Western'),
+]

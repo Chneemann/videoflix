@@ -17,22 +17,22 @@ export class CategoriesComponent {
   environmentBaseUrl: string = environment.baseUrl.slice(0, -1);
 
   filmGenres = [
-    'Action',
-    'Adventure',
-    'Comedy',
-    'Drama',
-    'Horror',
-    'Science Fiction',
-    'Fantasy',
-    'Romance',
-    'Thriller',
-    'Mystery',
-    'Crime',
-    'Animation',
-    'Documentary',
-    'Musical',
-    'War',
-    'Western',
+    'action',
+    'adventure',
+    'comedy',
+    'drama',
+    'horror',
+    'science_fiction',
+    'fantasy',
+    'romance',
+    'thriller',
+    'mystery',
+    'crime',
+    'animation',
+    'documentary',
+    'musical',
+    'war',
+    'western',
   ];
 
   openCurrentMovie(movieId: number) {

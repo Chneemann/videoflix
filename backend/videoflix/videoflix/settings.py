@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'debug_toolbar',
     'django_rq',
+    'import_export',
     'content.apps.ContentConfig',
     'users',
 ]
@@ -120,6 +121,11 @@ THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/thumbnails')
 MEDIA_URL = '/media/'
 
 WSGI_APPLICATION = 'videoflix.wsgi.application'
+
+# Statics
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
