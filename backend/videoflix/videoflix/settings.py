@@ -51,11 +51,13 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'corsheaders',
+    'debug_toolbar',
     'content.apps.ContentConfig',
     'users',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,6 +85,24 @@ TEMPLATES = [
         },
     },
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "PASSWORD": 'foobared',
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+            },
+        "KEY_PREFIX": "videoflix"
+    }
+}
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+CACHE_TTL = 60 * 15
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/img')
