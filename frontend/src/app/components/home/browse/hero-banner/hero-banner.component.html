@@ -2,7 +2,10 @@
   class="movie-banner"
   [ngStyle]="{
     'background-image':
-      'url(' + environmentBaseUrl + currentMovie[0]?.thumbnail + ')'
+      'url(' +
+      environmentBaseUrl +
+      currentMovie[0]?.thumbnail.replace('.jpg', '_1920p.jpg') +
+      ')'
   }"
 >
   @if (currentMovie.length > 0) {

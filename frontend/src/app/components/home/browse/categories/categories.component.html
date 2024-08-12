@@ -7,7 +7,9 @@
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
-          src="{{ environmentBaseUrl + movie.thumbnail }}"
+          src="{{
+            environmentBaseUrl + movie.thumbnail.replace('.jpg', '_480p.jpg')
+          }} }}"
           alt=""
         />
       </div>
@@ -25,7 +27,9 @@
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
-          src="{{ environmentBaseUrl + movie.thumbnail }}"
+          src="{{
+            environmentBaseUrl + movie.thumbnail.replace('.jpg', '_480p.jpg')
+          }}"
           alt=""
         />
       </div>
