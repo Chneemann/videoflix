@@ -8,7 +8,7 @@ class Video(models.Model):
     description = models.CharField(max_length=500)
     film_genre = models.CharField(max_length=20, choices=FILM_GENRES, blank=True, null=True)
     video_file = models.FileField(upload_to='videos/', blank=True, null=True)
-    thumbnail = models.ImageField(upload_to='thumbnails/', blank=True, null=True)
+    file_name = models.CharField(max_length=50, blank=True, null=True)
     
     def __str__(self):
-        return self.title
+        return f'({self.id}) {self.title}'

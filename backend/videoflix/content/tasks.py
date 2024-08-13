@@ -1,41 +1,76 @@
+import re
 import subprocess
 import ffmpeg
 import os
 from django.conf import settings
+from .models import Video
 
-def convert_video(source, resolution):
-    target = source + f'_{resolution}p.mp4'
-    target = remove_first_mp4(target)
-    ffmpeg_path = '/opt/homebrew/bin/ffmpeg'
-    cmd = [ffmpeg_path, '-i', source, '-s', f'hd{resolution}', '-c:v', 'libx264', '-crf', '23', '-c:a', 'aac', '-strict', '-2', target]
-    result = subprocess.run(cmd, capture_output=True, text=True)
+def convert_video_to_hls(source, resolution, model_id):
+    target_dir = os.path.join(os.path.dirname(source), str(model_id))
+    os.makedirs(target_dir, exist_ok=True)
+
+    base_filename = os.path.basename(source).split(".")[0]
+    target = os.path.join(target_dir, f'{base_filename}_{resolution}p')
     
-def remove_first_mp4(filename):
-    name_part, ext_part = filename.split('.mp4', 1)
-    new_filename = name_part + ext_part
-    return new_filename
-  
-def create_thumbnails(self):
-    video_file_path = self.video_file.path
-    thumbnail_dir = settings.THUMBNAIL_DIR
+    ffmpeg_path = '/opt/homebrew/bin/ffmpeg'
+    cmd = [
+        ffmpeg_path, 
+        '-i', source, 
+        '-s', f'hd{resolution}', 
+        '-c:v', 'libx264', 
+        '-crf', '23', 
+        '-c:a', 'aac', 
+        '-strict', '-2', 
+        '-hls_time', '10',
+        '-hls_playlist_type', 'vod', 
+        '-hls_segment_filename', os.path.join(target_dir, f'{base_filename}_{resolution}p_%03d.ts'),
+        f'{target}.m3u8'
+    ]
+    
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode == 0:
+        save_converted_file_name(model_id, base_filename)
+    else:
+        print(f"Conversion error: {result.stderr}")
 
+def save_converted_file_name(model_id, file_name):
+    """
+    Saves the name of the converted file in the model or a database.
+    """
+    try:
+        instance = Video.objects.get(id=model_id)
+        instance.file_name = file_name
+        instance.save()
+    except Video.DoesNotExist:
+        print(f"Model with ID {model_id} not found.")
+    except Exception as e:
+        print(f"Error saving file name:: {e}")
+        
+def delete_original_video(source):
+    """
+     Deletes the original MP4 file.
+    """
+    try:
+        os.remove(source)
+    except OSError as e:
+        print(f"Error deleting original file: {e}")
+
+def create_thumbnails(self, model_id):
+    video_file_path = self.video_file.path
+    thumbnail_dir = os.path.join(settings.THUMBNAIL_DIR, str(model_id))
+  
     base_filename = os.path.splitext(os.path.basename(video_file_path))[0]
     thumbnail_1080p_filename = base_filename + '_1080p.jpg'
     thumbnail_1080p_path = os.path.join(thumbnail_dir, thumbnail_1080p_filename)
     thumbnail_480_filename = base_filename + '_480p.jpg'
     thumbnail_480_path = os.path.join(thumbnail_dir, thumbnail_480_filename)
-    thumbnail_path = os.path.join(thumbnail_dir, base_filename + ".jpg")
-    
+
     if not os.path.exists(thumbnail_dir):
         os.makedirs(thumbnail_dir)
 
     try:
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_1080p_path, vf='scale=1920:-1', vframes=1).run(overwrite_output=True)
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_480_path, vf='scale=720:-1', vframes=1).run(overwrite_output=True)
-
-        # Hier speichern wir nur das Thumbnail für die Vorschau im Modell
-        self.thumbnail = os.path.relpath(thumbnail_path, start=settings.MEDIA_ROOT)
-        self.save()
 
     except ffmpeg._run.Error as e:
         print(f"Ein Fehler ist aufgetreten: {e.stderr.decode()}")

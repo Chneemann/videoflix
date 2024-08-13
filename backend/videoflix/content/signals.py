@@ -1,10 +1,11 @@
 from .models import Video
-from content.tasks import convert_video, create_thumbnails
+from .tasks import convert_video_to_hls, create_thumbnails, delete_original_video
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.conf import settings
 import os
 import django_rq
+import shutil
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):
@@ -14,41 +15,36 @@ def video_post_save(sender, instance, created, **kwargs):
     if created:
         queue = django_rq.get_queue("default", autocommit=True)
         
-        #Convert Video
-        queue.enqueue(convert_video, instance.video_file.path, "480")
-        queue.enqueue(convert_video, instance.video_file.path, "720")
-        queue.enqueue(convert_video, instance.video_file.path, "1080")
+        #Convert video
+        queue.enqueue(convert_video_to_hls, instance.video_file.path, "480", instance.id)
+        queue.enqueue(convert_video_to_hls, instance.video_file.path, "720", instance.id)
+        queue.enqueue(convert_video_to_hls, instance.video_file.path, "1080", instance.id)
         
-        #Create Thumbnail
-        queue.enqueue(create_thumbnails, instance)
+        #Create thumbnail
+        queue.enqueue(create_thumbnails, instance, instance.id)
+        
+        # Delete the original video file
+        queue.enqueue(delete_original_video, instance.video_file.path)
 
 @receiver(post_delete, sender=Video)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """
-    Deletes video file and its converted files from filesystem
-    when corresponding `Video` object is deleted.
+    Deletes the video and all converted files from the file system,
+    when the corresponding `Video` object is deleted.
     """
-    # Delete the original video file
-    if instance.video_file:
-        if os.path.isfile(instance.video_file.path):
-            os.remove(instance.video_file.path)
-    
-    # Delete the converted videos
-    if instance.video_file:
-        delete_converted_files(instance.video_file.path)
+    main_directory = os.path.dirname(instance.video_file.path)
+    model_directory = os.path.join(main_directory, str(instance.id))
+    delete_directory(model_directory)
 
-    # Delete the thumbnails
-    if instance.thumbnail:
-        thumbnail_dir = settings.THUMBNAIL_DIR
-        base_filename = os.path.splitext(os.path.basename(instance.video_file.path))[0]
-        thumbnail_1080p_path = os.path.join(thumbnail_dir, base_filename + '_1080p.jpg')
-        thumbnail_480_path = os.path.join(thumbnail_dir, base_filename + '_480p.jpg')
-
-        if os.path.isfile(thumbnail_1080p_path):
-            os.remove(thumbnail_1080p_path)
-        if os.path.isfile(thumbnail_480_path):
-            os.remove(thumbnail_480_path)
-
+def delete_directory(directory_path):
+    """
+    Deletes the specified directory recursively.
+    """
+    if os.path.exists(directory_path):
+        shutil.rmtree(directory_path)
+    else:
+        print(f"Folder not found: {directory_path}")
+        
 def remove_first_mp4(filename):
     """
     Remove the first .mp4 extension from the filename.

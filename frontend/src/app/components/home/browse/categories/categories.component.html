@@ -8,8 +8,13 @@
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
           src="{{
-            environmentBaseUrl + movie.thumbnail.replace('.jpg', '_480p.jpg')
-          }} }}"
+            environmentBaseUrl +
+              '/media/thumbnails/' +
+              movie.id +
+              '/' +
+              movie.file_name +
+              '_480p.jpg'
+          }}"
           alt=""
         />
       </div>
@@ -28,7 +33,12 @@
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
           src="{{
-            environmentBaseUrl + movie.thumbnail.replace('.jpg', '_480p.jpg')
+            environmentBaseUrl +
+              '/media/thumbnails/' +
+              movie.id +
+              '/' +
+              movie.file_name +
+              '_480p.jpg'
           }}"
           alt=""
         />
