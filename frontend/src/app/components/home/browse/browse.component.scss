@@ -67,3 +67,14 @@ section {
   width: 32px;
   height: auto;
 }
+
+.error {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 120px;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  text-align: center;
+}

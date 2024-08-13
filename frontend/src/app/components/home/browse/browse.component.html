@@ -1,4 +1,6 @@
 <section>
+  @if (currentMovie.length < 0) {
+  <!-- If at least one film has been uploaded -->
   @if (playMovie === "") {
   <app-header [browse]="true"></app-header>
   <app-hero-banner
@@ -21,10 +23,12 @@
       </div>
     </div>
     <app-video-player [playMovie]="playMovie"></app-video-player>
-    <!-- <video width="100%" height="100%" controls autoplay>
-      <source src="{{ playMovie }}" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video> -->
+  </div>
+  } } @else {
+  <!-- If the database is empty -->
+  <app-header [browse]="true"></app-header>
+  <div class="error">
+    <h2>Unfortunately there are no films available in the database.</h2>
   </div>
   }
 </section>
