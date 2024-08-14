@@ -1,5 +1,5 @@
 <section>
-  @if (currentMovie.length < 0) {
+  @if (currentMovie[0]) {
   <!-- If at least one film has been uploaded -->
   @if (playMovie === "") {
   <app-header [browse]="true"></app-header>
@@ -17,6 +17,38 @@
     <div class="video-header">
       <div class="back-button" (click)="closeVideo()">
         <img src="./../../../../assets/img/back.svg" alt="Back" />
+      </div>
+      <div class="resolution-controls">
+        <button
+          [ngClass]="{
+            'resolution-btn': true,
+            active: currentResolution === '480p'
+          }"
+          [disabled]="currentResolution === '480p'"
+          (click)="changeResolution('480p')"
+        >
+          480p
+        </button>
+        <button
+          [ngClass]="{
+            'resolution-btn': true,
+            active: currentResolution === '720p'
+          }"
+          [disabled]="currentResolution === '720p'"
+          (click)="changeResolution('720p')"
+        >
+          720p
+        </button>
+        <button
+          [ngClass]="{
+            'resolution-btn': true,
+            active: currentResolution === '1080p'
+          }"
+          [disabled]="currentResolution === '1080p'"
+          (click)="changeResolution('1080p')"
+        >
+          1080p
+        </button>
       </div>
       <div class="logo">
         <img src="./../../../../assets/img/logo_ci.svg" alt="Logo" />

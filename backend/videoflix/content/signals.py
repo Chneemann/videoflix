@@ -15,13 +15,13 @@ def video_post_save(sender, instance, created, **kwargs):
     if created:
         queue = django_rq.get_queue("default", autocommit=True)
         
+        #Create thumbnail
+        queue.enqueue(create_thumbnails, instance, instance.id)
+        
         #Convert video
         queue.enqueue(convert_video_to_hls, instance.video_file.path, "480", instance.id)
         queue.enqueue(convert_video_to_hls, instance.video_file.path, "720", instance.id)
         queue.enqueue(convert_video_to_hls, instance.video_file.path, "1080", instance.id)
-        
-        #Create thumbnail
-        queue.enqueue(create_thumbnails, instance, instance.id)
         
         # Delete the original video file
         queue.enqueue(delete_original_video, instance.video_file.path)
@@ -33,8 +33,12 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     when the corresponding `Video` object is deleted.
     """
     main_directory = os.path.dirname(instance.video_file.path)
+    parent_directory = os.path.dirname(main_directory)
     model_directory = os.path.join(main_directory, str(instance.id))
+    thumbnail_directory = os.path.join(parent_directory, 'thumbnails', str(instance.id))
+
     delete_directory(model_directory)
+    delete_directory(thumbnail_directory)
 
 def delete_directory(directory_path):
     """

@@ -21,6 +21,15 @@ export class MovieService {
     return lastValueFrom(this.http.get(url, { headers }));
   }
 
+  async uploadMovie(formData: FormData) {
+    const headers = this.getAuthHeaders();
+    await lastValueFrom(
+      this.http.post(`${environment.baseUrl}/content/upload/`, formData, {
+        headers,
+      })
+    );
+  }
+
   private getAuthHeaders(): HttpHeaders {
     let authToken = localStorage.getItem('authToken');
     if (!authToken) {

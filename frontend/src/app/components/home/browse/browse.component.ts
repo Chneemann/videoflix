@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { AuthService } from '../../../services/auth.service';
 import { MovieService } from '../../../services/movie.service';
 import { CommonModule } from '@angular/common';
-import { VideoPlayerComponent } from './vjs-player/vjs-player.component';
+import { VideoPlayerComponent } from './video-player/video-player.component';
 import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
 import { UploadMovieComponent } from './upload-movie/upload-movie.component';
 
@@ -25,10 +31,12 @@ import { UploadMovieComponent } from './upload-movie/upload-movie.component';
   styleUrl: './browse.component.scss',
 })
 export class BrowseComponent implements OnInit {
+  @ViewChild(VideoPlayerComponent) videoPlayer!: VideoPlayerComponent;
   movies: any[] = [];
   currentMovie: any[] = [];
   playMovie: string = '';
   uploadMovieOverview: boolean = false;
+  currentResolution: '480p' | '720p' | '1080p' = '720p';
 
   constructor(
     private authService: AuthService,
@@ -38,6 +46,13 @@ export class BrowseComponent implements OnInit {
   async ngOnInit() {
     await this.loadAllMovies();
     this.currentMovie.length === 0 ? this.loadRandomMovie() : null;
+  }
+
+  changeResolution(resolution: '480p' | '720p' | '1080p') {
+    if (this.videoPlayer) {
+      this.videoPlayer.switchResolution(resolution);
+      this.currentResolution = resolution;
+    }
   }
 
   async loadAllMovies() {
@@ -66,8 +81,6 @@ export class BrowseComponent implements OnInit {
   }
 
   toggleUploadMovieOverview(value: any) {
-    console.log(value);
-
     this.uploadMovieOverview = value;
   }
 }

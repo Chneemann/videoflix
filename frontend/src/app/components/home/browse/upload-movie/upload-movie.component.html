@@ -73,20 +73,19 @@
           type="file"
           id="videoFile"
           name="videoFile"
-          #videoFile="ngModel"
           placeholder="Video file"
-          [(ngModel)]="movieData.videoFile"
-          [class.error-border]="!videoFile.valid && videoFile.touched"
+          (change)="onFileChange($event)"
           required
         />
-        <div class="error-msg">
-          @if (!videoFile.valid && videoFile.touched) {
-          <p>Please enter the movie file</p>
-          }
-        </div>
+        <div class="error-msg"></div>
         <app-btn-large
-          [value]="'Get Started'"
-          [disabled]="!movieData.title"
+          [value]="'Upload Movie'"
+          [disabled]="
+            !movieData.title ||
+            !movieData.description ||
+            !movieData.filmGenre ||
+            !movieData.videoFile
+          "
         ></app-btn-large>
       </form>
     </div>

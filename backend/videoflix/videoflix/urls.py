@@ -36,6 +36,7 @@ urlpatterns = [
     
     # Content URLs
     path('content/', content_views.video_list),
+    path('content/upload/', content_views.video_upload),
 
     # Users URLs
     path('users/', user_views.user_list),

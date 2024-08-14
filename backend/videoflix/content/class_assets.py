@@ -15,4 +15,5 @@ FILM_GENRES = [
     ('musical', 'Musical'),
     ('war', 'War'),
     ('western', 'Western'),
+    ('other', 'Miscellaneous'),
 ]

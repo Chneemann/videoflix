@@ -27,25 +27,8 @@ def convert_video_to_hls(source, resolution, model_id):
         f'{target}.m3u8'
     ]
     
-    result = subprocess.run(cmd, capture_output=True, text=True)
-    if result.returncode == 0:
-        save_converted_file_name(model_id, base_filename)
-    else:
-        print(f"Conversion error: {result.stderr}")
+    subprocess.run(cmd, capture_output=True, text=True)
 
-def save_converted_file_name(model_id, file_name):
-    """
-    Saves the name of the converted file in the model or a database.
-    """
-    try:
-        instance = Video.objects.get(id=model_id)
-        instance.file_name = file_name
-        instance.save()
-    except Video.DoesNotExist:
-        print(f"Model with ID {model_id} not found.")
-    except Exception as e:
-        print(f"Error saving file name:: {e}")
-        
 def delete_original_video(source):
     """
      Deletes the original MP4 file.

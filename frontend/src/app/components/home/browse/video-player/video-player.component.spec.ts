@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VideoPlayerComponent } from './vjs-player.component';
+import { VideoPlayerComponent } from './video-player.component';
 
-describe('VjsPlayerComponent', () => {
+describe('VideoPlayerComponent', () => {
   let component: VideoPlayerComponent;
   let fixture: ComponentFixture<VideoPlayerComponent>;
 

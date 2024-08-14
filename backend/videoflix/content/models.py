@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import date
 from .class_assets import FILM_GENRES
-
+import os
 class Video(models.Model):
     created_at = models.DateField(default=date.today)
     title = models.CharField(max_length=80)
@@ -12,3 +12,11 @@ class Video(models.Model):
     
     def __str__(self):
         return f'({self.id}) {self.title}'
+    
+    def save(self, *args, **kwargs):
+        if self.video_file and not self.file_name:
+            video_file_path = self.video_file.path
+            base_filename, _ = os.path.splitext(os.path.basename(video_file_path))
+            self.file_name = base_filename
+        super().save(*args, **kwargs)
+    
