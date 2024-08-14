@@ -1,0 +1,94 @@
+<div class="overlay" (click)="uploadMovieOverview()">
+  <div class="center" (click)="stopPropagation($event)">
+    <div class="content">
+      <div class="headline">Upload Movie</div>
+      <form
+        #movieForm="ngForm"
+        (ngSubmit)="onSubmit(movieForm)"
+        onsubmit="return false"
+        (input)="this.errorService.clearError()"
+      >
+        <input
+          type="text"
+          id="title"
+          name="title"
+          #title="ngModel"
+          placeholder="Title"
+          [(ngModel)]="movieData.title"
+          [class.error-border]="!title.valid && title.touched"
+          required
+        />
+        <div class="error-msg">
+          @if (!title.valid && title.touched) {
+          <p>Please enter a movie title</p>
+          }
+        </div>
+        <textarea
+          id="description"
+          name="description"
+          #description="ngModel"
+          placeholder="Description"
+          [(ngModel)]="movieData.description"
+          [class.error-border]="!description.valid && description.touched"
+          rows="4"
+          required
+        ></textarea>
+        <div class="error-msg">
+          @if (!description.valid && description.touched) {
+          <p>Please enter a movie description</p>
+          }
+        </div>
+        <select
+          id="filmGenre"
+          name="filmGenre"
+          #filmGenre="ngModel"
+          [(ngModel)]="movieData.filmGenre"
+          [class.error-border]="!filmGenre.valid && filmGenre.touched"
+          required
+        >
+          <option value="action">Action</option>
+          <option value="adventure">Adventure</option>
+          <option value="comedy">Comedy</option>
+          <option value="drama">Drama</option>
+          <option value="horror">Horror</option>
+          <option value="science_fiction">Science Fiction</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="romance">Romance</option>
+          <option value="thriller">Thriller</option>
+          <option value="mystery">Mystery</option>
+          <option value="crime">Crime</option>
+          <option value="animation">Animation</option>
+          <option value="documentary">Documentary</option>
+          <option value="musical">Musical</option>
+          <option value="war">War</option>
+          <option value="western">Western</option>
+          <option value="other">Miscellaneous</option>
+        </select>
+        <div class="error-msg">
+          @if (!filmGenre.valid && filmGenre.touched) {
+          <p>Please enter a movie genre</p>
+          }
+        </div>
+        <input
+          type="file"
+          id="videoFile"
+          name="videoFile"
+          #videoFile="ngModel"
+          placeholder="Video file"
+          [(ngModel)]="movieData.videoFile"
+          [class.error-border]="!videoFile.valid && videoFile.touched"
+          required
+        />
+        <div class="error-msg">
+          @if (!videoFile.valid && videoFile.touched) {
+          <p>Please enter the movie file</p>
+          }
+        </div>
+        <app-btn-large
+          [value]="'Get Started'"
+          [disabled]="!movieData.title"
+        ></app-btn-large>
+      </form>
+    </div>
+  </div>
+</div>

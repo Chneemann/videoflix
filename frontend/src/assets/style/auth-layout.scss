@@ -54,11 +54,20 @@ section {
 @media screen and (max-width: 660px) {
   .content {
     padding: 43px 24px;
+    .headline {
+      font-size: 36px;
+    }
   }
 }
 
 @media screen and (max-width: 600px) {
   .content {
     width: 80%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .content {
+    padding: 24px 18px;
   }
 }
