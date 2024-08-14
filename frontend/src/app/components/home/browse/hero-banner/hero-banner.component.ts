@@ -6,7 +6,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { BtnLargeComponent } from '../../../../shared/components/btn-large/btn-large.component';
+import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
 import { MovieService } from '../../../../services/movie.service';
 import { environment } from '../../../../environments/environment';
 

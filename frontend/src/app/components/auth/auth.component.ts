@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { BtnLargeComponent } from '../../shared/components/btn-large/btn-large.component';
+import { BtnLargeComponent } from '../../shared/components/buttons/btn-large/btn-large.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from '../../services/error.service';

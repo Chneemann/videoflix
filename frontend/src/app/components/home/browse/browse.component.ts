@@ -7,6 +7,8 @@ import { MovieService } from '../../../services/movie.service';
 import { Observable, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './vjs-player/vjs-player.component';
+import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
+import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
 
 @Component({
   selector: 'app-browse',
@@ -17,6 +19,7 @@ import { VideoPlayerComponent } from './vjs-player/vjs-player.component';
     HeroBannerComponent,
     CategoriesComponent,
     VideoPlayerComponent,
+    BtnSmallComponent,
   ],
   templateUrl: './browse.component.html',
   styleUrl: './browse.component.scss',
@@ -61,4 +64,6 @@ export class BrowseComponent implements OnInit {
       this.currentMovie.push(this.movies[index]);
     }
   }
+
+  addNewMovie() {}
 }

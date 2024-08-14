@@ -45,6 +45,12 @@ section {
   transition: opacity 300ms ease-in-out;
 }
 
+.add-button {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+}
+
 .back-button {
   cursor: pointer;
   background: none;

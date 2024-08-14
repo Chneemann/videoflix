@@ -1,5 +1,5 @@
 import { Component, Input, input } from '@angular/core';
-import { BtnLargeComponent } from '../btn-large/btn-large.component';
+import { BtnLargeComponent } from '../buttons/btn-large/btn-large.component';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
