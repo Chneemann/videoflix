@@ -34,10 +34,16 @@ EMAIL_HOST_USER = 'andre.kempf.dev@gmail.com'
 EMAIL_HOST_PASSWORD = 'oyxwawshudwytgud'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'videoflix-django.andre-kempf.com', 
+    '34.65.103.198', 
+    'localhost', 
+    '127.0.0.1',
+]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:4200'
+    'https://34.65.103.198',
+    'http://localhost:4200',
 ]
 
 # Application definition
