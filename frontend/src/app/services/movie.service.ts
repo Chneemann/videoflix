@@ -21,12 +21,22 @@ export class MovieService {
     return lastValueFrom(this.http.get(url, { headers }));
   }
 
-  async uploadMovie(formData: FormData) {
+  uploadMovie(formData: FormData): Observable<any> {
     const headers = this.getAuthHeaders();
-    await lastValueFrom(
-      this.http.post(`${environment.baseUrl}/content/upload/`, formData, {
-        headers,
-      })
+    return this.http.post<any>(
+      `${environment.baseUrl}/content/upload/`,
+      formData,
+      { headers }
+    );
+  }
+
+  checkThumbnailStatus(
+    videoId: number
+  ): Observable<{ thumbnail_created: boolean }> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<{ thumbnail_created: boolean }>(
+      `${environment.baseUrl}/content/${videoId}/status/`,
+      { headers }
     );
   }
 

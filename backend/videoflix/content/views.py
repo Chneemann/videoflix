@@ -16,12 +16,25 @@ CACHETTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 @permission_classes([IsAuthenticated])
 #@cache_page(CACHETTL)
 def video_list(request):
-  
-  if request.method == 'GET':
-    video = Video.objects.all()
-    serializer = VideoSerializer(video, many=True)
+    """
+    List all videos.
+    """
+    videos = Video.objects.all()
+    serializer = VideoSerializer(videos, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_thumbnail_status(request, video_id):
+    """
+    Check the status of the thumbnail creation for a specific video.
+    """
+    try:
+        video = Video.objects.get(id=video_id)
+        return Response({'thumbnail_created': video.thumbnail_created})
+    except Video.DoesNotExist:
+        return Response({'error': 'Video not found'}, status=404)
+    
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def video_upload(request):

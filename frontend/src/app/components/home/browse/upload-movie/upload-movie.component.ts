@@ -44,27 +44,47 @@ export class UploadMovieComponent {
   }
 
   async onSubmit(ngForm: NgForm) {
-    if (ngForm.submitted && ngForm.form.valid) {
-      const formData = new FormData();
-      formData.append('title', this.movieData.title);
-      formData.append('description', this.movieData.description);
-      formData.append('film_genre', this.movieData.filmGenre);
-      if (this.movieData.videoFile) {
-        formData.append('video_file', this.movieData.videoFile);
-      }
-      try {
-        await this.movieService.uploadMovie(formData);
-        this.movieData.send = true;
-        setTimeout(() => {
-          ngForm.resetForm();
-          this.uploadMovieOverview();
-          this.movieData.send = false;
-          window.location.reload();
-        }, 1000);
-        this.errorService.clearError();
-      } catch (error) {
-        this.errorService.handleError(error);
-      }
+    if (!ngForm.submitted || !ngForm.form.valid) return;
+
+    try {
+      this.movieData.send = true;
+
+      const formData = this.createFormData();
+      const response = await this.movieService
+        .uploadMovie(formData)
+        .toPromise();
+      const videoId = response.id;
+
+      await this.waitForThumbnailCreation(videoId);
+
+      ngForm.resetForm();
+      this.uploadMovieOverview();
+      this.movieData.send = false;
+      window.location.reload();
+      this.errorService.clearError();
+    } catch (error) {
+      this.errorService.handleError(error);
+    }
+  }
+
+  private createFormData(): FormData {
+    const formData = new FormData();
+    formData.append('title', this.movieData.title);
+    formData.append('description', this.movieData.description);
+    formData.append('film_genre', this.movieData.filmGenre);
+    if (this.movieData.videoFile) {
+      formData.append('video_file', this.movieData.videoFile);
+    }
+    return formData;
+  }
+
+  private async waitForThumbnailCreation(videoId: number) {
+    while (true) {
+      const statusResponse = await this.movieService
+        .checkThumbnailStatus(videoId)
+        .toPromise();
+      if (statusResponse?.thumbnail_created) break;
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   }
 }
