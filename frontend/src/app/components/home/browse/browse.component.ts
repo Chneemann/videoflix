@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './vjs-player/vjs-player.component';
 import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
 import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
+import { NewMovieComponent } from './new-movie/new-movie.component';
 
 @Component({
   selector: 'app-browse',
@@ -20,6 +21,7 @@ import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/
     CategoriesComponent,
     VideoPlayerComponent,
     BtnSmallComponent,
+    NewMovieComponent,
   ],
   templateUrl: './browse.component.html',
   styleUrl: './browse.component.scss',
@@ -34,6 +36,7 @@ export class BrowseComponent implements OnInit {
 
   currentMovie: any[] = [];
   playMovie: string = '';
+  newMovieOverview: boolean = false;
 
   async ngOnInit() {
     await this.loadAllMovies();
@@ -65,5 +68,7 @@ export class BrowseComponent implements OnInit {
     }
   }
 
-  addNewMovie() {}
+  toggleNewMovieOverview(value: any) {
+    this.newMovieOverview = value;
+  }
 }

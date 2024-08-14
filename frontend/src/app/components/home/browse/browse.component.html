@@ -32,6 +32,14 @@
   </div>
   }
   <div class="add-button">
-    <app-btn-small [imgPath]="'add'" (click)="addNewMovie()"></app-btn-small>
+    <app-btn-small
+      [imgPath]="'add'"
+      (click)="toggleNewMovieOverview(true)"
+    ></app-btn-small>
   </div>
 </section>
+@if (newMovieOverview) {
+<app-new-movie
+  (toggleNewMovieOverview)="toggleNewMovieOverview($event)"
+></app-new-movie>
+}
