@@ -36,7 +36,7 @@ export class MovieService {
       authToken = sessionStorage.getItem('authToken');
     }
     return new HttpHeaders({
-      Authorization: `Token ${authToken}`, // Ensure this matches your backend
+      Authorization: `Token ${authToken}`,
     });
   }
 }

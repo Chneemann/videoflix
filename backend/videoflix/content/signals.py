@@ -49,14 +49,6 @@ def delete_directory(directory_path):
     else:
         print(f"Folder not found: {directory_path}")
         
-def remove_first_mp4(filename):
-    """
-    Remove the first .mp4 extension from the filename.
-    """
-    name_part, ext_part = filename.split('.mp4', 1)
-    new_filename = name_part + ext_part
-    return new_filename
-
 def delete_converted_files(video_file_path):
     """
     Delete all converted video files related to the original video file.
@@ -67,3 +59,11 @@ def delete_converted_files(video_file_path):
         converted_video_path = remove_first_mp4(converted_video_path)
         if os.path.isfile(converted_video_path):
             os.remove(converted_video_path)
+
+def remove_first_mp4(filename):
+    """
+    Remove the first .mp4 extension from the filename.
+    """
+    name_part, ext_part = filename.split('.mp4', 1)
+    new_filename = name_part + ext_part
+    return new_filename

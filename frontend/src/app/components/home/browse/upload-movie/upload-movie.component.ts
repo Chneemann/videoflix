@@ -4,6 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ErrorService } from '../../../../services/error.service';
 import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
 import { MovieService } from '../../../../services/movie.service';
+
 @Component({
   selector: 'app-upload-movie',
   standalone: true,
@@ -19,6 +20,7 @@ export class UploadMovieComponent {
     description: '',
     filmGenre: '',
     videoFile: null as File | null,
+    send: false,
   };
 
   constructor(
@@ -52,8 +54,13 @@ export class UploadMovieComponent {
       }
       try {
         await this.movieService.uploadMovie(formData);
-        ngForm.resetForm();
-        this.uploadMovieOverview();
+        this.movieData.send = true;
+        setTimeout(() => {
+          ngForm.resetForm();
+          this.uploadMovieOverview();
+          this.movieData.send = false;
+          window.location.reload();
+        }, 1000);
         this.errorService.clearError();
       } catch (error) {
         this.errorService.handleError(error);
