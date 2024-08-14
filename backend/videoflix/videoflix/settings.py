@@ -44,6 +44,11 @@ ALLOWED_HOSTS = [
 CORS_ALLOWED_ORIGINS = [
     'https://34.65.103.198',
     'http://localhost:4200',
+    'https://videoflix.andre-kempf.com',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://videoflix-django.andre-kempf.com',
 ]
 
 # Application definition
