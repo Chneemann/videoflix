@@ -21,7 +21,7 @@ export class HeroBannerComponent {
   @Input() currentMovie: any[] = [];
   @Output() playMovie = new EventEmitter<string>();
 
-  environmentBaseUrl: string = environment.baseUrl.slice(0, -1);
+  environmentBaseUrl: string = environment.baseUrl;
 
   constructor(private el: ElementRef, private movieService: MovieService) {}
 

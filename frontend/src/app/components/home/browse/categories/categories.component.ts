@@ -14,7 +14,7 @@ export class CategoriesComponent {
   @Input() currentMovie: number = 0;
   @Output() currentMovieId = new EventEmitter<number>();
 
-  environmentBaseUrl: string = environment.baseUrl.slice(0, -1);
+  environmentBaseUrl: string = environment.baseUrl;
 
   filmGenres = [
     'action',

@@ -65,7 +65,7 @@ class RegisterView(APIView):
             subject='Confirm your email',
             body=strip_tags(html_body),  # Plain text fallback
             from_email='noreply@videoflix.com',
-            to=['andre.kempf.dev@gmail.com']
+            to=user.email
         )
         message.attach_alternative(html_body, "text/html")
         message.send(fail_silently=False)
@@ -116,7 +116,7 @@ class ForgotPasswordView(APIView):
             subject='Reset your Password',
             body=strip_tags(html_body),  # Plain text fallback
             from_email='noreply@videoflix.com',
-            to=['andre.kempf.dev@gmail.com']
+            to=user.email
         )
         message.attach_alternative(html_body, "text/html")
         message.send(fail_silently=False)
