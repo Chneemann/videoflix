@@ -29,6 +29,7 @@ from auth.views import (
 )
 from content import views as content_views
 from debug_toolbar.toolbar import debug_toolbar_urls
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -50,4 +51,4 @@ urlpatterns = [
     path('auth/verify-email/', VerifyEmailView.as_view()),
     path('auth/forgot-password/', ForgotPasswordView.as_view()),
     path('auth/change-password/', ChangePasswordView.as_view()),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls()
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls() + staticfiles_urlpatterns()
