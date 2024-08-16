@@ -43,7 +43,7 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://35.198.182.146'
+    'https://35.198.182.146',
     'https://34.65.133.166',
     'http://localhost:4200',
     'https://videoflix.andre-kempf.com',
