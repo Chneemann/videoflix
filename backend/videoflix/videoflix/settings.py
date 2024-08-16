@@ -36,13 +36,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ALLOWED_HOSTS = [
     'videoflix-django.andre-kempf.com', 
-    '34.65.103.198', 
+    '35.198.182.146', 
+    '34.65.133.166', 
     'localhost', 
     '127.0.0.1',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://34.65.103.198',
+    'https://35.198.182.146'
+    'https://34.65.133.166',
     'http://localhost:4200',
     'https://videoflix.andre-kempf.com',
 ]
