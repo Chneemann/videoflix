@@ -1,5 +1,5 @@
 from .models import Video
-from .tasks import convert_video_to_hls, create_thumbnails, delete_original_video
+from .tasks import convert_video_to_hls, create_thumbnails, delete_original_video, update_thumbnail_status
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.conf import settings
@@ -16,8 +16,8 @@ def video_post_save(sender, instance, created, **kwargs):
         queue = django_rq.get_queue("default", autocommit=True)
         
         #Create thumbnail
-        create_thumbnails(instance, instance.id)
-        
+        queue.enqueue(create_thumbnails, instance, instance.id)
+
         #Convert video
         for resolution in ["480", "720", "1080"]:
             queue.enqueue(convert_video_to_hls, instance.video_file.path, resolution, instance.id)
