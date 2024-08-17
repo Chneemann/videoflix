@@ -13,7 +13,8 @@ def convert_video_to_hls(source, resolution, model_id):
     base_filename = os.path.basename(source).split(".")[0]
     target = os.path.join(target_dir, f'{base_filename}_{resolution}p')
     
-    ffmpeg_path = '/opt/homebrew/bin/ffmpeg'
+    #ffmpeg_path = '/opt/homebrew/bin/ffmpeg'
+    ffmpeg_path = '/usr/bin/ffmpeg'
     cmd = [
         ffmpeg_path, 
         '-i', source, 
