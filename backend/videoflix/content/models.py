@@ -9,8 +9,7 @@ class Video(models.Model):
     film_genre = models.CharField(max_length=20, choices=FILM_GENRES, blank=True, null=True)
     video_file = models.FileField(upload_to='videos/', blank=True, null=True)
     file_name = models.CharField(max_length=50, blank=True, null=True)
-    thumbnail_created = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return f'({self.id}) {self.title}'
     

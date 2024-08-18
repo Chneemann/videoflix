@@ -4,11 +4,17 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ErrorService } from '../../../../services/error.service';
 import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
 import { MovieService } from '../../../../services/movie.service';
+import { LoadingDialogComponent } from '../../../../shared/components/loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-upload-movie',
   standalone: true,
-  imports: [CommonModule, FormsModule, BtnLargeComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    BtnLargeComponent,
+    LoadingDialogComponent,
+  ],
   templateUrl: './upload-movie.component.html',
   styleUrl: './upload-movie.component.scss',
 })
@@ -48,15 +54,8 @@ export class UploadMovieComponent {
 
     try {
       this.movieData.send = true;
-
-      const formData = this.createFormData();
-      const response = await this.movieService
-        .uploadMovie(formData)
-        .toPromise();
-      const videoId = response.id;
-
-      await this.waitForThumbnailCreation(videoId);
-
+      let formData = this.createFormData();
+      await this.movieService.uploadMovie(formData);
       ngForm.resetForm();
       this.uploadMovieOverview();
       this.movieData.send = false;
@@ -76,15 +75,5 @@ export class UploadMovieComponent {
       formData.append('video_file', this.movieData.videoFile);
     }
     return formData;
-  }
-
-  private async waitForThumbnailCreation(videoId: number) {
-    while (true) {
-      const statusResponse = await this.movieService
-        .checkThumbnailStatus(videoId)
-        .toPromise();
-      if (statusResponse?.thumbnail_created) break;
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-    }
   }
 }

@@ -28,8 +28,4 @@ export class HeroBannerComponent {
   playMovieId(videoPath: string) {
     this.playMovie.emit(videoPath);
   }
-
-  getImagePath(): any {
-    return '123';
-  }
 }

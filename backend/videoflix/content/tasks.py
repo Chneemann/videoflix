@@ -56,16 +56,6 @@ def create_thumbnails(instance, model_id):
         # Generate the thumbnails
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_1080p_path, vf='scale=1920:-1', vframes=1).run(overwrite_output=True)
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_480_path, vf='scale=720:-1', vframes=1).run(overwrite_output=True)
-        # Update thumbnail status
-        update_thumbnail_status(model_id)
         
     except ffmpeg._run.Error as e:
         print(f"Ein Fehler ist aufgetreten: {e.stderr.decode()}")
-
-def update_thumbnail_status(video_id):
-    try:
-        video = Video.objects.get(id=video_id)
-        video.thumbnail_created = True
-        video.save()
-    except Video.DoesNotExist:
-        print(f"Video with id {video_id} does not exist.")

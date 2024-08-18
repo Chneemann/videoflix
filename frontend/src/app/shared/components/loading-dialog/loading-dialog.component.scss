@@ -1,0 +1,58 @@
+@import "./../../../../assets/style/colors.scss";
+
+.loading-dialog {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(5px);
+  background-color: rgba($black, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 6px solid $white;
+  border-top: 6px solid $blue;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1.5s linear infinite;
+  box-shadow: 0px 0px 15px rgba($blue, 0.5);
+  margin-bottom: 20px;
+}
+
+.loading-text {
+  text-align: center;
+  max-width: 300px;
+  padding: 12px;
+  color: $white;
+  text-shadow: 3px 3px 3px $black;
+
+  p {
+    font-size: 21px;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -92,3 +92,8 @@
     </div>
   </div>
 </div>
+@if(movieData.send){
+<app-loading-dialog
+  loadingMsg="Movie is uploading, please be patient a moment."
+></app-loading-dialog>
+}
