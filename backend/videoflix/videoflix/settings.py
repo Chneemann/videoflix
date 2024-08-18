@@ -33,6 +33,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'andre.kempf.dev@gmail.com'
 EMAIL_HOST_PASSWORD = 'oyxwawshudwytgud'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@videoflix.com'
 
 ALLOWED_HOSTS = [
     'videoflix-django.andre-kempf.com', 

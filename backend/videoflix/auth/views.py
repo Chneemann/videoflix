@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, authentication
@@ -64,8 +65,8 @@ class RegisterView(APIView):
         message = EmailMultiAlternatives(
             subject='Confirm your email',
             body=strip_tags(html_body),  # Plain text fallback
-            from_email='noreply@videoflix.com',
-            to=user.email
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[user.email]
         )
         message.attach_alternative(html_body, "text/html")
         message.send(fail_silently=False)
@@ -115,8 +116,8 @@ class ForgotPasswordView(APIView):
         message = EmailMultiAlternatives(
             subject='Reset your Password',
             body=strip_tags(html_body),  # Plain text fallback
-            from_email='noreply@videoflix.com',
-            to=user.email
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[user.email]
         )
         message.attach_alternative(html_body, "text/html")
         message.send(fail_silently=False)
