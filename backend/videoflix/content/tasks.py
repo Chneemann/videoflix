@@ -3,8 +3,6 @@ import subprocess
 import ffmpeg
 import os
 from django.conf import settings
-from .models import Video
-from django_rq import get_queue
 
 def convert_video_to_hls(source, resolution, model_id):
     target_dir = os.path.join(os.path.dirname(source), str(model_id))

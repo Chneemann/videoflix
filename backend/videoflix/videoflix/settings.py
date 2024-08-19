@@ -37,15 +37,13 @@ DEFAULT_FROM_EMAIL = 'noreply@videoflix.com'
 
 ALLOWED_HOSTS = [
     'videoflix-django.andre-kempf.com', 
-    '35.198.182.146', 
-    '34.65.133.166', 
+    '45.157.177.172',
     'localhost', 
     '127.0.0.1',
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://35.198.182.146',
-    'https://34.65.133.166',
+    'https://45.157.177.172',
     'http://localhost:4200',
     'https://videoflix.andre-kempf.com',
 ]

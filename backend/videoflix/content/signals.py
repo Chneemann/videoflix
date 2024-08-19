@@ -2,9 +2,7 @@ from .models import Video
 from .tasks import convert_video_to_hls, create_thumbnails, delete_original_video
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
-from django.conf import settings
 import os
-import django_rq
 import shutil
 
 @receiver(post_save, sender=Video)
