@@ -3,6 +3,7 @@ from .tasks import convert_video_to_hls, create_thumbnails, delete_original_vide
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 import os
+import django_rq
 import shutil
 
 @receiver(post_save, sender=Video)
@@ -10,32 +11,20 @@ def video_post_save(sender, instance, created, **kwargs):
     """
     Generates a thumbnail for a newly created `Video` instance.
     """
-    if created:
-        #Create thumbnail
-        create_thumbnails(instance, instance.id)
-
-        #Convert video
-        for resolution in ["480", "720", "1080"]:
-            convert_video_to_hls(instance.video_file.path, resolution, instance.id)
-            
-        # Delete the original video file
-        delete_original_video(instance.video_file.path)
-    
-    """
     # With Django RQ Worker (My server is too slow for it)
     if created:
         queue = django_rq.get_queue("default", autocommit=True)
         
-        Create thumbnail
-        queue.enqueue(create_thumbnails, instance, instance.id)
+        #Create thumbnail
+        create_thumbnails(instance, instance.id)
         
-        Convert video
+        #Convert video
         for resolution in ["480", "720", "1080"]:
-            #queue.enqueue(convert_video_to_hls, instance.video_file.path, resolution, #instance.id)
+            queue.enqueue(convert_video_to_hls, instance.video_file.path, resolution, instance.id)
             
-        Delete the original video file
+        #Delete the original video file
         queue.enqueue(delete_original_video, instance.video_file.path)
-    """
+        
 @receiver(post_delete, sender=Video)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """
