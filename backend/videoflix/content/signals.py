@@ -9,9 +9,8 @@ import shutil
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):
     """
-    Generates a thumbnail for a newly created `Video` instance.
+    Generates a thumbnail, enqueues tasks to convert the video to different resolutions, and schedules the deletion of the original video file.
     """
-    # With Django RQ Worker (My server is too slow for it)
     if created:
         queue = django_rq.get_queue("default", autocommit=True)
         

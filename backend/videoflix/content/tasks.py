@@ -5,6 +5,9 @@ import os
 from django.conf import settings
 
 def convert_video_to_hls(source, resolution, model_id):
+    """
+    Converts a video to the HLS format
+    """
     target_dir = os.path.join(os.path.dirname(source), str(model_id))
     os.makedirs(target_dir, exist_ok=True)
 
@@ -38,6 +41,9 @@ def delete_original_video(source):
         print(f"Error deleting original file: {e}")
 
 def create_thumbnails(instance, model_id):
+    """
+    Creates high-resolution and low-resolution thumbnails from a video file 
+    """
     video_file_path = instance.video_file.path
     thumbnail_dir = os.path.join(settings.THUMBNAIL_DIR, str(model_id))
 
