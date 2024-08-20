@@ -7,7 +7,10 @@ from .models import Video
 from django.core.cache.backends.base import DEFAULT_TIMEOUT 
 from django.views.decorators.cache import cache_page 
 from django.conf import settings
+from django.http import FileResponse, Http404
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.http import JsonResponse
+import os
 
 CACHETTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
@@ -23,6 +26,29 @@ def video_list(request):
     serializer = VideoSerializer(videos, many=True)
     return Response(serializer.data)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_video(request, id):
+    """
+    Check if a specific video exists in 480p, 720p, and 1080p resolutions
+    URL: /content/movie/<video_id>/
+    """
+    resolutions = ['480', '720', '1080']
+    result = {}
+
+    try:
+        video = Video.objects.get(id=id)
+    except Video.DoesNotExist:
+        return JsonResponse({'error': 'Video not found'}, status=404)
+
+    video_dir = os.path.join(settings.MEDIA_ROOT, 'videos', str(id))
+
+    for res in resolutions:
+        video_file_name = f"{video.file_name}_{res}p.m3u8"
+        video_file_path = os.path.join(video_dir, video_file_name)
+        result[res] = os.path.exists(video_file_path)
+
+    return JsonResponse(result)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def video_upload(request):

@@ -1,8 +1,10 @@
 import {
   Component,
   EventEmitter,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
@@ -37,6 +39,11 @@ export class BrowseComponent implements OnInit {
   playMovie: string = '';
   uploadMovieOverview: boolean = false;
   currentResolution: '480p' | '720p' | '1080p' = '720p';
+  movieIsUploaded: { [resolution: string]: boolean } = {
+    '480': false,
+    '720': false,
+    '1080': false,
+  };
 
   constructor(
     private authService: AuthService,
@@ -46,6 +53,10 @@ export class BrowseComponent implements OnInit {
   async ngOnInit() {
     await this.loadAllMovies();
     this.currentMovie.length === 0 ? this.loadRandomMovie() : null;
+  }
+
+  onMovieIsUploadedChange(newStatus: { [resolution: string]: boolean }) {
+    this.movieIsUploaded = newStatus;
   }
 
   changeResolution(resolution: '480p' | '720p' | '1080p') {

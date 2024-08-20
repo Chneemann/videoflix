@@ -6,6 +6,7 @@
   <app-hero-banner
     [currentMovie]="currentMovie"
     (playMovie)="playVideo($event)"
+    (movieIsUploadedChange)="onMovieIsUploadedChange($event)"
   ></app-hero-banner>
   <app-categories
     [movies]="movies"
