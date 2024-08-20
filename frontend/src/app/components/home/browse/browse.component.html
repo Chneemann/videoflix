@@ -23,9 +23,10 @@
         <button
           [ngClass]="{
             'resolution-btn': true,
-            active: currentResolution === '480p'
+            active: currentResolution === '480p',
+            'not-available': !movieIsUploaded['480']
           }"
-          [disabled]="currentResolution === '480p'"
+          [disabled]="!movieIsUploaded['480'] || currentResolution === '480p'"
           (click)="changeResolution('480p')"
         >
           480p
@@ -33,9 +34,10 @@
         <button
           [ngClass]="{
             'resolution-btn': true,
-            active: currentResolution === '720p'
+            active: currentResolution === '720p',
+            'not-available': !movieIsUploaded['720']
           }"
-          [disabled]="currentResolution === '720p'"
+          [disabled]="!movieIsUploaded['720'] || currentResolution === '720p'"
           (click)="changeResolution('720p')"
         >
           720p
@@ -43,14 +45,16 @@
         <button
           [ngClass]="{
             'resolution-btn': true,
-            active: currentResolution === '1080p'
+            active: currentResolution === '1080p',
+            'not-available': !movieIsUploaded['1080']
           }"
-          [disabled]="currentResolution === '1080p'"
+          [disabled]="!movieIsUploaded['1080'] || currentResolution === '1080p'"
           (click)="changeResolution('1080p')"
         >
           1080p
         </button>
       </div>
+
       <div class="logo">
         <img src="./../../../../assets/img/logo_ci.svg" alt="Logo" />
       </div>

@@ -60,7 +60,7 @@ export class BrowseComponent implements OnInit {
   }
 
   changeResolution(resolution: '480p' | '720p' | '1080p') {
-    if (this.videoPlayer) {
+    if (this.videoPlayer && this.movieIsUploaded[resolution.replace('p', '')]) {
       this.videoPlayer.switchResolution(resolution);
       this.currentResolution = resolution;
     }
@@ -75,6 +75,7 @@ export class BrowseComponent implements OnInit {
   }
 
   playVideo(videoPath: string) {
+    this.currentResolution = '720p';
     this.playMovie = videoPath;
   }
 
