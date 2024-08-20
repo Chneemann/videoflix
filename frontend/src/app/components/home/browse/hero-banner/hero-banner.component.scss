@@ -1,7 +1,7 @@
 @import "./../../../../../assets/style/colors.scss";
 
 section {
-  height: 40%;
+  height: 400px;
   position: relative;
   overflow: hidden;
   img {
@@ -30,7 +30,6 @@ section {
 .content {
   position: relative;
   width: 50%;
-  height: 40%;
   top: 120px;
   left: 96px;
   gap: 32px;
@@ -40,7 +39,6 @@ section {
 .title {
   font-size: 48px;
   font-weight: 700;
-  height: 40%;
   margin-bottom: 6px;
   text-shadow: 1px 1px 2px $black;
 }
@@ -49,8 +47,9 @@ section {
   position: relative;
   font-size: 18px;
   font-weight: 400;
+  max-height: 96px;
+  height: fit-content;
   overflow: hidden;
-  height: 50%;
   word-wrap: break-word;
   text-shadow: 1px 1px 2px $black;
 }
