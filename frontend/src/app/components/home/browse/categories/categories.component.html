@@ -3,6 +3,7 @@
   <div *ngIf="recentMovies().length > 0" class="category">
     <p>Added in the last 7 days</p>
     <div class="movies">
+      <!-- Filme hier einfügen -->
       @for (movie of recentMovies(); track movie) {
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
@@ -19,16 +20,22 @@
         />
       </div>
       }
+      <!-- Buttons for scrolling -->
+      <div class="scroll-buttons">
+        <button class="scroll-left" (click)="scrollLeft($event)"></button>
+        <button class="scroll-right" (click)="scrollRight($event)"></button>
+      </div>
     </div>
   </div>
+
   <!-- Genre columns -->
   @for (filmGenre of filmGenres; track filmGenre) {
   <!-- Movie available in genre -->
-  @if (allMovies(filmGenre).length > 0) {
+  @if (allMovies(filmGenre.code).length > 0) {
   <div class="category">
-    <p>{{ filmGenre }}</p>
+    <p>{{ filmGenre.name }}</p>
     <div class="movies">
-      @for (movie of allMovies(filmGenre); track movie) {
+      @for (movie of allMovies(filmGenre.code); track movie) {
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
@@ -44,6 +51,11 @@
         />
       </div>
       }
+      <!-- Buttons for scrolling -->
+      <div class="scroll-buttons">
+        <button class="scroll-left" (click)="scrollLeft($event)"></button>
+        <button class="scroll-right" (click)="scrollRight($event)"></button>
+      </div>
     </div>
   </div>
   } }

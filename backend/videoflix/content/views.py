@@ -30,8 +30,7 @@ def video_list(request):
 @permission_classes([IsAuthenticated])
 def check_video(request, id):
     """
-    Check if a specific video exists in 480p, 720p, and 1080p resolutions
-    URL: /content/movie/<video_id>/
+    Check if a specific video exists in different resolutions (480p, 720p, 1080p).
     """
     resolutions = ['480', '720', '1080']
     result = {}
@@ -49,9 +48,13 @@ def check_video(request, id):
         result[res] = os.path.exists(video_file_path)
 
     return JsonResponse(result)
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def video_upload(request):
+    """
+    Handle the upload of a video file.
+    """
     parser_classes = (MultiPartParser, FormParser)
     if request.method == 'POST':
         serializer = VideoSerializer(data=request.data)
