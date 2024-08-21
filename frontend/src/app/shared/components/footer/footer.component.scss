@@ -25,10 +25,17 @@ footer {
 
 /*------------- RESPONSIVE -------------*/
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 550px) {
+  footer {
+    height: fit-content;
+    padding: 24px;
+  }
+}
+
+@media screen and (max-width: 400px) {
   footer {
     a {
-      padding: 0 24px;
+      padding: 0 18px;
     }
   }
 }
