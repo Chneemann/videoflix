@@ -4,4 +4,8 @@ export const environment = {
 
   // Live
   // baseUrl: 'https://videoflix-django.andre-kempf.com',
+
+  // Guest account
+  guestMail: 'guest@example.com',
+  guestPassword: 'guest@example.com',
 };

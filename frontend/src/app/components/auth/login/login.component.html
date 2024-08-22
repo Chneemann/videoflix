@@ -76,14 +76,22 @@
           <span class="checkmark"></span>
         </label>
       </div>
-      <app-btn-large
-        [value]="'Log in'"
-        [disabled]="
-          !authData.mail ||
-          (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
-          !password.valid
-        "
-      ></app-btn-large>
+      <div class="buttons">
+        <app-btn-large
+          [value]="'Log in'"
+          [disabled]="
+            !authData.mail ||
+            (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
+            !password.valid ||
+            authData.guestLogin
+          "
+        ></app-btn-large>
+        <app-btn-large
+          [value]="'Guest Log in'"
+          [disabled]="authData.guestLogin"
+          (click)="guestLogin()"
+        ></app-btn-large>
+      </div>
     </form>
     <div class="footer">
       <a routerLink="/forgot-password">Forgot password?</a>
