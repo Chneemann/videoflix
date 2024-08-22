@@ -13,10 +13,11 @@
   position: relative;
 }
 
-app-btn-small {
-  position: absolute;
-  top: 24px;
-  right: 24px;
+.buttons {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 24px;
 }
 
 // Overlay

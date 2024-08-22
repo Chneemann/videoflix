@@ -1,15 +1,7 @@
 <div class="overlay" (click)="uploadMovieOverview()">
   <div class="center" (click)="stopPropagation($event)">
     <div class="content">
-      <div class="headline">
-        Upload Movie
-        <app-btn-small
-          [imgPath]="'close'"
-          [btnRadius]="'32px'"
-          [imgRadius]="'24px'"
-          (click)="uploadMovieOverview()"
-        ></app-btn-small>
-      </div>
+      <div class="headline">Upload Movie</div>
       <form
         #movieForm="ngForm"
         (ngSubmit)="onSubmit(movieForm)"
@@ -86,16 +78,22 @@
           required
         />
         <div class="error-msg"></div>
-        <app-btn-large
-          [value]="'Upload Movie'"
-          [disabled]="
-            !movieData.title ||
-            !movieData.description ||
-            !movieData.filmGenre ||
-            !movieData.videoFile ||
-            movieData.send
-          "
-        ></app-btn-large>
+        <div class="buttons">
+          <app-btn-large
+            [value]="'Close'"
+            (click)="uploadMovieOverview()"
+          ></app-btn-large>
+          <app-btn-large
+            [value]="'Upload Movie'"
+            [disabled]="
+              !movieData.title ||
+              !movieData.description ||
+              !movieData.filmGenre ||
+              !movieData.videoFile ||
+              movieData.send
+            "
+          ></app-btn-large>
+        </div>
       </form>
     </div>
   </div>

@@ -5,7 +5,6 @@ import { ErrorService } from '../../../../services/error.service';
 import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
 import { MovieService } from '../../../../services/movie.service';
 import { LoadingDialogComponent } from '../../../../shared/components/loading-dialog/loading-dialog.component';
-import { BtnSmallComponent } from '../../../../shared/components/buttons/btn-small/btn-small.component';
 
 @Component({
   selector: 'app-upload-movie',
@@ -15,7 +14,6 @@ import { BtnSmallComponent } from '../../../../shared/components/buttons/btn-sma
     FormsModule,
     BtnLargeComponent,
     LoadingDialogComponent,
-    BtnSmallComponent,
   ],
   templateUrl: './upload-movie.component.html',
   styleUrl: './upload-movie.component.scss',
