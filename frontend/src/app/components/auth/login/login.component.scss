@@ -36,3 +36,15 @@ section {
     }
   }
 }
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 600px) {
+  .footer {
+    margin-top: 24px;
+    gap: 12px;
+    .footer-content {
+      margin-top: 18px;
+    }
+  }
+}
