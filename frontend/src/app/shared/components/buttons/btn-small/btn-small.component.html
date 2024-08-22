@@ -1,7 +1,18 @@
-<button class="btn" [disabled]="disabled">
+<button
+  class="btn"
+  [disabled]="disabled"
+  [ngStyle]="{
+    '--btnRadius': btnRadius,
+    '--imgRadius': imgRadius
+  }"
+>
   <img
     src="./../../../../assets/img/{{ imgPath }}.svg"
     alt="{{ imgPath }}"
     class="icon"
+    [ngStyle]="{
+      '--btnRadius': btnRadius,
+      '--imgRadius': imgRadius
+    }"
   />
 </button>

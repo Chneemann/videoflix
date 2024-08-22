@@ -1,7 +1,15 @@
 <div class="overlay" (click)="uploadMovieOverview()">
   <div class="center" (click)="stopPropagation($event)">
     <div class="content">
-      <div class="headline">Upload Movie</div>
+      <div class="headline">
+        Upload Movie
+        <app-btn-small
+          [imgPath]="'close'"
+          [btnRadius]="'32px'"
+          [imgRadius]="'24px'"
+          (click)="uploadMovieOverview()"
+        ></app-btn-small>
+      </div>
       <form
         #movieForm="ngForm"
         (ngSubmit)="onSubmit(movieForm)"
