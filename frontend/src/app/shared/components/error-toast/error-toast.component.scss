@@ -1,20 +1,35 @@
 @import "./../../../../assets/style/colors.scss";
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background-color: rgba($black, 0.2);
+  z-index: 999;
+}
+
 section {
   position: relative;
   width: 615px;
   max-width: 80%;
-  height: fit-content;
   padding: 12px 32px;
   border-radius: 20px;
   background-color: $blue;
   box-shadow: 1px 1px 3px rgba($black, 0.5);
   opacity: 0;
   transform: translateY(100vh);
-  animation: slide-in-bottom 500ms forwards;
+  animation: slide-in 500ms forwards;
+  display: flex;
+  align-items: center;
 }
 
-@keyframes slide-in-bottom {
+@keyframes slide-in {
   to {
     opacity: 1;
     transform: translateY(0);
@@ -30,67 +45,46 @@ section {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   background-color: $red;
-  z-index: 2;
+}
+
+.line {
+  position: absolute;
+  top: 50%;
+  right: 64px;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 40%;
+  background-color: $white;
 }
 
 .content {
   display: flex;
   align-items: center;
-  width: 82%;
-  min-height: 48px;
-  margin-left: 24px;
+  margin-left: 62px;
+  max-width: 350px;
   p {
     font-size: 18px;
     font-weight: 400;
-    padding-left: 12px;
+    padding-left: 24px;
     max-height: 72px;
     overflow: hidden;
   }
 }
 
-.right {
-  display: flex;
-  align-items: center;
+.close-btn {
   position: absolute;
-  top: 0;
-  right: 48px;
-  width: 38px;
-  height: 100%;
-  .line {
-    height: 40%;
-    padding: 1px;
-    background-color: $white;
-  }
-  .img {
-    padding: 24px;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  img {
     width: 24px;
     height: 24px;
-    img {
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      &:hover {
-        filter: brightness(0) saturate(100%) invert(13%) sepia(90%)
-          saturate(7329%) hue-rotate(344deg) brightness(105%) contrast(117%);
-      }
+    &:hover {
+      filter: brightness(0) saturate(100%) invert(25%) sepia(82%)
+        saturate(6600%) hue-rotate(237deg) brightness(88%) contrast(96%);
     }
   }
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  height: 100vh;
-  backdrop-filter: blur(5px);
-  background-color: rgba($black, 0.2);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
 }
 
 /*------------- RESPONSIVE -------------*/
@@ -101,30 +95,34 @@ section {
     bottom: 0;
     left: 0;
     right: 0;
-    height: fit-content;
-    min-height: 120px;
-    max-width: 90%;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
+    padding: 16px;
+    max-width: calc(100vw - 32px);
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .line {
+    display: none;
   }
 
   .left {
     width: 100%;
     height: 38px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 0;
-  }
-
-  .right {
-    top: 12px;
-    right: 60px;
-    .line {
-      display: none;
-    }
+    border-radius: 20px 20px 0 0;
   }
 
   .content {
+    margin-left: 0;
     margin-top: 48px;
+    justify-content: center;
+    text-align: center;
+    max-width: 80%;
+  }
+
+  .close-btn {
+    top: 8px;
+    right: 16px;
+    transform: none;
   }
 }

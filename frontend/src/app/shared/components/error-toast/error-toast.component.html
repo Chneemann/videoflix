@@ -1,21 +1,13 @@
 <div class="overlay" (click)="closeError()">
-  <section class="slide-in-right" (click)="stopPropagation($event)">
+  <section class="slide-in" (click)="stopPropagation($event)">
     <div class="left"></div>
     <div class="content">
-      <img src="./../../../../assets/img/attention.svg" alt="" />
-      <p>
-        {{ errorText }}
-      </p>
+      <img src="./../../../../assets/img/attention.svg" alt="Achtung" />
+      <p>{{ errorText }}</p>
     </div>
-    <div class="right">
-      <div class="line"></div>
-      <div class="img">
-        <img
-          src="./../../../../assets/img/close.svg"
-          alt=""
-          (click)="closeError()"
-        />
-      </div>
+    <div class="line"></div>
+    <div class="close-btn" (click)="closeError()">
+      <img src="./../../../../assets/img/close.svg" alt="Schließen" />
     </div>
   </section>
 </div>
