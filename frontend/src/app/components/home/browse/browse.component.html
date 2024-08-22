@@ -1,13 +1,17 @@
 <section>
-  @if (currentMovie[0]) {
+  @if (movies.length > 0) {
   <!-- If at least one film has been uploaded -->
   @if (playMovie === "") {
   <app-header [browse]="true"></app-header>
+  @if (this.checkScreenWidth()) {
   <app-hero-banner
     [currentMovie]="currentMovie"
     (playMovie)="playVideo($event)"
     (movieIsUploadedChange)="onMovieIsUploadedChange($event)"
   ></app-hero-banner>
+  } @else {
+  <div class="spacer"></div>
+  }
   <app-categories
     [movies]="movies"
     [currentMovie]="currentMovie[0]?.id"

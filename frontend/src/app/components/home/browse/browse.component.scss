@@ -45,6 +45,10 @@ section {
   transition: opacity 300ms ease-in-out;
 }
 
+.spacer {
+  margin-top: 120px;
+}
+
 .add-button {
   position: absolute;
   bottom: 24px;
@@ -134,6 +138,8 @@ section {
   transform: scale(1);
 }
 
+/*------------- RESPONSIVE -------------*/
+
 @media screen and (max-width: 550px) {
   form {
     flex-direction: column;
@@ -150,8 +156,6 @@ section {
     margin-bottom: 8px;
   }
 }
-
-/*------------- RESPONSIVE -------------*/
 
 @media screen and (max-width: 500px) {
   .resolution-btn {

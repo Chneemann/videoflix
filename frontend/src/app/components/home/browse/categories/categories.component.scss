@@ -112,6 +112,12 @@ section {
 
 /*------------- RESPONSIVE -------------*/
 
+@media screen and (max-width: 600px) {
+  .hide-scrollbar {
+    height: calc(100% - 120px);
+  }
+}
+
 @media screen and (max-width: 400px) {
   .category {
     p {
