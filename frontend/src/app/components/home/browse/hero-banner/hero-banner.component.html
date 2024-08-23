@@ -1,41 +1,64 @@
 <section
-  class="movie-banner"
-  [ngStyle]="{
-    'background-image':
-      'url(' +
-      environmentBaseUrl +
-      '/media/thumbnails/' +
-      currentMovie[0]?.id +
-      '/' +
-      currentMovie[0]?.file_name +
-      '_1080p.jpg' +
-      ')'
-  }"
   [ngClass]="{
     fullVh: !screenWidth
   }"
 >
+  <div
+    class="movie-banner"
+    [ngStyle]="{
+      'background-image':
+        'url(' +
+        environmentBaseUrl +
+        '/media/thumbnails/' +
+        currentMovie[0]?.id +
+        '/' +
+        currentMovie[0]?.file_name +
+        '_1080p.jpg' +
+        ')',
+    }"
+    [ngClass]="{
+      fullVhBanner: !screenWidth
+    }"
+  ></div>
   @if (currentMovie.length > 0) {
-  <div class="content">
+  <div
+    class="content"
+    [ngClass]="{
+      fullVhContent: !screenWidth
+    }"
+  >
     <div class="title">{{ currentMovie[0].title }}</div>
-    <div class="description">
+    <div
+      class="description"
+      [ngClass]="{
+        fullVhDescription: !screenWidth
+      }"
+    >
       {{ currentMovie[0].description }}
     </div>
-    <app-btn-large
-      [value]="'Play'"
-      [imgPath]="'play'"
-      [imgReverse]="true"
-      [disabled]="!isAnyResolutionUploaded()"
-      (click)="
-        playMovieId(
-          environmentBaseUrl +
-            '/media/videos/' +
-            currentMovie[0]?.id +
-            '/' +
-            currentMovie[0]?.file_name
-        )
-      "
-    ></app-btn-large>
+    <div class="buttons">
+      <app-btn-small
+        *ngIf="!screenWidth"
+        [imgPath]="'back'"
+        [imgRadius]="'24px'"
+        (click)="backToCategory()"
+      ></app-btn-small>
+      <app-btn-large
+        [value]="'Play'"
+        [imgPath]="'play'"
+        [imgReverse]="true"
+        [disabled]="!isAnyResolutionUploaded()"
+        (click)="
+          playMovieId(
+            environmentBaseUrl +
+              '/media/videos/' +
+              currentMovie[0]?.id +
+              '/' +
+              currentMovie[0]?.file_name
+          )
+        "
+      ></app-btn-large>
+    </div>
   </div>
   }
 </section>

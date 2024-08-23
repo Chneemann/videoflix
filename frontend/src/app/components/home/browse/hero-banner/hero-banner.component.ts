@@ -10,11 +10,12 @@ import {
 import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
 import { MovieService } from '../../../../services/movie.service';
 import { environment } from '../../../../environments/environment';
+import { BtnSmallComponent } from '../../../../shared/components/buttons/btn-small/btn-small.component';
 
 @Component({
   selector: 'app-hero-banner',
   standalone: true,
-  imports: [CommonModule, BtnLargeComponent],
+  imports: [CommonModule, BtnLargeComponent, BtnSmallComponent],
   templateUrl: './hero-banner.component.html',
   styleUrl: './hero-banner.component.scss',
 })
@@ -58,5 +59,9 @@ export class HeroBannerComponent {
 
   playMovieId(videoPath: string) {
     this.playMovie.emit(videoPath);
+  }
+
+  backToCategory() {
+    window.location.href = '/browse/';
   }
 }

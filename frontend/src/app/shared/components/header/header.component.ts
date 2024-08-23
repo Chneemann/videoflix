@@ -14,6 +14,10 @@ export class HeaderComponent {
 
   constructor(private router: Router) {}
 
+  reloadPage() {
+    window.location.href = '/browse/';
+  }
+
   logout() {
     localStorage.clear();
     sessionStorage.clear();
