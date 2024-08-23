@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+
 @Component({
   selector: 'app-imprint',
   standalone: true,

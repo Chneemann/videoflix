@@ -1,12 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
 import { CategoriesComponent } from './categories/categories.component';

@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from '../../services/error.service';
 import { AuthService } from '../../services/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',

@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BtnLargeComponent } from '../buttons/btn-large/btn-large.component';
 import { Router, RouterLink } from '@angular/router';
 

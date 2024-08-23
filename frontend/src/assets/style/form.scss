@@ -28,12 +28,12 @@ form {
   }
   input::file-selector-button {
     width: fit-content;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 3px rgba($black, 0.5);
     border-radius: 6px;
     padding: 6px;
     color: $white;
-    background-color: blue;
-    border: 1px solid blue;
+    background-color: $blue;
+    border: 1px solid $blue;
     transition: 300ms ease-in-out;
     cursor: pointer;
   }
@@ -54,8 +54,8 @@ form {
   padding: 9px;
   p {
     color: $red;
-    font-size: 12px !important;
-    font-weight: 400 !important;
+    font-size: 12px;
+    font-weight: 400;
   }
 }
 

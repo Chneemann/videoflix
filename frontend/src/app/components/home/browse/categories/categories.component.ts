@@ -1,14 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   HostListener,
   Input,
   Output,
-  Renderer2,
-  ViewChild,
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 

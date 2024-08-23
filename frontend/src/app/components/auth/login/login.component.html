@@ -88,7 +88,9 @@
         ></app-btn-large>
         <app-btn-large
           [value]="'Guest Log in'"
-          [disabled]="authData.guestLogin"
+          [disabled]="
+            authData.guestLogin || (!!authData.mail && !!authData.password)
+          "
           (click)="guestLogin()"
         ></app-btn-large>
       </div>
