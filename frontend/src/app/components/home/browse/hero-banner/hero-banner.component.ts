@@ -20,6 +20,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class HeroBannerComponent {
   @Input() currentMovie: any[] = [];
+  @Input() screenWidth: boolean = false;
   @Output() playMovie = new EventEmitter<string>();
   @Output() movieIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;

@@ -11,6 +11,9 @@
       '_1080p.jpg' +
       ')'
   }"
+  [ngClass]="{
+    fullVh: !screenWidth
+  }"
 >
   @if (currentMovie.length > 0) {
   <div class="content">

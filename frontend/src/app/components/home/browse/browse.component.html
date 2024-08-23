@@ -3,16 +3,25 @@
   <!-- If at least one film has been uploaded -->
   @if (playMovie === "") {
   <app-header [browse]="true"></app-header>
-  @if (this.checkScreenWidth()) {
+  <!-- Hero Banner -->
   <app-hero-banner
+    *ngIf="
+      currentMovie.length === 1 ||
+      (this.checkScreenWidth() && currentMovie.length > 1)
+    "
+    [screenWidth]="checkScreenWidth()"
     [currentMovie]="currentMovie"
     (playMovie)="playVideo($event)"
     (movieIsUploadedChange)="onMovieIsUploadedChange($event)"
   ></app-hero-banner>
-  } @else {
-  <div class="spacer"></div>
-  }
+  <!-- Spacer -->
+  <div *ngIf="!this.checkScreenWidth()" class="spacer"></div>
+  <!-- Movie Categories -->
   <app-categories
+    *ngIf="
+      this.checkScreenWidth() ||
+      (!this.checkScreenWidth() && currentMovie.length === 0)
+    "
     [movies]="movies"
     [currentMovie]="currentMovie[0]?.id"
     (currentMovieId)="currentMovieId($event)"

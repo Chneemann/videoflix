@@ -27,6 +27,13 @@ section {
   }
 }
 
+.fullVh {
+  height: 100vh;
+  &::after {
+    height: 0%;
+  }
+}
+
 .content {
   position: relative;
   width: 50%;
