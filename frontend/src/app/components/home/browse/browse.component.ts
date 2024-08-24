@@ -50,6 +50,14 @@ export class BrowseComponent implements OnInit {
     }
   }
 
+  onMoviesChange(updatedMovies: any[]) {
+    if (this.checkScreenWidth()) {
+      this.loadRandomMovie();
+    } else {
+      this.currentMovie = updatedMovies;
+    }
+  }
+
   checkScreenWidth() {
     return (this.isWideScreen = window.innerWidth > 600);
   }

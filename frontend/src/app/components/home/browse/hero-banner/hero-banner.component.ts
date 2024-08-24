@@ -26,6 +26,7 @@ export class HeroBannerComponent {
   @Output() movieIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;
   }>();
+  @Output() moviesChange = new EventEmitter<any[]>();
 
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
@@ -57,11 +58,11 @@ export class HeroBannerComponent {
     );
   }
 
-  playMovieId(videoPath: string) {
-    this.playMovie.emit(videoPath);
+  backToCategory(newMovies: any[]) {
+    this.moviesChange.emit(newMovies);
   }
 
-  backToCategory() {
-    window.location.href = '/browse/';
+  playMovieId(videoPath: string) {
+    this.playMovie.emit(videoPath);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BtnLargeComponent } from '../buttons/btn-large/btn-large.component';
 import { Router, RouterLink } from '@angular/router';
 
@@ -11,11 +11,12 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class HeaderComponent {
   @Input() browse: boolean = false;
+  @Output() moviesChange = new EventEmitter<any[]>();
 
   constructor(private router: Router) {}
 
-  reloadPage() {
-    window.location.href = '/browse/';
+  backToOverview(newMovies: any[]) {
+    this.moviesChange.emit(newMovies);
   }
 
   logout() {
