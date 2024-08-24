@@ -41,8 +41,8 @@ urlpatterns = [
     path('content/movie/<int:id>/', content_views.check_video),
  
     # Users URLs
-    path('users/', user_views.user_list),
-    path('users/<int:id>/', user_views.user_detail),
+    path('users/', user_views.user_list, name='user_list'),
+    path('users/<int:id>/', user_views.user_detail, name='user_detail'),
 
     # Authentication URLs
     path('auth/', AuthView.as_view()),
