@@ -45,10 +45,10 @@ urlpatterns = [
     path('users/<int:id>/', user_views.user_detail, name='user_detail'),
 
     # Authentication URLs
-    path('auth/', AuthView.as_view()),
-    path('auth/login/', LoginView.as_view()),
-    path('auth/register/', RegisterView.as_view()),
-    path('auth/verify-email/', VerifyEmailView.as_view()),
-    path('auth/forgot-password/', ForgotPasswordView.as_view()),
-    path('auth/change-password/', ChangePasswordView.as_view()),
+    path('auth/', AuthView.as_view(), name='auth_view'),
+    path('auth/login/', LoginView.as_view(), name='login'),
+    path('auth/register/', RegisterView.as_view(), name='register'),
+    path('auth/verify-email/', VerifyEmailView.as_view(), name='verify_email'),
+    path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
+    path('auth/change-password/', ChangePasswordView.as_view(), name='change_password'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls() + staticfiles_urlpatterns()

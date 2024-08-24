@@ -34,8 +34,8 @@ class LoginView(APIView):
 
     def _create_token_response(self, user):
         token, created = Token.objects.get_or_create(user=user)
-        return Response({token.key}, status=status.HTTP_200_OK)
-
+        return Response({'token': token.key}, status=status.HTTP_200_OK)
+    
 class RegisterView(APIView):
     def post(self, request):
         email = request.data.get('email')
@@ -89,6 +89,7 @@ class VerifyEmailView(APIView):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response({"error": "Invalid email or token."}, status=status.HTTP_400_BAD_REQUEST)
+
         
 class ForgotPasswordView(APIView):
     def post(self, request):
