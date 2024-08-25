@@ -1,8 +1,10 @@
 from django.db import models
+from django.conf import settings
 from datetime import date
 from .class_assets import FILM_GENRES
 import os
 class Video(models.Model):
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,default=1)
     created_at = models.DateField(default=date.today)
     title = models.CharField(max_length=80)
     description = models.CharField(max_length=500)
