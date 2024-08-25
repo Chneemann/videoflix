@@ -17,7 +17,7 @@ CACHETTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 # Create your views here.
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-#@cache_page(CACHETTL)
+@cache_page(CACHETTL)
 def video_list(request):
     """
     List all videos.
