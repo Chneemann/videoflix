@@ -33,10 +33,10 @@ export class AuthService {
   }
 
   async login(body: any, storage: boolean) {
-    const data = await lastValueFrom(
+    const data = (await lastValueFrom(
       this.http.post(`${environment.baseUrl}/auth/login/`, body)
-    );
-    this.storeAuthToken(data, storage);
+    )) as { token: string };
+    this.storeAuthToken(data.token, storage);
   }
 
   async verifyEmail(body: any) {

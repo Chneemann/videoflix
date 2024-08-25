@@ -18,7 +18,7 @@ def video_post_save(sender, instance, created, **kwargs):
         create_thumbnails(instance, instance.id)
         
         #Convert video
-        for resolution in ["480", "720", "1080"]:
+        for resolution in ["720", "480", "1080"]:
             queue.enqueue(convert_video_to_hls, instance.video_file.path, resolution, instance.id)
             
         #Delete the original video file

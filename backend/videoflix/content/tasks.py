@@ -62,4 +62,5 @@ def create_thumbnails(instance, model_id):
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_480_path, vf='scale=720:-1', vframes=1).run(overwrite_output=True)
         
     except ffmpeg._run.Error as e:
-        print(f"Ein Fehler ist aufgetreten: {e.stderr.decode()}")
+        error_message = e.stderr.decode() if e.stderr else "Unknown ffmpeg error"
+        print(f"Ein Fehler ist aufgetreten: {error_message}")
