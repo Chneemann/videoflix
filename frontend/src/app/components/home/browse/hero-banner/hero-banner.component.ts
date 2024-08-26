@@ -53,7 +53,9 @@ export class HeroBannerComponent {
     }
   }
 
-  toggleLikeMovie(movieId: number) {}
+  toggleLikeMovie(movieId: number) {
+    this.currentUserLikedCurrentMovie = !this.currentUserLikedCurrentMovie;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentMovie'] && this.currentMovie.length > 0) {

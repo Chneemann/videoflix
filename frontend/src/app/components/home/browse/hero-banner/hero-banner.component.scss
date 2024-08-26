@@ -101,19 +101,15 @@ section {
         filter: brightness(0) saturate(100%) invert(18%) sepia(98%)
           saturate(7267%) hue-rotate(342deg) brightness(94%) contrast(119%);
       }
-      .red {
-        filter: brightness(0) saturate(100%) invert(9%) sepia(96%)
-          saturate(7415%) hue-rotate(248deg) brightness(90%) contrast(144%);
-      }
     }
     img {
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
     }
   }
 }
 
-.red {
+.filled {
   filter: brightness(0) saturate(100%) invert(18%) sepia(98%) saturate(7267%)
     hue-rotate(342deg) brightness(94%) contrast(119%);
 }

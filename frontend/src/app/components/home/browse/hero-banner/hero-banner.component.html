@@ -58,13 +58,20 @@
           )
         "
       ></app-btn-large>
-      <div class="favorite-img">
+      <div class="favorite-img" (click)="toggleLikeMovie(currentMovie[0].id)">
+        @if(currentUserLikedCurrentMovie) {
         <img
-          [class.red]="currentUserLikedCurrentMovie"
-          src="./../../../../assets/img/favorite.svg"
+          class="filled"
+          src="./../../../../assets/img/favorite-filled.svg"
           alt=""
-          (click)="toggleLikeMovie(currentMovie[0].id)"
         />
+        } @else {
+        <img
+          class="outlined"
+          src="./../../../../assets/img/favorite-outlined.svg"
+          alt=""
+        />
+        }
       </div>
     </div>
   </div>
