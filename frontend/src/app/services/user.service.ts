@@ -14,8 +14,13 @@ export class UserService {
   async getLikedMovies(): Promise<any> {
     const url = environment.baseUrl + `/users/${this.currentUserId}/`;
     const headers = this.getAuthHeaders();
-
     return lastValueFrom(this.http.get(url, { headers }));
+  }
+
+  updateLikedMovies(likedMovies: any) {
+    const url = `${environment.baseUrl}/users/liked/${this.currentUserId}/`;
+    const headers = this.getAuthHeaders();
+    return lastValueFrom(this.http.put(url, likedMovies, { headers }));
   }
 
   private getAuthHeaders(): HttpHeaders {

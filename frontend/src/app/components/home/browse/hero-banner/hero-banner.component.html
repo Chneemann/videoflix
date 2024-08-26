@@ -59,7 +59,7 @@
         "
       ></app-btn-large>
       <div class="favorite-img" (click)="toggleLikeMovie(currentMovie[0].id)">
-        @if(currentUserLikedCurrentMovie) {
+        @if(checkLikeMovies(currentMovie[0].id)) {
         <img
           class="filled"
           src="./../../../../assets/img/favorite-filled.svg"

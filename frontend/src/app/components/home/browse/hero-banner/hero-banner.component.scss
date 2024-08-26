@@ -94,9 +94,9 @@ section {
     background-color: blue;
     border-radius: 50%;
     cursor: pointer;
+    transition: 300ms ease-in-out;
     &:hover {
       background-color: $white;
-      transition: 300ms ease-in-out;
       img {
         filter: brightness(0) saturate(100%) invert(18%) sepia(98%)
           saturate(7267%) hue-rotate(342deg) brightness(94%) contrast(119%);
