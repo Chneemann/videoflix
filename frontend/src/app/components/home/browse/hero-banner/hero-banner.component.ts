@@ -11,6 +11,7 @@ import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-lar
 import { MovieService } from '../../../../services/movie.service';
 import { environment } from '../../../../environments/environment';
 import { BtnSmallComponent } from '../../../../shared/components/buttons/btn-small/btn-small.component';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-hero-banner',
@@ -28,17 +29,36 @@ export class HeroBannerComponent {
   }>();
   @Output() moviesChange = new EventEmitter<any[]>();
 
+  currentUserLikedCurrentMovie: boolean = false;
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
     '480': false,
     '720': false,
     '1080': false,
   };
-  constructor(private el: ElementRef, private movieService: MovieService) {}
+  constructor(
+    private el: ElementRef,
+    private movieService: MovieService,
+    public userService: UserService
+  ) {}
+
+  async loadLikedMovies() {
+    try {
+      const likedMovies = await this.userService.getLikedMovies();
+      this.currentUserLikedCurrentMovie = likedMovies.liked_videos.includes(
+        this.currentMovie[0].id
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  toggleLikeMovie(movieId: number) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentMovie'] && this.currentMovie.length > 0) {
       const movieId = this.currentMovie[0]?.id;
+      this.loadLikedMovies();
       if (movieId) {
         this.movieService
           .isMovieResolutionUploaded(movieId)

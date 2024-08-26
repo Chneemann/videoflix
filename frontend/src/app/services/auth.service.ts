@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
 import { environment } from '../environments/environment';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class AuthService {
   passwordFieldType: string = 'password';
   passwordIcon: string = './../../../assets/img/close-eye.svg';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   togglePasswordVisibility() {
     this.passwordFieldType =
@@ -66,9 +67,16 @@ export class AuthService {
   checkAuthUser(): Observable<boolean> {
     const headers = this.getAuthHeaders();
     return this.http.get<any>(`${environment.baseUrl}/auth/`, { headers }).pipe(
-      map((response) => true),
+      map((response) => {
+        this.saveUserId(response);
+        return true;
+      }),
       catchError(() => of(false))
     );
+  }
+
+  saveUserId(userId: string): void {
+    this.userService.currentUserId = userId;
   }
 
   async checkAuthUserMail(body: any) {

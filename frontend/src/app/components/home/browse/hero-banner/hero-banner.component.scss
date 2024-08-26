@@ -81,9 +81,37 @@ section {
   bottom: -70px;
   left: 0;
   display: flex;
+  align-items: center;
   justify-content: left;
   width: 100%;
   gap: 12px;
+  .btn-small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background-color: blue;
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover {
+      background-color: $white;
+      transition: 300ms ease-in-out;
+      img {
+        filter: brightness(0) saturate(100%) invert(18%) sepia(98%)
+          saturate(7267%) hue-rotate(342deg) brightness(94%) contrast(119%);
+      }
+    }
+    img {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}
+
+.red {
+  filter: brightness(0) saturate(100%) invert(18%) sepia(98%) saturate(7267%)
+    hue-rotate(342deg) brightness(94%) contrast(119%);
 }
 
 .movie-banner {

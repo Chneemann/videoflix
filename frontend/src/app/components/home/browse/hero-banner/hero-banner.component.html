@@ -58,6 +58,14 @@
           )
         "
       ></app-btn-large>
+      <div class="btn-small">
+        <img
+          [class.red]="currentUserLikedCurrentMovie"
+          src="./../../../../assets/img/favorite.svg"
+          alt=""
+          (click)="toggleLikeMovie(currentMovie[0].id)"
+        />
+      </div>
     </div>
   </div>
   }
