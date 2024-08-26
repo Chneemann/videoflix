@@ -13,6 +13,7 @@ class CustomUserAdmin(UserAdmin):
       'Individual data',
       {
         'fields': (
+          'liked_videos',
           'verify_email_token',
           )
        }
