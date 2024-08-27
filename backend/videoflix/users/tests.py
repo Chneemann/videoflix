@@ -2,13 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-from .serializer import LikedVideosSerializer
 from .models import CustomUser
-from content.models import Video
-from django.contrib.auth import get_user_model
-from django.core.files.uploadedfile import SimpleUploadedFile
-
-User = get_user_model()
 
 class CustomUserModelTests(TestCase):
     def test_generate_verification_token(self):
@@ -34,9 +28,9 @@ class UserTests(TestCase):
         Initializes the APIClient and creates test users. Authenticates a user for the tests.
         """
         self.client = APIClient()
-        self.user = User.objects.create_user(username='testuser', password='testpass')
+        self.user = CustomUser.objects.create_user(username='testuser', password='testpass')
         self.client.force_authenticate(user=self.user)
-        self.user2 = User.objects.create_user(username='testuser2', password='testpass2')
+        self.user2 = CustomUser.objects.create_user(username='testuser2', password='testpass2')
 
     def test_get_users(self):
         """
@@ -55,8 +49,8 @@ class UserTests(TestCase):
         data = {'username': 'testuser3', 'password': 'testpass3'}
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(User.objects.count(), 3)
-        self.assertEqual(User.objects.get(username='testuser3').username, 'testuser3')
+        self.assertEqual(CustomUser.objects.count(), 3)
+        self.assertEqual(CustomUser.objects.get(username='testuser3').username, 'testuser3')
 
     def test_get_user_detail(self):
         """
@@ -85,7 +79,7 @@ class UserTests(TestCase):
         url = reverse('user_detail', args=[self.user.pk])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertFalse(User.objects.filter(pk=self.user.pk).exists())
+        self.assertFalse(CustomUser.objects.filter(pk=self.user.pk).exists())
 
     def test_get_user_detail_not_found(self):
         """
