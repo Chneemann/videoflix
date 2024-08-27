@@ -2,11 +2,32 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
+from .serializer import LikedVideosSerializer
 from .models import CustomUser
+from content.models import Video
 from django.contrib.auth import get_user_model
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 User = get_user_model()
 
+class CustomUserModelTests(TestCase):
+    def test_generate_verification_token(self):
+        """
+        Ensure the token generated is 20 characters long and alphanumeric.
+        """
+        user = CustomUser(username='testuser')
+        token = user.generate_verification_token()
+        self.assertEqual(len(token), 20)
+        self.assertTrue(token.isalnum())
+
+    def test_save_without_token_generates_token(self):
+        """
+        Verify a token is assigned if not present when saving a user.
+        """
+        user = CustomUser(username='testuser')
+        user.save()
+        self.assertIsNotNone(user.verify_email_token)
+        
 class UserTests(TestCase):
     def setUp(self):
         """
@@ -73,3 +94,4 @@ class UserTests(TestCase):
         url = reverse('user_detail', args=[9999])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
