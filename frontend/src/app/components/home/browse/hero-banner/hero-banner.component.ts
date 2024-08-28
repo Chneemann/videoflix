@@ -23,13 +23,14 @@ import { UserService } from '../../../../services/user.service';
 export class HeroBannerComponent {
   @Input() currentMovie: any[] = [];
   @Input() screenWidth: boolean = false;
+  @Input() favoriteMovies: any[] = [];
   @Output() playMovie = new EventEmitter<string>();
   @Output() movieIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;
   }>();
   @Output() moviesChange = new EventEmitter<any[]>();
+  @Output() favoriteMovieChange = new EventEmitter<any[]>();
 
-  currentUserLikedMovies: number[] = [];
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
     '480': false,
@@ -42,39 +43,17 @@ export class HeroBannerComponent {
     public userService: UserService
   ) {}
 
-  ngOnInit() {
-    this.loadLikedMovies();
+  toggleLikeMovie(movieId: number): void {
+    if (this.favoriteMovies.includes(movieId)) {
+      this.favoriteMovies = this.favoriteMovies.filter((id) => id !== movieId);
+    } else {
+      this.favoriteMovies.push(movieId);
+    }
+    this.favoriteMovieChange.emit(this.favoriteMovies);
   }
 
   checkLikeMovies(videoId: number) {
-    return this.currentUserLikedMovies.includes(videoId);
-  }
-
-  async loadLikedMovies() {
-    try {
-      const likedMovies = await this.userService.getLikedMovies();
-      this.currentUserLikedMovies = likedMovies.liked_videos;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  toggleLikeMovie(movieId: number): void {
-    if (this.currentUserLikedMovies.includes(movieId)) {
-      this.currentUserLikedMovies = this.currentUserLikedMovies.filter(
-        (id) => id !== movieId
-      );
-    } else {
-      this.currentUserLikedMovies.push(movieId);
-    }
-    this.updateLikeMovies();
-  }
-
-  updateLikeMovies() {
-    const body = {
-      liked_videos: this.currentUserLikedMovies,
-    };
-    this.userService.updateLikedMovies(body);
+    return this.favoriteMovies.includes(videoId);
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -18,6 +18,7 @@ import { environment } from '../../../../environments/environment';
 export class CategoriesComponent {
   @Input() movies: any[] = [];
   @Input() currentMovie: number = 0;
+  @Input() favoriteMovies: any[] = [];
   @Output() currentMovieId = new EventEmitter<number>();
 
   environmentBaseUrl: string = environment.baseUrl;
@@ -65,6 +66,10 @@ export class CategoriesComponent {
       const movieDate = new Date(movie.created_at);
       return movieDate >= sevenDaysAgo;
     });
+  }
+
+  getThumbnailUrl(movieId: number, fileName: string): string {
+    return `${environment.baseUrl}/media/thumbnails/${movieId}/${fileName}_480p.jpg`;
   }
 
   // Category scroll

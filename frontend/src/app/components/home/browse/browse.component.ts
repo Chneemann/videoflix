@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
 import { UploadMovieComponent } from './upload-movie/upload-movie.component';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-browse',
@@ -27,6 +28,7 @@ import { UploadMovieComponent } from './upload-movie/upload-movie.component';
 export class BrowseComponent implements OnInit {
   @ViewChild(VideoPlayerComponent) videoPlayer!: VideoPlayerComponent;
   movies: any[] = [];
+  favoriteMovies: number[] = [];
   currentMovie: any[] = [];
   playMovie: string = '';
   isWideScreen: boolean = false;
@@ -40,14 +42,32 @@ export class BrowseComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private movieService: MovieService
+    private movieService: MovieService,
+    public userService: UserService
   ) {}
 
   async ngOnInit() {
+    this.loadLikedMovies();
     await this.loadAllMovies();
     if (this.checkScreenWidth()) {
       this.currentMovie.length === 0 ? this.loadRandomMovie() : null;
     }
+  }
+
+  async loadLikedMovies() {
+    try {
+      const likedMovies = await this.userService.getLikedMovies();
+      this.favoriteMovies = likedMovies.liked_videos;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  updateLikeMovies() {
+    const body = {
+      liked_videos: this.favoriteMovies,
+    };
+    this.userService.updateLikedMovies(body);
   }
 
   onMoviesChange(updatedMovies: any[]) {
@@ -64,6 +84,11 @@ export class BrowseComponent implements OnInit {
 
   onMovieIsUploadedChange(newStatus: { [resolution: string]: boolean }) {
     this.movieIsUploaded = newStatus;
+  }
+
+  onFavoriteMovieChange(favoriteMovies: any) {
+    this.favoriteMovies = favoriteMovies;
+    this.updateLikeMovies();
   }
 
   changeResolution(resolution: '480p' | '720p' | '1080p') {

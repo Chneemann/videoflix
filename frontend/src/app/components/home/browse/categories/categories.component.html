@@ -3,23 +3,42 @@
   <div *ngIf="recentMovies().length > 0" class="category">
     <p>Added in the last 7 days</p>
     <div class="movies">
-      <!-- Filme hier einfügen -->
+      <!-- Load movies -->
       @for (movie of recentMovies(); track movie) {
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
-          src="{{
-            environmentBaseUrl +
-              '/media/thumbnails/' +
-              movie.id +
-              '/' +
-              movie.file_name +
-              '_480p.jpg'
-          }}"
+          [src]="getThumbnailUrl(movie.id, movie.file_name)"
           alt=""
         />
       </div>
       }
+      <!-- Buttons for scrolling -->
+      <div class="scroll-buttons">
+        <button class="scroll-left" (click)="scrollLeft($event)"></button>
+        <button class="scroll-right" (click)="scrollRight($event)"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Column for favorites -->
+  <div *ngIf="favoriteMovies.length > 0" class="category">
+    <p>Favorites</p>
+    <div class="movies">
+      <!-- Load movies -->
+      @for (favorite of favoriteMovies; track favorite) {
+      <!-- Filter movies -->
+      @for (movie of movies; track movie) {
+      <!-- If movie favorite -->
+      @if (movie.id === favorite) {
+      <div class="movie" (click)="openCurrentMovie(movie.id)">
+        <img
+          [ngClass]="{ selected: movie.id === currentMovie }"
+          [src]="getThumbnailUrl(movie.id, movie.file_name)"
+          alt=""
+        />
+      </div>
+      } } }
       <!-- Buttons for scrolling -->
       <div class="scroll-buttons">
         <button class="scroll-left" (click)="scrollLeft($event)"></button>
@@ -35,18 +54,12 @@
   <div class="category">
     <p>{{ filmGenre.name }}</p>
     <div class="movies">
+      <!-- Load movies -->
       @for (movie of allMovies(filmGenre.code); track movie) {
       <div class="movie" (click)="openCurrentMovie(movie.id)">
         <img
           [ngClass]="{ selected: movie.id === currentMovie }"
-          src="{{
-            environmentBaseUrl +
-              '/media/thumbnails/' +
-              movie.id +
-              '/' +
-              movie.file_name +
-              '_480p.jpg'
-          }}"
+          [src]="getThumbnailUrl(movie.id, movie.file_name)"
           alt=""
         />
       </div>

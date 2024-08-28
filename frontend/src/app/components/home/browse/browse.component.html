@@ -14,9 +14,11 @@
     "
     [screenWidth]="checkScreenWidth()"
     [currentMovie]="currentMovie"
+    [favoriteMovies]="favoriteMovies"
     (playMovie)="playVideo($event)"
     (movieIsUploadedChange)="onMovieIsUploadedChange($event)"
     (moviesChange)="onMoviesChange($event)"
+    (favoriteMovieChange)="onFavoriteMovieChange($event)"
   ></app-hero-banner>
   <!-- Spacer -->
   <div *ngIf="!this.checkScreenWidth()" class="spacer"></div>
@@ -28,6 +30,7 @@
     "
     [movies]="movies"
     [currentMovie]="currentMovie[0]?.id"
+    [favoriteMovies]="favoriteMovies"
     (currentMovieId)="currentMovieId($event)"
   ></app-categories>
   } @else {
