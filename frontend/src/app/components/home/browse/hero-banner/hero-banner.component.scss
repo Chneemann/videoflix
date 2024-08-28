@@ -33,7 +33,7 @@ section {
 
 .content {
   position: absolute;
-  width: 50%;
+  width: 60%;
   top: 120px;
   left: 96px;
   gap: 32px;
@@ -52,9 +52,6 @@ section {
   font-size: 18px;
   font-weight: 400;
   max-height: 96px;
-  height: fit-content;
-  overflow: hidden;
-  word-wrap: break-word;
   text-shadow: 1px 1px 2px $black;
 }
 
@@ -118,4 +115,17 @@ section {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+// Hide scrollbar
+
+.hide-scrollbar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0px;
 }
