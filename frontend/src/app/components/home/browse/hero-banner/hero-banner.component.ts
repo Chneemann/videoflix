@@ -4,6 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -20,7 +21,7 @@ import { UserService } from '../../../../services/user.service';
   templateUrl: './hero-banner.component.html',
   styleUrl: './hero-banner.component.scss',
 })
-export class HeroBannerComponent {
+export class HeroBannerComponent implements OnChanges {
   @Input() currentMovie: any[] = [];
   @Input() screenWidth: boolean = false;
   @Input() favoriteMovies: any[] = [];
@@ -43,19 +44,6 @@ export class HeroBannerComponent {
     public userService: UserService
   ) {}
 
-  toggleLikeMovie(movieId: number): void {
-    if (this.favoriteMovies.includes(movieId)) {
-      this.favoriteMovies = this.favoriteMovies.filter((id) => id !== movieId);
-    } else {
-      this.favoriteMovies.push(movieId);
-    }
-    this.favoriteMovieChange.emit(this.favoriteMovies);
-  }
-
-  checkLikeMovies(videoId: number) {
-    return this.favoriteMovies.includes(videoId);
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentMovie'] && this.currentMovie.length > 0) {
       const movieId = this.currentMovie[0]?.id;
@@ -68,6 +56,19 @@ export class HeroBannerComponent {
           });
       }
     }
+  }
+
+  toggleLikeMovie(movieId: number): void {
+    if (this.favoriteMovies.includes(movieId)) {
+      this.favoriteMovies = this.favoriteMovies.filter((id) => id !== movieId);
+    } else {
+      this.favoriteMovies.push(movieId);
+    }
+    this.favoriteMovieChange.emit(this.favoriteMovies);
+  }
+
+  checkLikeMovies(videoId: number) {
+    return this.favoriteMovies.includes(videoId);
   }
 
   isAnyResolutionUploaded(): boolean {

@@ -17,6 +17,7 @@ export class AuthComponent {
   authData = {
     mail: '',
   };
+
   constructor(
     private router: Router,
     public errorService: ErrorService,

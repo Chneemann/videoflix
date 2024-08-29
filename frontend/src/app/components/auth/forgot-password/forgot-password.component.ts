@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -13,7 +13,7 @@ import { ErrorService } from '../../../services/error.service';
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
   authData = {
     mail: '',
     token: '',

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   HostListener,
@@ -15,7 +16,7 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements AfterViewInit {
   @Input() movies: any[] = [];
   @Input() currentMovie: number = 0;
   @Input() favoriteMovies: any[] = [];

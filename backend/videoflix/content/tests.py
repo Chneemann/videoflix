@@ -11,10 +11,10 @@ class VideoTasksTest(TestCase):
         Tests whether the HLS conversion script is called correctly and the correct parameters are passed.
         """
         mock_subprocess_run.return_value = MagicMock()
-        convert_video_to_hls('test/source.mp4', '1080', 1)
+        convert_video_to_hls('test/source.mp4', '1920x1080', 1)
         mock_subprocess_run.assert_called_once()
         self.assertIn('-i', mock_subprocess_run.call_args[0][0])
-        self.assertIn('hd1080', mock_subprocess_run.call_args[0][0])
+        self.assertIn('1920x1080', mock_subprocess_run.call_args[0][0])
 
     @patch('os.remove')
     def test_delete_original_video(self, mock_os_remove):
