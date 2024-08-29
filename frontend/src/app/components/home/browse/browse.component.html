@@ -43,13 +43,13 @@
         <button
           [ngClass]="{
             'resolution-btn': true,
-            active: currentResolution === '480p',
-            'not-available': !movieIsUploaded['480']
+            active: currentResolution === '360p',
+            'not-available': !movieIsUploaded['360']
           }"
-          [disabled]="!movieIsUploaded['480'] || currentResolution === '480p'"
-          (click)="changeResolution('480p')"
+          [disabled]="!movieIsUploaded['360'] || currentResolution === '360p'"
+          (click)="changeResolution('360p')"
         >
-          480p
+          360p
         </button>
         <button
           [ngClass]="{

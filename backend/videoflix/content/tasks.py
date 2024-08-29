@@ -8,24 +8,26 @@ def convert_video_to_hls(source, resolution, model_id):
     """
     Converts a video to the HLS format
     """
+    resolution_after_x = resolution.split('x')[1] if 'x' in resolution else resolution
+
     target_dir = os.path.join(os.path.dirname(source), str(model_id))
     os.makedirs(target_dir, exist_ok=True)
 
     base_filename = os.path.basename(source).split(".")[0]
-    target = os.path.join(target_dir, f'{base_filename}_{resolution}p')
+    target = os.path.join(target_dir, f'{base_filename}_{resolution_after_x}p')
     
     ffmpeg_path = shutil.which("ffmpeg")
     cmd = [
         ffmpeg_path, 
         '-i', source, 
-        '-s', f'hd{resolution}', 
+        '-s', resolution, 
         '-c:v', 'libx264', 
         '-crf', '23', 
         '-c:a', 'aac', 
         '-strict', '-2', 
         '-hls_time', '10',
         '-hls_playlist_type', 'vod', 
-        '-hls_segment_filename', os.path.join(target_dir, f'{base_filename}_{resolution}p_%03d.ts'),
+        '-hls_segment_filename', os.path.join(target_dir, f'{base_filename}_{resolution_after_x}p_%03d.ts'),
         f'{target}.m3u8'
     ]
     

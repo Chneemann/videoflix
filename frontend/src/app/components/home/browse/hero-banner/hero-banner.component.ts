@@ -33,7 +33,7 @@ export class HeroBannerComponent {
 
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
-    '480': false,
+    '320': false,
     '720': false,
     '1080': false,
   };
@@ -72,7 +72,7 @@ export class HeroBannerComponent {
 
   isAnyResolutionUploaded(): boolean {
     return (
-      this.movieIsUploaded['480'] ||
+      this.movieIsUploaded['320'] ||
       this.movieIsUploaded['720'] ||
       this.movieIsUploaded['1080']
     );

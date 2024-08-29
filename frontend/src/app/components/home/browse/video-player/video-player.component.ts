@@ -22,7 +22,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
     if (this.playMovie) {
       this.resolutionUrls = {
-        '480p': `${this.playMovie}_480p.m3u8`,
+        '360p': `${this.playMovie}_360p.m3u8`,
         '720p': `${this.playMovie}_720p.m3u8`,
         '1080p': `${this.playMovie}_1080p.m3u8`,
       };
@@ -63,7 +63,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   }
 
   // Method to switch resolution
-  public switchResolution(resolution: '480p' | '720p' | '1080p') {
+  public switchResolution(resolution: '360p' | '720p' | '1080p') {
     if (this.resolutionUrls[resolution]) {
       if (this.hls) {
         this.hls.loadSource(this.resolutionUrls[resolution]);

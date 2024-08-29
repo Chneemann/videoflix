@@ -81,7 +81,7 @@ export class MovieService {
       this.http.get(url, { headers }).subscribe(
         (response: any) => {
           const resolutions = {
-            '480': response['480'] || false,
+            '360': response['360'] || false,
             '720': response['720'] || false,
             '1080': response['1080'] || false,
           };
@@ -92,7 +92,7 @@ export class MovieService {
         (error) => {
           observer.next(
             this.movieCache[videoID] || {
-              '480': false,
+              '360': false,
               '720': false,
               '1080': false,
             }

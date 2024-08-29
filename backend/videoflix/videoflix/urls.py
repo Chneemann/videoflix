@@ -38,7 +38,7 @@ urlpatterns = [
     # Content URLs
     path('content/', content_views.video_list, name='video_list'),
     path('content/upload/', content_views.video_upload, name='video_upload'),
-    path('content/movie/<int:id>/', content_views.check_video, name='check_video'),
+    path('content/movie/<int:id>/', content_views.check_video_resolutions, name='check_video_resolutions'),
  
     # Users URLs
     path('users/', user_views.user_list, name='user_list'),

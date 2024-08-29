@@ -18,7 +18,7 @@ def video_post_save(sender, instance, created, **kwargs):
         create_thumbnails(instance, instance.id)
         
         #Convert video
-        for resolution in ["720", "480", "1080"]:
+        for resolution in ["1280x720", "640x360", "1920x1080"]:
             queue.enqueue(convert_video_to_hls, instance.video_file.path, resolution, instance.id)
             
         #Delete the original video file
@@ -51,7 +51,7 @@ def delete_converted_files(video_file_path):
     """
     Delete all converted video files related to the original video file.
     """
-    resolutions = ["480", "720", "1080"]
+    resolutions = ["360", "720", "1080"]
     for resolution in resolutions:
         converted_video_path = video_file_path + f'_{resolution}p.mp4'
         converted_video_path = remove_first_mp4(converted_video_path)

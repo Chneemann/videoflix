@@ -33,9 +33,9 @@ export class BrowseComponent implements OnInit {
   playMovie: string = '';
   isWideScreen: boolean = false;
   uploadMovieOverview: boolean = false;
-  currentResolution: '480p' | '720p' | '1080p' = '720p';
+  currentResolution: '360p' | '720p' | '1080p' = '720p';
   movieIsUploaded: { [resolution: string]: boolean } = {
-    '480': false,
+    '360': false,
     '720': false,
     '1080': false,
   };
@@ -91,7 +91,7 @@ export class BrowseComponent implements OnInit {
     this.updateLikeMovies();
   }
 
-  changeResolution(resolution: '480p' | '720p' | '1080p') {
+  changeResolution(resolution: '360p' | '720p' | '1080p') {
     if (this.videoPlayer && this.movieIsUploaded[resolution.replace('p', '')]) {
       this.videoPlayer.switchResolution(resolution);
       this.currentResolution = resolution;

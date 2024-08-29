@@ -12,12 +12,12 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import JsonResponse
 import os
 
-CACHETTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 # Create your views here.
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@cache_page(CACHETTL)
+#@cache_page(CACHE_TTL)
 def video_list(request):
     """
     List all videos.
@@ -28,11 +28,11 @@ def video_list(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def check_video(request, id):
+def check_video_resolutions(request, id):
     """
-    Check if a specific video exists in different resolutions (480p, 720p, 1080p).
+    Check if a specific video exists in different resolutions (360p, 720p, 1080p).
     """
-    resolutions = ['480', '720', '1080']
+    resolutions = ['360', '720', '1080']
     result = {}
 
     try:
@@ -59,6 +59,7 @@ def video_upload(request):
     if request.method == 'POST':
         serializer = VideoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            creator = request.user
+            serializer.save(creator=creator)
             return Response(serializer.data, status=201)
         return Response({"error": "Invalid data", "details": serializer.errors}, status=400)
