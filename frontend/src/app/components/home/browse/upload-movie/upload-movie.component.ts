@@ -20,6 +20,8 @@ import { LoadingDialogComponent } from '../../../../shared/components/loading-di
 })
 export class UploadMovieComponent {
   @Output() toggleUploadMovieOverview = new EventEmitter<boolean>();
+  errorMsgFileSize: string | null = null;
+  maxFileSizeMB = 50;
 
   movieData = {
     title: '',
@@ -43,9 +45,26 @@ export class UploadMovieComponent {
   }
 
   onFileChange(event: any) {
+    this.isOneFile(event);
+    this.isFileSize(event);
+  }
+
+  isOneFile(event: any) {
     const file = event.target.files[0];
     if (file) {
       this.movieData.videoFile = file;
+    }
+  }
+  isFileSize(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const fileSizeMB = file.size / (1024 * 1024);
+      if (fileSizeMB > this.maxFileSizeMB) {
+        this.errorMsgFileSize = `The file must not be larger than ${this.maxFileSizeMB} MB.`;
+        event.target.value = '';
+      } else {
+        this.errorMsgFileSize = null;
+      }
     }
   }
 

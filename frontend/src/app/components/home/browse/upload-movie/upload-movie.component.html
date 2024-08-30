@@ -75,9 +75,12 @@
           name="videoFile"
           placeholder="Video file"
           (change)="onFileChange($event)"
+          accept="video/*"
           required
         />
-        <div class="error-msg"></div>
+        <div class="error-msg">
+          <p>{{ errorMsgFileSize }}</p>
+        </div>
         <div class="buttons">
           <app-btn-large
             [value]="'Close'"
