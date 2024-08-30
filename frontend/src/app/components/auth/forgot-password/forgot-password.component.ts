@@ -19,6 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
     token: '',
     password: '',
     passwordConfirm: '',
+    send: false,
   };
 
   sendMailSuccess: boolean = false;
@@ -70,10 +71,12 @@ export class ForgotPasswordComponent implements OnInit {
       email: this.authData.mail,
     };
     try {
+      this.authData.send = true;
       await this.authService.forgotPassword(body);
       this.sendMailSuccess = true;
       this.errorService.clearError();
     } catch (error) {
+      this.authData.send = false;
       this.sendMailSuccess = false;
       this.errorService.handleError(error);
     }
@@ -85,14 +88,14 @@ export class ForgotPasswordComponent implements OnInit {
       token: this.authData.token,
       new_password: this.authData.password,
     };
-    console.log(body);
-
     try {
+      this.authData.send = true;
       await this.authService.changePassword(body);
       this.queryEmail = false;
       this.queryEmailSuccess = true;
       this.errorService.clearError();
     } catch (error) {
+      this.authData.send = false;
       this.errorService.handleError(error);
     }
   }

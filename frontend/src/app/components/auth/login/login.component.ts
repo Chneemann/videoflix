@@ -45,6 +45,7 @@ export class LoginComponent {
       password: environment.guestPassword,
     };
     try {
+      this.authData.send = true;
       await this.authService.login(body, this.authData.checkbox);
       this.authData.mail = '';
       this.authData.password = '';
@@ -52,6 +53,7 @@ export class LoginComponent {
       this.router.navigate(['/browse/']);
       this.errorService.clearError();
     } catch (error) {
+      this.authData.send = false;
       this.errorService.handleError(error);
     }
   }
@@ -63,11 +65,13 @@ export class LoginComponent {
         password: this.authData.password,
       };
       try {
+        this.authData.send = true;
         await this.authService.login(body, this.authData.checkbox);
         ngForm.resetForm();
         this.router.navigate(['/browse/']);
         this.errorService.clearError();
       } catch (error) {
+        this.authData.send = false;
         this.errorService.handleError(error);
       }
     }

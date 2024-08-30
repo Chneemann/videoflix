@@ -39,7 +39,10 @@
       [imgPath]="'play'"
       [imgPath]="'arrow_right'"
       [imgReverse]="true"
-      [disabled]="!isUserEmailValid(authData.mail) && authData.mail.length > 0"
+      [disabled]="
+        (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
+        authData.send
+      "
     ></app-btn-large>
   </form>
 </section>

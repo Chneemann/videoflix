@@ -83,13 +83,16 @@
             !authData.mail ||
             (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
             !password.valid ||
-            authData.guestLogin
+            authData.guestLogin ||
+            authData.send
           "
         ></app-btn-large>
         <app-btn-large
           [value]="'Guest Log in'"
           [disabled]="
-            authData.guestLogin || (!!authData.mail && !!authData.password)
+            authData.guestLogin ||
+            (!!authData.mail && !!authData.password) ||
+            authData.send
           "
           (click)="guestLogin()"
         ></app-btn-large>

@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 export class AuthComponent {
   authData = {
     mail: '',
+    send: false,
   };
 
   constructor(
@@ -42,11 +43,13 @@ export class AuthComponent {
       email: this.authData.mail,
     };
     try {
+      this.authData.send = true;
       await this.authService.checkAuthUserMail(body);
       const queryParams = { mail: this.authData.mail };
       this.router.navigate(['/register'], { queryParams });
       this.errorService.clearError();
     } catch (error) {
+      this.authData.send = false;
       this.errorService.handleError(error);
     }
   }

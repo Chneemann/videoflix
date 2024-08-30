@@ -19,6 +19,7 @@ export class RegisterComponent implements OnInit {
     password: '',
     passwordConfirm: '',
     privacyPolicy: false,
+    send: false,
   };
 
   registrationSuccess: boolean = false;
@@ -49,11 +50,13 @@ export class RegisterComponent implements OnInit {
         password: this.authData.password,
       };
       try {
+        this.authData.send = true;
         await this.authService.register(body);
         ngForm.resetForm();
         this.registrationSuccess = true;
         this.errorService.clearError();
       } catch (error) {
+        this.authData.send = false;
         this.errorService.handleError(error);
       }
     }

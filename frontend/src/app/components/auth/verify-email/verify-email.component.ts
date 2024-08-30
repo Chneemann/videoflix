@@ -18,6 +18,7 @@ export class VerifyEmailComponent {
   authData = {
     mail: '',
     token: '',
+    send: false,
   };
 
   constructor(
@@ -40,10 +41,12 @@ export class VerifyEmailComponent {
       token: this.authData.token,
     };
     try {
+      this.authData.send = true;
       await this.authService.verifyEmail(body);
       this.verified = true;
       this.errorService.clearError();
     } catch (error) {
+      this.authData.send = false;
       this.verified = false;
       this.errorService.handleError(error);
     }
