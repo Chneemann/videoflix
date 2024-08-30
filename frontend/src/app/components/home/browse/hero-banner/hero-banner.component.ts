@@ -58,6 +58,8 @@ export class HeroBannerComponent implements OnChanges {
     }
   }
 
+  refreshPage(movieId: number) {}
+
   toggleLikeMovie(movieId: number): void {
     if (this.favoriteMovies.includes(movieId)) {
       this.favoriteMovies = this.favoriteMovies.filter((id) => id !== movieId);

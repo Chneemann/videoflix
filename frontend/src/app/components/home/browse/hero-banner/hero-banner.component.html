@@ -73,6 +73,10 @@
         />
         }
       </div>
+      <p *ngIf="!isAnyResolutionUploaded()">
+        (The video is being converted)
+        <a (click)="backToCategory(currentMovie)">Refresh</a>
+      </p>
     </div>
   </div>
   }
