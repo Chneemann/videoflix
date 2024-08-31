@@ -70,6 +70,13 @@ export class BrowseComponent implements OnInit {
     this.userService.updateLikedMovies(body);
   }
 
+  onRefreshPage(updatedMovies: any[]) {
+    this.currentMovie = [];
+    setTimeout(() => {
+      this.currentMovie = updatedMovies;
+    }, 1);
+  }
+
   onMoviesChange(updatedMovies: any[]) {
     if (this.checkScreenWidth()) {
       this.loadRandomMovie();

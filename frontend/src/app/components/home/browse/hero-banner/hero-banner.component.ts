@@ -29,6 +29,7 @@ export class HeroBannerComponent implements OnChanges {
   @Output() movieIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;
   }>();
+  @Output() refreshChange = new EventEmitter<any[]>();
   @Output() moviesChange = new EventEmitter<any[]>();
   @Output() favoriteMovieChange = new EventEmitter<any[]>();
 
@@ -77,6 +78,10 @@ export class HeroBannerComponent implements OnChanges {
       this.movieIsUploaded['720'] ||
       this.movieIsUploaded['1080']
     );
+  }
+
+  refreshPage(newMovies: any[]) {
+    this.refreshChange.emit(newMovies);
   }
 
   backToCategory(newMovies: any[]) {
