@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../../shared/components/header/header.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
 import { CategoriesComponent } from './categories/categories.component';
-import { AuthService } from '../../../services/auth.service';
 import { MovieService } from '../../../services/movie.service';
 import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './video-player/video-player.component';
@@ -41,7 +40,6 @@ export class BrowseComponent implements OnInit {
   };
 
   constructor(
-    private authService: AuthService,
     private movieService: MovieService,
     public userService: UserService
   ) {}

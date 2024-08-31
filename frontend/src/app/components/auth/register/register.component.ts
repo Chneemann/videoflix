@@ -27,8 +27,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public authService: AuthService,
-    public errorService: ErrorService,
-    private router: Router
+    public errorService: ErrorService
   ) {}
 
   ngOnInit(): void {

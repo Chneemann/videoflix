@@ -62,7 +62,6 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Method to switch resolution
   public switchResolution(resolution: '360p' | '720p' | '1080p') {
     if (this.resolutionUrls[resolution]) {
       if (this.hls) {

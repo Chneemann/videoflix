@@ -40,7 +40,6 @@ export class HeroBannerComponent implements OnChanges {
     '1080': false,
   };
   constructor(
-    private el: ElementRef,
     private movieService: MovieService,
     public userService: UserService
   ) {}
