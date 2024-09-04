@@ -60,12 +60,14 @@ export class CategoriesComponent implements AfterViewInit {
 
   recentMovies() {
     const today = new Date();
-    const sevenDaysAgo = new Date(today);
-    sevenDaysAgo.setDate(today.getDate() - 7);
+    const dayOfWeek = today.getDay();
+
+    const lastMonday = new Date(today);
+    lastMonday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
 
     return this.movies.filter((movie) => {
       const movieDate = new Date(movie.created_at);
-      return movieDate >= sevenDaysAgo;
+      return movieDate >= lastMonday && movieDate <= today;
     });
   }
 
