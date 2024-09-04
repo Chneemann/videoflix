@@ -36,7 +36,7 @@ export class LoginComponent {
     return emailRegex.test(emailValue);
   }
 
-  async guestLogin() {
+  async guestLogin(ngForm: NgForm) {
     this.authData.mail = environment.guestMail;
     this.authData.password = environment.guestPassword;
     this.authData.guestLogin = true;
@@ -54,6 +54,8 @@ export class LoginComponent {
       this.errorService.clearError();
     } catch (error) {
       this.authData.send = false;
+      this.authData.guestLogin = false;
+      ngForm.reset();
       this.errorService.handleError(error);
     }
   }
