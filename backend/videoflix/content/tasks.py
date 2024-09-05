@@ -44,7 +44,7 @@ def delete_original_video(source):
 
 def create_thumbnails(instance, model_id):
     """
-    Creates high-resolution and low-resolution thumbnails from a video file 
+    Creates high-resolution and low-resolution thumbnails from a video file.
     """
     video_file_path = instance.video_file.path
     thumbnail_dir = os.path.join(settings.THUMBNAIL_DIR, str(model_id))
@@ -59,10 +59,32 @@ def create_thumbnails(instance, model_id):
         os.makedirs(thumbnail_dir)
 
     try:
-        # Generate the thumbnails
+        # Generate the image thumbnails
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_1080p_path, vf='scale=1920:-1', vframes=1).run(overwrite_output=True)
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_480_path, vf='scale=720:-1', vframes=1).run(overwrite_output=True)
         
+        # Create the 10-second video thumbnail
+        create_video_thumbnail(video_file_path, thumbnail_dir, base_filename)
+
     except ffmpeg._run.Error as e:
         error_message = e.stderr.decode() if e.stderr else "Unknown ffmpeg error"
-        print(f"Ein Fehler ist aufgetreten: {error_message}")
+        print(f"An error has occurred: {error_message}")
+
+def create_video_thumbnail(video_file_path, thumbnail_dir, base_filename):
+    """
+    Creates a 10-second video thumbnail from a video file without audio.
+    """
+    video_thumbnail_filename = base_filename + '_video-thumbnail.mp4'
+    video_thumbnail_path = os.path.join(thumbnail_dir, video_thumbnail_filename)
+
+    try:
+        ffmpeg.input(video_file_path, ss=1, t=10).output(
+            video_thumbnail_path, 
+            vf='scale=1280:-1', 
+            vcodec='libx264', 
+            an=None  # Disable audio
+        ).run(overwrite_output=True)
+
+    except ffmpeg._run.Error as e:
+        error_message = e.stderr.decode() if e.stderr else "Unknown ffmpeg error"
+        print(f"An error has occurred: {error_message}")

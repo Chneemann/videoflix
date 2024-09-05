@@ -5,21 +5,39 @@
 >
   <div
     class="movie-banner"
-    [ngStyle]="{
-      'background-image':
-        'url(' +
+    [ngClass]="{
+      fullVhBanner: !screenWidth
+    }"
+  >
+    <video
+      #videoElement
+      *ngIf="currentMovie[0]?.file_name"
+      [src]="
         environmentBaseUrl +
         '/media/thumbnails/' +
         currentMovie[0]?.id +
         '/' +
         currentMovie[0]?.file_name +
-        '_1080p.jpg' +
-        ')',
-    }"
-    [ngClass]="{
-      fullVhBanner: !screenWidth
-    }"
-  ></div>
+        '_video-thumbnail.mp4'
+      "
+      autoplay
+      muted
+      loop
+      playsinline
+      class="video-banner"
+    >
+      <img
+        [src]="
+          environmentBaseUrl +
+          '/media/thumbnails/' +
+          currentMovie[0]?.id +
+          '/' +
+          currentMovie[0]?.file_name +
+          '_1080p.jpg'
+        "
+      />
+    </video>
+  </div>
   @if (currentMovie.length > 0) {
   <div
     class="content"

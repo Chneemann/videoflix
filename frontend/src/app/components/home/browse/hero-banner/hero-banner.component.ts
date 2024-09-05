@@ -7,6 +7,7 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
 import { MovieService } from '../../../../services/movie.service';
@@ -22,6 +23,7 @@ import { UserService } from '../../../../services/user.service';
   styleUrl: './hero-banner.component.scss',
 })
 export class HeroBannerComponent implements OnChanges {
+  @ViewChild('videoElement') videoElementRef!: ElementRef<HTMLVideoElement>;
   @Input() currentMovie: any[] = [];
   @Input() screenWidth: boolean = false;
   @Input() favoriteMovies: any[] = [];
@@ -44,6 +46,10 @@ export class HeroBannerComponent implements OnChanges {
     public userService: UserService
   ) {}
 
+  ngAfterViewInit() {
+    this.videoSpeed();
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentMovie'] && this.currentMovie.length > 0) {
       const movieId = this.currentMovie[0]?.id;
@@ -54,7 +60,15 @@ export class HeroBannerComponent implements OnChanges {
             this.movieIsUploaded = resolutions;
             this.movieIsUploadedChange.emit(this.movieIsUploaded);
           });
+        setTimeout(() => this.videoSpeed(), 0);
       }
+    }
+  }
+
+  videoSpeed() {
+    if (this.videoElementRef) {
+      const videoElement = this.videoElementRef.nativeElement;
+      videoElement.playbackRate = 0.5;
     }
   }
 
