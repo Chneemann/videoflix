@@ -37,9 +37,9 @@ export class HeroBannerComponent implements OnChanges {
 
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
-    '320': false,
-    '720': false,
-    '1080': false,
+    '320': true,
+    '720': true,
+    '1080': true,
   };
   constructor(
     private movieService: MovieService,
