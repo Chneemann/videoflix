@@ -1,5 +1,6 @@
 <section>
-  @if (movies.length > 0) {
+  <div *ngIf="isLoading"></div>
+  @if (!isLoading && movies.length > 0) {
   <!-- If at least one film has been uploaded -->
   @if (playMovie === "") {
   <app-header
@@ -95,7 +96,7 @@
     </div>
     <app-video-player [playMovie]="playMovie"></app-video-player>
   </div>
-  } } @else {
+  } } @if (!isLoading && movies.length === 0) {
   <!-- If the database is empty -->
   <app-header [browse]="true"></app-header>
   <div class="error">

@@ -30,6 +30,7 @@ export class BrowseComponent implements OnInit {
   favoriteMovies: number[] = [];
   currentMovie: any[] = [];
   playMovie: string = '';
+  isLoading: boolean = true;
   isWideScreen: boolean = false;
   uploadMovieOverview: boolean = false;
   currentResolution: '360p' | '720p' | '1080p' = '720p';
@@ -104,7 +105,12 @@ export class BrowseComponent implements OnInit {
   }
 
   async loadAllMovies() {
-    this.movies = await this.movieService.getAllMovies();
+    this.isLoading = true;
+    try {
+      this.movies = await this.movieService.getAllMovies();
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   closeVideo(): void {
