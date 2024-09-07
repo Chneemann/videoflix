@@ -94,12 +94,14 @@ section {
     justify-content: center;
     width: 48px;
     height: 48px;
-    background-color: blue;
+    background-color: $pure-blue;
+    border: 1px solid $pure-blue;
     border-radius: 50%;
     cursor: pointer;
     transition: 300ms ease-in-out;
     &:hover {
       background-color: $white;
+      border: 1px solid $red;
       img {
         filter: brightness(0) saturate(100%) invert(18%) sepia(98%)
           saturate(7267%) hue-rotate(342deg) brightness(94%) contrast(119%);
