@@ -40,7 +40,7 @@ export class UploadMovieComponent {
     event.stopPropagation();
   }
 
-  uploadMovieOverview() {
+  closeMovieUploadOverview() {
     this.toggleUploadMovieOverview.emit(false);
   }
 
@@ -76,7 +76,7 @@ export class UploadMovieComponent {
       let formData = this.createFormData();
       await this.movieService.uploadMovie(formData);
       ngForm.resetForm();
-      this.uploadMovieOverview();
+      this.closeMovieUploadOverview();
       this.movieData.send = false;
       window.location.reload();
       this.errorService.clearError();

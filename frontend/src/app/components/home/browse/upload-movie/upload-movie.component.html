@@ -1,4 +1,4 @@
-<div class="overlay" (click)="uploadMovieOverview()">
+<div class="overlay" (click)="closeMovieUploadOverview()">
   <div class="center" (click)="stopPropagation($event)">
     <div class="content">
       <div class="headline">Upload Movie</div>
@@ -84,10 +84,12 @@
         </div>
         <div class="buttons">
           <app-btn-large
+            [type]="'button'"
             [value]="'Close'"
-            (click)="uploadMovieOverview()"
+            (click)="closeMovieUploadOverview()"
           ></app-btn-large>
           <app-btn-large
+            [type]="'submit'"
             [value]="'Upload Movie'"
             [disabled]="
               !movieData.title ||
