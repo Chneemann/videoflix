@@ -16,6 +16,8 @@ section {
   }
 }
 
+// Movies
+
 .movie {
   width: 213px;
   height: 120px;
@@ -37,8 +39,6 @@ section {
   border: 2px solid $blue !important;
 }
 
-// Movies
-
 .movies {
   display: flex;
   overflow-x: auto;
@@ -52,19 +52,20 @@ section {
   display: none;
 }
 
+// Scroll buttons
+
 .scroll-buttons {
   position: absolute;
   top: 50%;
   width: 100%;
-  display: flex;
-  opacity: 0;
+  display: none;
   justify-content: space-between;
   pointer-events: none;
   transform: translateY(-50%);
 }
 
 .scroll-buttons.show {
-  opacity: 1; /* Sichtbar machen, wenn Klasse 'show' hinzugefügt wird */
+  display: flex;
 }
 
 .scroll-left,
