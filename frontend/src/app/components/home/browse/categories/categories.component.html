@@ -1,7 +1,7 @@
 <section *ngIf="movies.length > 0" class="hide-scrollbar">
-  <!-- New movies this week (starts on Mondays) -->
+  <!-- New movies added this week (starts on Mondays) -->
   <div *ngIf="recentMovies().length > 0" class="category">
-    <p>Added in the last 7 days</p>
+    <p>New movies added this week</p>
     <div class="movies">
       <!-- Load movies -->
       @for (movie of recentMovies(); track movie) {
