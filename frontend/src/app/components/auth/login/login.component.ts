@@ -5,7 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ErrorService } from '../../../services/error.service';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
