@@ -9,6 +9,19 @@
       fullVhBanner: !screenWidth
     }"
   >
+    <!-- Fallback image is displayed before the video is loaded -->
+    <img
+      *ngIf="!isVideoLoaded"
+      [src]="
+        environmentBaseUrl +
+        '/media/thumbnails/' +
+        currentMovie[0]?.id +
+        '/' +
+        currentMovie[0]?.file_name +
+        '_1080p.jpg'
+      "
+      class="fallback-image"
+    />
     <video
       #videoElement
       *ngIf="currentMovie[0]?.file_name"
@@ -25,6 +38,8 @@
       loop
       playsinline
       class="video-banner"
+      (canplay)="onVideoLoad()"
+      (error)="onVideoError()"
     >
       <img
         [src]="
@@ -35,9 +50,11 @@
           currentMovie[0]?.file_name +
           '_1080p.jpg'
         "
+        alt="Fallback image"
       />
     </video>
   </div>
+
   @if (currentMovie.length > 0) {
   <div
     class="content"

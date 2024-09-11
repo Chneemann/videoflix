@@ -35,6 +35,7 @@ export class HeroBannerComponent implements OnChanges {
   @Output() moviesChange = new EventEmitter<any[]>();
   @Output() favoriteMovieChange = new EventEmitter<any[]>();
 
+  isVideoLoaded: boolean = false;
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
     '320': true,
@@ -48,6 +49,14 @@ export class HeroBannerComponent implements OnChanges {
 
   ngAfterViewInit() {
     this.videoSpeed();
+  }
+
+  onVideoLoad() {
+    this.isVideoLoaded = true;
+  }
+
+  onVideoError() {
+    this.isVideoLoaded = false;
   }
 
   ngOnChanges(changes: SimpleChanges) {
