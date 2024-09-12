@@ -10,29 +10,12 @@
     }"
   >
     <!-- Fallback image is displayed before the video is loaded -->
-    <img
-      *ngIf="!isVideoLoaded"
-      [src]="
-        environmentBaseUrl +
-        '/media/thumbnails/' +
-        currentMovie[0]?.id +
-        '/' +
-        currentMovie[0]?.file_name +
-        '_1080p.jpg'
-      "
-      class="fallback-image"
-    />
+    <img *ngIf="!isVideoLoaded" [src]="thumbnailUrl" class="fallback-image" />
     <video
       #videoElement
-      *ngIf="currentMovie[0]?.file_name"
-      [src]="
-        environmentBaseUrl +
-        '/media/thumbnails/' +
-        currentMovie[0]?.id +
-        '/' +
-        currentMovie[0]?.file_name +
-        '_video-thumbnail.mp4'
-      "
+      *ngIf="currentMovie[0].id"
+      [src]="videoUrl"
+      poster="{{ thumbnailUrl }}"
       autoplay
       muted
       loop
@@ -40,19 +23,7 @@
       class="video-banner"
       (canplay)="onVideoLoad()"
       (error)="onVideoError()"
-    >
-      <img
-        [src]="
-          environmentBaseUrl +
-          '/media/thumbnails/' +
-          currentMovie[0]?.id +
-          '/' +
-          currentMovie[0]?.file_name +
-          '_1080p.jpg'
-        "
-        alt="Fallback image"
-      />
-    </video>
+    ></video>
   </div>
 
   @if (currentMovie.length > 0) {
@@ -83,15 +54,7 @@
         [imgPath]="'play'"
         [imgReverse]="true"
         [disabled]="!isAnyResolutionUploaded()"
-        (click)="
-          playMovieId(
-            environmentBaseUrl +
-              '/media/videos/' +
-              currentMovie[0]?.id +
-              '/' +
-              currentMovie[0]?.file_name
-          )
-        "
+        (click)="playMovieId(playUrl)"
       ></app-btn-large>
       <div class="favorite-img" (click)="toggleLikeMovie(currentMovie[0].id)">
         @if(checkLikeMovies(currentMovie[0].id)) {

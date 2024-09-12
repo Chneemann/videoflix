@@ -36,6 +36,9 @@ export class HeroBannerComponent implements OnChanges {
   @Output() favoriteMovieChange = new EventEmitter<any[]>();
 
   isVideoLoaded: boolean = false;
+  videoUrl: string = '';
+  thumbnailUrl: string = '';
+  playUrl: string = '';
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
     '320': true,
@@ -59,6 +62,12 @@ export class HeroBannerComponent implements OnChanges {
     this.isVideoLoaded = false;
   }
 
+  getVideoUrls() {
+    this.playUrl = `${this.environmentBaseUrl}/media/videos/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}`;
+    this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}_video-thumbnail.mp4`;
+    this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}_1080p.jpg`;
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentMovie'] && this.currentMovie.length > 0) {
       const movieId = this.currentMovie[0]?.id;
@@ -70,6 +79,7 @@ export class HeroBannerComponent implements OnChanges {
             this.movieIsUploadedChange.emit(this.movieIsUploaded);
           });
         setTimeout(() => this.videoSpeed(), 0);
+        this.getVideoUrls();
       }
     }
   }
