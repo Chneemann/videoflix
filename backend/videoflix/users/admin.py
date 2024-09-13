@@ -14,6 +14,7 @@ class CustomUserAdmin(UserAdmin):
       {
         'fields': (
           'liked_videos',
+          'watched_videos',
           'verify_email_token',
           )
        }

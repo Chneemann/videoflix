@@ -6,8 +6,9 @@ from content.models import Video
 
 class CustomUser(AbstractUser):
     verify_email_token = models.CharField(max_length=20, blank=True, null=True)
-    liked_videos = models.ManyToManyField(Video, blank=True)
-
+    liked_videos = models.ManyToManyField(Video, related_name='liked_by_users', blank=True)
+    watched_videos = models.ManyToManyField(Video, related_name='watched_by_users', blank=True)
+    
     def save(self, *args, **kwargs):
         if not self.verify_email_token:
             self.verify_email_token = self.generate_verification_token()
