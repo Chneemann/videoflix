@@ -11,3 +11,8 @@ class LikedVideosSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['liked_videos']
+        
+class WatchedVideosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['watched_videos']

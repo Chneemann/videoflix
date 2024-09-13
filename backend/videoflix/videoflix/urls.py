@@ -44,6 +44,7 @@ urlpatterns = [
     path('users/', user_views.user_list, name='user_list'),
     path('users/<int:id>/', user_views.user_detail, name='user_detail'),
     path('users/liked/<int:id>/', user_views.user_liked_detail, name='user_liked_detail'),
+    path('users/watched/<int:id>/', user_views.user_liked_detail, name='user_liked_detail'),
 
     # Authentication URLs
     path('auth/', AuthView.as_view(), name='auth_view'),
