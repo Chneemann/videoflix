@@ -20,6 +20,7 @@ export class CategoriesComponent implements AfterViewInit {
   @Input() movies: any[] = [];
   @Input() currentMovie: number = 0;
   @Input() favoriteMovies: any[] = [];
+  @Input() watchedMovies: any[] = [];
   @Output() currentMovieId = new EventEmitter<number>();
 
   environmentBaseUrl: string = environment.baseUrl;

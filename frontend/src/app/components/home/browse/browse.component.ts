@@ -28,6 +28,7 @@ export class BrowseComponent implements OnInit {
   @ViewChild(VideoPlayerComponent) videoPlayer!: VideoPlayerComponent;
   movies: any[] = [];
   favoriteMovies: number[] = [];
+  watchedMovies: number[] = [];
   currentMovie: any[] = [];
   playMovie: string = '';
   isLoading: boolean = true;
@@ -46,17 +47,18 @@ export class BrowseComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.loadLikedMovies();
+    this.loadLikedAndWatchedMovies();
     await this.loadAllMovies();
     if (this.checkScreenWidth()) {
       this.currentMovie.length === 0 ? this.loadRandomMovie() : null;
     }
   }
 
-  async loadLikedMovies() {
+  async loadLikedAndWatchedMovies() {
     try {
-      const likedMovies = await this.userService.getLikedMovies();
-      this.favoriteMovies = likedMovies.liked_videos;
+      const userData = await this.userService.getLikedAndWatchedMovies();
+      this.favoriteMovies = userData.liked_videos;
+      this.watchedMovies = userData.watched_videos;
     } catch (error) {
       console.error(error);
     }

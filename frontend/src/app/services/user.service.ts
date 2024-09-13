@@ -11,7 +11,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  async getLikedMovies(): Promise<any> {
+  async getLikedAndWatchedMovies(): Promise<any> {
     const url = environment.baseUrl + `/users/${this.currentUserId}/`;
     const headers = this.getAuthHeaders();
     return lastValueFrom(this.http.get(url, { headers }));

@@ -4,7 +4,7 @@ from .models import CustomUser
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = CustomUser
-    fields = ["id", "username", "email", "liked_videos"]
+    fields = ["id", "username", "email", "liked_videos", "watched_videos"]
     
 
 class LikedVideosSerializer(serializers.ModelSerializer):

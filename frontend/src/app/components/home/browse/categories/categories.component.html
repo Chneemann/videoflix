@@ -46,7 +46,6 @@
       </div>
     </div>
   </div>
-
   <!-- Genre columns -->
   @for (filmGenre of filmGenres; track filmGenre) {
   <!-- Movie available in genre -->
@@ -56,12 +55,20 @@
     <div class="movies">
       <!-- Load movies -->
       @for (movie of allMovies(filmGenre.code); track movie) {
+
       <div class="movie" (click)="openCurrentMovie(movie.id)">
-        <img
-          [ngClass]="{ selected: movie.id === currentMovie }"
-          [src]="getThumbnailUrl(movie.id, movie.file_name)"
-          alt=""
-        />
+        <div class="banner">
+          <img
+            [ngClass]="{ selected: movie.id === currentMovie }"
+            [src]="getThumbnailUrl(movie.id, movie.file_name)"
+            alt=""
+          />
+        </div>
+        @if (watchedMovies.includes(movie.id)) {
+        <div class="watched">
+          <img src="./../../../../../assets/img/open-eye.svg" alt="" />
+        </div>
+        }
       </div>
       }
       <!-- Buttons for scrolling -->

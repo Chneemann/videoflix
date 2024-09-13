@@ -19,18 +19,34 @@ section {
 // Movies
 
 .movie {
+  position: relative;
   width: 213px;
   height: 120px;
   padding: 6px;
-  img {
-    width: 213px;
-    height: 120px;
-    transition: scale 300ms ease-in-out;
-    border: 2px solid rgba($black, 0);
-    cursor: pointer;
-    &:hover {
-      scale: 1.02;
-      border: 2px solid $blue;
+  .banner {
+    img {
+      width: 213px;
+      height: 120px;
+      transition: scale 300ms ease-in-out;
+      border: 2px solid rgba($black, 0);
+      cursor: pointer;
+      &:hover {
+        scale: 1.02;
+        border: 2px solid $blue;
+      }
+    }
+  }
+  .watched {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 2;
+    img {
+      width: 24px;
+      height: auto;
+      filter: brightness(0) saturate(100%) invert(100%) sepia(28%) saturate(1%)
+        hue-rotate(288deg) brightness(101%) contrast(101%)
+        drop-shadow(0 0 5px rgba(38, 143, 255, 1));
     }
   }
 }
