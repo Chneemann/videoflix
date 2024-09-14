@@ -89,3 +89,59 @@ class UserTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+class UserVideosAPITest(TestCase):
+    def setUp(self):
+        """
+        Initializes the APIClient and creates test users. Authenticates a user for the tests.
+        """
+        self.user = CustomUser.objects.create_user(
+            username='testuser',
+            password='testpassword'
+        )
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+        self.user_liked_url = reverse('user_liked_detail', kwargs={'id': self.user.id})
+        self.user_watched_url = reverse('user_watched_detail', kwargs={'id': self.user.id})
+
+    def test_user_liked_detail_invalid_data(self):
+        """
+        Test for invalid data
+        """
+        data = {
+            'liked_videos': 'invalid_data_format'
+        }
+        response = self.client.put(self.user_liked_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_user_liked_detail_user_not_found(self):
+        """
+        Test if user does not exist
+        """
+        wrong_url = reverse('user_liked_detail', kwargs={'id': 9999})
+        data = {
+            'liked_videos': ['video1', 'video2']
+        }
+        response = self.client.put(wrong_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_user_watched_detail_invalid_data(self):
+        """
+        Test for invalid data
+        """
+        data = {
+            'watched_videos': 'invalid_data_format'
+        }
+        response = self.client.put(self.user_watched_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_user_watched_detail_user_not_found(self):
+        """
+        Test if user does not exist
+        """
+        wrong_url = reverse('user_watched_detail', kwargs={'id': 9999}) 
+        data = {
+            'watched_videos': ['video3', 'video4']
+        }
+        response = self.client.put(wrong_url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
