@@ -27,6 +27,7 @@ export class HeroBannerComponent implements OnChanges {
   @Input() currentMovie: any[] = [];
   @Input() screenWidth: boolean = false;
   @Input() favoriteMovies: any[] = [];
+  @Input() watchedMovies: any[] = [];
   @Output() playMovie = new EventEmitter<string>();
   @Output() movieIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;
@@ -100,6 +101,22 @@ export class HeroBannerComponent implements OnChanges {
     this.favoriteMovieChange.emit(this.favoriteMovies);
   }
 
+  toggleWatchedMovie(movieId: number): void {
+    if (this.watchedMovies.includes(movieId)) {
+      this.watchedMovies = this.watchedMovies.filter((id) => id !== movieId);
+    } else {
+      this.watchedMovies.push(movieId);
+    }
+    this.updateWatchedMovies();
+  }
+
+  updateWatchedMovies() {
+    const body = {
+      watched_videos: this.watchedMovies,
+    };
+    this.userService.updateWatchedMovies(body);
+  }
+
   checkLikeMovies(videoId: number) {
     return this.favoriteMovies.includes(videoId);
   }
@@ -120,7 +137,8 @@ export class HeroBannerComponent implements OnChanges {
     this.moviesChange.emit(newMovies);
   }
 
-  playMovieId(videoPath: string) {
+  playMovieId(videoPath: string, videoId: number) {
     this.playMovie.emit(videoPath);
+    this.toggleWatchedMovie(videoId);
   }
 }

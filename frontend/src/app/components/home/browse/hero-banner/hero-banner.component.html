@@ -54,7 +54,7 @@
         [imgPath]="'play'"
         [imgReverse]="true"
         [disabled]="!isAnyResolutionUploaded()"
-        (click)="playMovieId(playUrl)"
+        (click)="playMovieId(playUrl, currentMovie[0].id)"
       ></app-btn-large>
       <div class="favorite-img" (click)="toggleLikeMovie(currentMovie[0].id)">
         @if(checkLikeMovies(currentMovie[0].id)) {

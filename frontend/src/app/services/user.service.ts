@@ -23,6 +23,12 @@ export class UserService {
     return lastValueFrom(this.http.put(url, likedMovies, { headers }));
   }
 
+  updateWatchedMovies(watchedMovies: any) {
+    const url = `${environment.baseUrl}/users/watched/${this.currentUserId}/`;
+    const headers = this.getAuthHeaders();
+    return lastValueFrom(this.http.put(url, watchedMovies, { headers }));
+  }
+
   private getAuthHeaders(): HttpHeaders {
     let authToken = localStorage.getItem('authToken');
     if (!authToken) {
