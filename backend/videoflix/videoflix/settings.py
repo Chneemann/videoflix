@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from decouple import config
+import sentry_sdk
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -218,4 +219,17 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = (
     'auth.custom_backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
+)
+
+# Sentry
+
+sentry_sdk.init(
+    dsn="https://f9cac097dbb7a0d104f07d347e1bd470@o4507955559464960.ingest.de.sentry.io/4507955586138192",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
 )
