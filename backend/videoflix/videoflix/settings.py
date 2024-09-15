@@ -40,6 +40,7 @@ DEFAULT_FROM_EMAIL = 'noreply@videoflix.com'
 ALLOWED_HOSTS = [
     'videoflix-django.andre-kempf.com', 
     '45.157.177.172',
+    'v2202408206841281687.happysrv.de',
     'localhost', 
     '127.0.0.1',
 ]
