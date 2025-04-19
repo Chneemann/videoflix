@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -7,7 +6,6 @@ from .models import Video
 from django.core.cache.backends.base import DEFAULT_TIMEOUT 
 from django.views.decorators.cache import cache_page 
 from django.conf import settings
-from django.http import FileResponse, Http404
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import JsonResponse
 import os

@@ -2,7 +2,7 @@ import string
 import secrets
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from content.models import Video
+from video_app.models import Video
 
 class CustomUser(AbstractUser):
     verify_email_token = models.CharField(max_length=20, blank=True, null=True)

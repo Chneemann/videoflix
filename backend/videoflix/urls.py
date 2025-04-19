@@ -18,8 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from users import views as user_views
-from auth.views import (
+from user_app import views as user_views
+from auth_app.views import (
     LoginView,
     RegisterView,
     VerifyEmailView,
@@ -27,7 +27,7 @@ from auth.views import (
     ForgotPasswordView,
     ChangePasswordView
 )
-from content import views as content_views
+from video_app import views as video_views
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -36,9 +36,9 @@ urlpatterns = [
     path('django-rq/', include('django_rq.urls')),
     
     # Content URLs
-    path('content/', content_views.video_list, name='video_list'),
-    path('content/upload/', content_views.video_upload, name='video_upload'),
-    path('content/movie/<int:id>/', content_views.check_video_resolutions, name='check_video_resolutions'),
+    path('video/', video_views.video_list, name='video_list'),
+    path('video/upload/', video_views.video_upload, name='video_upload'),
+    path('video/movie/<int:id>/', video_views.check_video_resolutions, name='check_video_resolutions'),
  
     # Users URLs
     path('users/', user_views.user_list, name='user_list'),

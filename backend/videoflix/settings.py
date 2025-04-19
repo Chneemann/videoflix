@@ -68,8 +68,8 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'django_rq',
     'import_export',
-    'content.apps.ContentConfig',
-    'users',
+    'user_app',
+    'video_app.apps.VideoAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -203,7 +203,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Auth
 
 AUTH_EMAIL_VERIFICATION = True
-AUTH_USER_MODEL = 'users.CustomUser'
+
+AUTH_USER_MODEL = 'user_app.CustomUser'
 
 # Rest Framework
 
@@ -214,7 +215,7 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    'auth.custom_backend.EmailBackend',
+    'auth_app.custom_backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 

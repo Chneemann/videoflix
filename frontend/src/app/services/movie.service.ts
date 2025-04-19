@@ -12,7 +12,7 @@ export class MovieService {
   constructor(private http: HttpClient) {}
 
   getAllMovies(): Promise<any> {
-    const url = environment.baseUrl + '/content/';
+    const url = environment.baseUrl + '/video/';
     const headers = this.getAuthHeaders();
     return lastValueFrom(this.http.get(url, { headers }));
   }
@@ -24,7 +24,7 @@ export class MovieService {
   }
 
   uploadMovie(formData: FormData) {
-    const url = environment.baseUrl + '/content/upload/';
+    const url = environment.baseUrl + '/video/upload/';
     const headers = this.getAuthHeaders();
     return lastValueFrom(this.http.post(url, formData, { headers }));
   }
@@ -74,7 +74,7 @@ export class MovieService {
   private fetchAndCacheResolutions(
     videoID: number
   ): Observable<{ [resolution: string]: boolean }> {
-    const url = `${environment.baseUrl}/content/movie/${videoID}/`;
+    const url = `${environment.baseUrl}/video/movie/${videoID}/`;
     const headers = this.getAuthHeaders();
 
     return new Observable<{ [resolution: string]: boolean }>((observer) => {

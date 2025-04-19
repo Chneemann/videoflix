@@ -1,8 +1,6 @@
 from django.test import TestCase
 from unittest.mock import patch, MagicMock
 from .tasks import convert_video_to_hls, delete_original_video
-from django.core.files.uploadedfile import SimpleUploadedFile
-
 
 class VideoTasksTest(TestCase):
     @patch('subprocess.run')

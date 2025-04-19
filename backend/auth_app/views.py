@@ -6,11 +6,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.contrib.auth import authenticate
 from .serializer import LoginSerializer
-from users.serializer import UserSerializer
+from user_app.serializer import UserSerializer
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from users.models import CustomUser
+from user_app.models import CustomUser
 from django.db.models import Q
 
 class LoginView(APIView):
