@@ -130,31 +130,23 @@ RQ_QUEUES = {
 
 CACHE_TTL = 60 * 15
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/thumbnails')
-MEDIA_URL = '/media/'
-
 WSGI_APPLICATION = 'videoflix.wsgi.application'
 
-# Statics
+# Media
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-IMPORT_EXPORT_USE_TRANSACTIONS = True
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
+THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/thumbnails')
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'videoflix',
+        'NAME': 'videoflix_db',
         'USER': 'chneemann',
         'PASSWORD': '91&yWMr6',
         'HOST': 'localhost',
@@ -197,7 +189,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATIC_URL = 'static/'
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -210,6 +206,7 @@ AUTH_EMAIL_VERIFICATION = True
 AUTH_USER_MODEL = 'users.CustomUser'
 
 # Rest Framework
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -225,11 +222,6 @@ AUTHENTICATION_BACKENDS = (
 
 sentry_sdk.init(
     dsn="https://f9cac097dbb7a0d104f07d347e1bd470@o4507955559464960.ingest.de.sentry.io/4507955586138192",
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for tracing.
     traces_sample_rate=1.0,
-    # Set profiles_sample_rate to 1.0 to profile 100%
-    # of sampled transactions.
-    # We recommend adjusting this value in production.
     profiles_sample_rate=1.0,
 )
