@@ -1,7 +1,6 @@
-@import "./../../../../assets/style/colors.scss";
-@import "./../../../../assets/style/form.scss";
-@import "./../../../../assets/style/auth-layout.scss";
-@import "./../../../../assets/style/checkbox.scss";
+@use "./../../../../assets/style/form.scss" as *;
+@use "./../../../../assets/style/auth-layout.scss" as *;
+@use "./../../../../assets/style/checkbox.scss" as *;
 
 section {
   background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),

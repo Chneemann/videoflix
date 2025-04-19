@@ -1,4 +1,4 @@
-@import "./../../../../../assets/style/colors.scss";
+@use "./../../../../../assets/style/colors.scss" as *;
 
 .btn {
   display: flex;
@@ -32,7 +32,7 @@
   }
   &:disabled {
     background-color: lightblue;
-    color: darken(white, 10%);
+    color: color-mix(in srgb, white 90%, black 10%);
     border: 1px solid lightblue;
     cursor: default;
   }

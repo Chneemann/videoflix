@@ -7,7 +7,6 @@ import { RegisterComponent } from '../auth/register/register.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from '../auth/login/login.component';
 import { ForgotPasswordComponent } from '../auth/forgot-password/forgot-password.component';
-import { BrowseComponent } from './browse/browse.component';
 import { VerifyEmailComponent } from '../auth/verify-email/verify-email.component';
 import { ErrorToastComponent } from '../../shared/components/error-toast/error-toast.component';
 import { ErrorService } from '../../services/error.service';
@@ -24,7 +23,6 @@ import { ErrorService } from '../../services/error.service';
     LoginComponent,
     ForgotPasswordComponent,
     VerifyEmailComponent,
-    BrowseComponent,
     ErrorToastComponent,
   ],
   templateUrl: './home.component.html',
