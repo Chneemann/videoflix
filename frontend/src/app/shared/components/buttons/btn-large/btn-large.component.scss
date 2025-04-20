@@ -12,13 +12,13 @@
   transition: 300ms ease-in-out;
   cursor: pointer;
   p {
-    color: white;
+    color: $white;
     font-size: 18px;
     font-weight: 600;
     margin: 0 4px 0 0;
   }
   &:not(:disabled):hover {
-    background-color: white;
+    background-color: $white;
     border: 1px solid $pure-blue;
     p {
       transition: 300ms ease-in-out;
@@ -31,9 +31,9 @@
     }
   }
   &:disabled {
-    background-color: lightblue;
-    color: color-mix(in srgb, white 90%, black 10%);
-    border: 1px solid lightblue;
+    background-color: $dark-gray;
+    color: color-mix(in srgb, $white 90%, $black 10%);
+    border: 1px solid $dark-gray;
     cursor: default;
   }
   .icon {

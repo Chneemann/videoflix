@@ -12,7 +12,6 @@ form {
     padding: 12px 18px;
     box-sizing: border-box;
     background: transparent;
-    color: $blue;
     border: 1px solid $blue;
     border-radius: 12px;
     font-size: 18px;
@@ -21,7 +20,7 @@ form {
     transition: background-color 250ms ease-in-out, color 250ms ease-in-out,
       border-color 250ms ease-in-out;
     &::placeholder {
-      color: rgba($blue, 0.6);
+      color: rgba($white, 0.6);
     }
     &:focus {
       outline: none;

@@ -10,8 +10,8 @@ section {
   bottom: 0;
   left: 0;
   right: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   text-align: center;
   background-size: cover;
   background-position: center;
@@ -21,20 +21,18 @@ section {
 .content {
   width: 520px;
   height: fit-content;
-  padding: 43px 56px;
+  padding: 32px;
   border-radius: 48px;
-  background-color: $white;
+  background-color: rgba(30, 28, 33, 0.85);
   .headline {
     font-size: 48px;
     font-weight: 700;
-    color: $blue;
     margin-bottom: 24px;
   }
 }
 
 .note {
   p {
-    color: $black;
     font-size: 18px;
     font-weight: 400;
     margin: 36px 0 24px 0;
@@ -42,7 +40,6 @@ section {
   a {
     font-size: 18px;
     font-weight: 700;
-    color: $blue;
     text-decoration: none;
     cursor: pointer;
     &:hover {
@@ -55,7 +52,7 @@ section {
 
 @media screen and (max-width: 660px) {
   .content {
-    padding: 43px 24px;
+    padding: 28px;
     .headline {
       font-size: 36px;
     }
@@ -70,6 +67,6 @@ section {
 
 @media screen and (max-width: 400px) {
   .content {
-    padding: 24px 18px;
+    padding: 24px;
   }
 }

@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  @Input() browse: boolean = false;
+  @Input() showFullLogo: boolean = true;
   @Output() moviesChange = new EventEmitter<any[]>();
 
   constructor(private router: Router) {}

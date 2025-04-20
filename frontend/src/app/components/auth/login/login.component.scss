@@ -4,7 +4,7 @@
 @use "./../../../../assets/style/checkbox.scss" as *;
 
 section {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url(./../../../../assets/img/backgrounds/login.png);
 }
 
@@ -24,7 +24,6 @@ section {
   a {
     font-size: 18px;
     font-weight: 700;
-    color: $blue;
     text-decoration: none;
     cursor: pointer;
     &:hover {
@@ -38,8 +37,7 @@ section {
     gap: 24px;
     p {
       font-size: 18px;
-      font-weight: 700;
-      color: $black;
+      font-weight: 400;
     }
   }
 }

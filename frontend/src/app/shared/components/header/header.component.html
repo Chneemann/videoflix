@@ -1,5 +1,15 @@
 <header>
-  @if (browse) {
+  @if (showFullLogo) {
+  <div class="logo-full" routerLink="/">
+    <img src="./../../../../assets/img/logo_full.svg" alt="" />
+  </div>
+  <div class="logo-mobile" routerLink="/">
+    <img src="./../../../../assets/img/logo_ci.svg" alt="" />
+  </div>
+  <div class="btn">
+    <app-btn-large [value]="'Log in'" routerLink="/login"></app-btn-large>
+  </div>
+  } @else {
   <div class="logo" (click)="backToOverview([])">
     <img src="./../../../../assets/img/logo_ci.svg" alt="" />
   </div>
@@ -9,16 +19,6 @@
       [imgPath]="'logout'"
       (click)="logout()"
     ></app-btn-large>
-  </div>
-  } @else {
-  <div class="logo-full" routerLink="/">
-    <img src="./../../../../assets/img/logo_full.svg" alt="" />
-  </div>
-  <div class="logo-mobile" routerLink="/">
-    <img src="./../../../../assets/img/logo_ci.svg" alt="" />
-  </div>
-  <div class="btn">
-    <app-btn-large [value]="'Log in'" routerLink="/login"></app-btn-large>
   </div>
   }
 </header>
