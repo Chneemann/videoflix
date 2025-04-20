@@ -16,22 +16,25 @@
       onsubmit="return false"
       (input)="this.errorService.clearError()"
     >
-      <input
-        type="mail"
-        id="mail"
-        name="mail"
-        #mail="ngModel"
-        placeholder="Email Address"
-        autocomplete="email"
-        [(ngModel)]="authData.mail"
-        [class.error-border]="
-          (!mail.valid && mail.touched) ||
-          (mail.touched &&
-            !isUserEmailValid(authData.mail.toLowerCase()) &&
-            authData.mail.length > 0)
-        "
-        required
-      />
+      <div class="mail-field">
+        <input
+          type="mail"
+          id="mail"
+          name="mail"
+          #mail="ngModel"
+          placeholder="Email Address"
+          autocomplete="email"
+          [(ngModel)]="authData.mail"
+          [class.error-border]="
+            (!mail.valid && mail.touched) ||
+            (mail.touched &&
+              !isUserEmailValid(authData.mail.toLowerCase()) &&
+              authData.mail.length > 0)
+          "
+          required
+        />
+        <img class="mail-icon" src="./assets/img/mail.svg" />
+      </div>
       <div class="error-msg">
         @if (!mail.valid && mail.touched) {
         <p>Please enter your email</p>
@@ -56,8 +59,9 @@
           "
           required
         />
+        <img class="password-icon" src="./assets/img/password.svg" />
         <img
-          class="passwordEye"
+          class="password-eye"
           (click)="authService.togglePasswordVisibility()"
           [src]="authService.passwordIcon"
         />
@@ -88,8 +92,9 @@
           "
           required
         />
+        <img class="password-icon" src="./assets/img/password.svg" />
         <img
-          class="passwordEye"
+          class="password-eye"
           (click)="authService.togglePasswordVisibility()"
           [src]="authService.passwordIcon"
         />

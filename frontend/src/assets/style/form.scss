@@ -62,12 +62,19 @@ form {
 
 // Show / Hide Password
 
-.password-field {
+.password-field,
+.mail-field {
   position: relative;
   width: 100%;
+
+  input,
+  textarea,
+  select {
+    padding-left: 60px;
+  }
 }
 
-.passwordEye {
+.password-eye {
   position: absolute;
   right: 48px;
   top: 50%;
@@ -75,6 +82,18 @@ form {
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(16%) sepia(77%) saturate(7494%)
     hue-rotate(241deg) brightness(93%) contrast(88%);
+}
+
+// Icons
+
+.mail-icon,
+.password-icon {
+  position: absolute;
+  left: 44px;
+  top: 50%;
+  width: 28px;
+  height: auto;
+  transform: translateY(-50%);
 }
 
 /*------------- RESPONSIVE -------------*/
