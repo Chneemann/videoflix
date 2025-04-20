@@ -32,7 +32,6 @@ export class BrowseComponent implements OnInit {
   currentMovie: any[] = [];
   playMovie: string = '';
   isLoading: boolean = true;
-  isWideScreen: boolean = false;
   uploadMovieOverview: boolean = false;
   currentResolution: '360p' | '720p' | '1080p' = '720p';
   movieIsUploaded: { [resolution: string]: boolean } = {
@@ -49,7 +48,7 @@ export class BrowseComponent implements OnInit {
   async ngOnInit() {
     this.loadLikedAndWatchedMovies();
     await this.loadAllMovies();
-    if (this.checkScreenWidth()) {
+    if (this.isWideScreen()) {
       this.currentMovie.length === 0 ? this.loadRandomMovie() : null;
     }
   }
@@ -79,15 +78,15 @@ export class BrowseComponent implements OnInit {
   }
 
   onMoviesChange(updatedMovies: any[]) {
-    if (this.checkScreenWidth()) {
+    if (this.isWideScreen()) {
       this.loadRandomMovie();
     } else {
       this.currentMovie = updatedMovies;
     }
   }
 
-  checkScreenWidth() {
-    return (this.isWideScreen = window.innerWidth > 600);
+  isWideScreen() {
+    return window.innerWidth > 600;
   }
 
   onMovieIsUploadedChange(newStatus: { [resolution: string]: boolean }) {

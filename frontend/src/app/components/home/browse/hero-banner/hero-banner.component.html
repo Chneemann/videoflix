@@ -1,12 +1,12 @@
 <section
   [ngClass]="{
-    fullVh: !screenWidth
+    fullVh: !isWideScreen
   }"
 >
   <div
     class="movie-banner"
     [ngClass]="{
-      fullVhBanner: !screenWidth
+      fullVhBanner: !isWideScreen
     }"
   >
     <!-- Fallback image is displayed before the video is loaded -->
@@ -30,21 +30,21 @@
   <div
     class="content"
     [ngClass]="{
-      fullVhContent: !screenWidth
+      fullVhContent: !isWideScreen
     }"
   >
     <div class="title">{{ currentMovie[0].title }}</div>
     <div
       class="description hide-scrollbar"
       [ngClass]="{
-        fullVhDescription: !screenWidth
+        fullVhDescription: !isWideScreen
       }"
     >
       {{ currentMovie[0].description }}
     </div>
     <div class="buttons">
       <app-btn-small
-        *ngIf="!screenWidth"
+        *ngIf="!isWideScreen"
         [imgPath]="'back'"
         [imgRadius]="'24px'"
         (click)="backToCategory([])"

@@ -1,8 +1,8 @@
 @use "./../../../../assets/style/colors.scss" as *;
 
 section {
-  height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  width: 100dvw;
   background-color: $black;
   overflow: hidden;
 }

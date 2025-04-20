@@ -11,9 +11,9 @@
   <app-hero-banner
     *ngIf="
       currentMovie.length === 1 ||
-      (this.checkScreenWidth() && currentMovie.length > 1)
+      (this.isWideScreen() && currentMovie.length > 1)
     "
-    [screenWidth]="checkScreenWidth()"
+    [isWideScreen]="isWideScreen()"
     [currentMovie]="currentMovie"
     [favoriteMovies]="favoriteMovies"
     [watchedMovies]="watchedMovies"
@@ -24,12 +24,11 @@
     (favoriteMovieChange)="onFavoriteMovieChange($event)"
   ></app-hero-banner>
   <!-- Spacer -->
-  <div *ngIf="!this.checkScreenWidth()" class="spacer"></div>
+  <div *ngIf="!this.isWideScreen()" class="spacer"></div>
   <!-- Movie Categories -->
   <app-categories
     *ngIf="
-      this.checkScreenWidth() ||
-      (!this.checkScreenWidth() && currentMovie.length === 0)
+      this.isWideScreen() || (!this.isWideScreen() && currentMovie.length === 0)
     "
     [movies]="movies"
     [currentMovie]="currentMovie[0]?.id"

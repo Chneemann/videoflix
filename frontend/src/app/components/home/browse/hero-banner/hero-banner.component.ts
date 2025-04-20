@@ -25,7 +25,7 @@ import { UserService } from '../../../../services/user.service';
 export class HeroBannerComponent implements OnChanges {
   @ViewChild('videoElement') videoElementRef!: ElementRef<HTMLVideoElement>;
   @Input() currentMovie: any[] = [];
-  @Input() screenWidth: boolean = false;
+  @Input() isWideScreen: boolean = false;
   @Input() favoriteMovies: any[] = [];
   @Input() watchedMovies: any[] = [];
   @Output() playMovie = new EventEmitter<string>();

@@ -1,0 +1,33 @@
+<div class="movies">
+  <!-- List of movies -->
+  @for (movie of movies; track movie) {
+  <div class="movie" (click)="openCurrentMovie(movie.id)">
+    <div class="banner">
+      <img
+        [ngClass]="{ selected: movie.id === currentMovie }"
+        [src]="getThumbnailUrl(movie.id, movie.file_name)"
+        alt=""
+      />
+    </div>
+    <div *ngIf="watchedMovies.includes(movie.id)" class="watched">
+      <img src="./../../../../../assets/img/open-eye.svg" alt="" />
+    </div>
+  </div>
+  }
+
+  <!-- Scroll buttons -->
+  <div class="scroll-buttons">
+    <img
+      class="scroll-left"
+      (click)="scrollLeft($event)"
+      src="./../../../../../assets/img/arrow_back.svg"
+      alt=""
+    />
+    <img
+      class="scroll-right"
+      (click)="scrollRight($event)"
+      src="./../../../../../assets/img/arrow_forward.svg"
+      alt=""
+    />
+  </div>
+</div>

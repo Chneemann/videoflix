@@ -1,82 +1,44 @@
-<section *ngIf="movies.length > 0" class="hide-scrollbar">
-  <!-- New movies added this week (starts on Mondays) -->
-  <div *ngIf="recentMovies().length > 0" class="category">
+@if (movies.length > 0) {
+<section class="hide-scrollbar">
+  <!--  New movies this week -->
+  @if (recentMovies().length > 0) {
+  <div class="category">
     <p>New movies added this week</p>
-    <div class="movies">
-      <!-- Load movies -->
-      @for (movie of recentMovies(); track movie) {
-      <div class="movie" (click)="openCurrentMovie(movie.id)">
-        <img
-          [ngClass]="{ selected: movie.id === currentMovie }"
-          [src]="getThumbnailUrl(movie.id, movie.file_name)"
-          alt=""
-        />
-      </div>
-      }
-      <!-- Buttons for scrolling -->
-      <div class="scroll-buttons">
-        <button class="scroll-left" (click)="scrollLeft($event)"></button>
-        <button class="scroll-right" (click)="scrollRight($event)"></button>
-      </div>
-    </div>
+    <app-movie-list
+      [movies]="recentMovies()"
+      [currentMovie]="currentMovie"
+      [watchedMovies]="watchedMovies"
+      (currentMovieId)="openCurrentMovie($event)"
+    ></app-movie-list>
   </div>
+  }
 
-  <!-- Column for favorites -->
-  <div *ngIf="favoriteMovies.length > 0" class="category">
+  <!-- Favorites -->
+  @if (favoriteMovies.length > 0) {
+  <div class="category">
     <p>Favorites</p>
-    <div class="movies">
-      <!-- Load movies -->
-      @for (favorite of favoriteMovies; track favorite) {
-      <!-- Filter movies -->
-      @for (movie of movies; track movie) {
-      <!-- If movie favorite -->
-      @if (movie.id === favorite) {
-      <div class="movie" (click)="openCurrentMovie(movie.id)">
-        <img
-          [ngClass]="{ selected: movie.id === currentMovie }"
-          [src]="getThumbnailUrl(movie.id, movie.file_name)"
-          alt=""
-        />
-      </div>
-      } } }
-      <!-- Buttons for scrolling -->
-      <div class="scroll-buttons">
-        <button class="scroll-left" (click)="scrollLeft($event)"></button>
-        <button class="scroll-right" (click)="scrollRight($event)"></button>
-      </div>
-    </div>
+    <app-movie-list
+      [movies]="getFavoriteMovies()"
+      [currentMovie]="currentMovie"
+      [watchedMovies]="watchedMovies"
+      (currentMovieId)="openCurrentMovie($event)"
+    ></app-movie-list>
   </div>
+  }
+
   <!-- Genre columns -->
   @for (filmGenre of filmGenres; track filmGenre) {
-  <!-- Movie available in genre -->
+  <!-- Movies by genre -->
   @if (allMovies(filmGenre.code).length > 0) {
   <div class="category">
     <p>{{ filmGenre.name }}</p>
-    <div class="movies">
-      <!-- Load movies -->
-      @for (movie of allMovies(filmGenre.code); track movie) {
-
-      <div class="movie" (click)="openCurrentMovie(movie.id)">
-        <div class="banner">
-          <img
-            [ngClass]="{ selected: movie.id === currentMovie }"
-            [src]="getThumbnailUrl(movie.id, movie.file_name)"
-            alt=""
-          />
-        </div>
-        @if (watchedMovies.includes(movie.id)) {
-        <div class="watched">
-          <img src="./../../../../../assets/img/open-eye.svg" alt="" />
-        </div>
-        }
-      </div>
-      }
-      <!-- Buttons for scrolling -->
-      <div class="scroll-buttons">
-        <button class="scroll-left" (click)="scrollLeft($event)"></button>
-        <button class="scroll-right" (click)="scrollRight($event)"></button>
-      </div>
-    </div>
+    <app-movie-list
+      [movies]="allMovies(filmGenre.code)"
+      [currentMovie]="currentMovie"
+      [watchedMovies]="watchedMovies"
+      (currentMovieId)="openCurrentMovie($event)"
+    ></app-movie-list>
   </div>
   } }
 </section>
+}

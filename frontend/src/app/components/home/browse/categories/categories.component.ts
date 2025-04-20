@@ -8,11 +8,12 @@ import {
   Output,
 } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
+import { MoviesListComponent } from './movie-list/movie-list.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MoviesListComponent],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
@@ -46,6 +47,12 @@ export class CategoriesComponent implements AfterViewInit {
     { code: 'war', name: 'War' },
     { code: 'western', name: 'Western' },
   ];
+
+  getFavoriteMovies() {
+    return this.movies.filter((movie) =>
+      this.favoriteMovies.includes(movie.id)
+    );
+  }
 
   ngAfterViewInit() {
     this.checkScroll();
