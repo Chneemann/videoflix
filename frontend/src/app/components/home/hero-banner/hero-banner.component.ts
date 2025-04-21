@@ -9,11 +9,11 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
-import { MovieService } from '../../../../services/movie.service';
-import { environment } from '../../../../../environments/environment';
-import { BtnSmallComponent } from '../../../../shared/components/buttons/btn-small/btn-small.component';
-import { UserService } from '../../../../services/user.service';
+import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
+import { MovieService } from '../../../services/movie.service';
+import { environment } from '../../../../environments/environment';
+import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-hero-banner',

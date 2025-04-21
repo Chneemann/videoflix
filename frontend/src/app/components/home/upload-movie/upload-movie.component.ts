@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ErrorService } from '../../../../services/error.service';
-import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
-import { MovieService } from '../../../../services/movie.service';
-import { LoadingDialogComponent } from '../../../../shared/components/loading-dialog/loading-dialog.component';
+import { ErrorService } from '../../../services/error.service';
+import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
+import { MovieService } from '../../../services/movie.service';
+import { LoadingDialogComponent } from '../../../shared/components/loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-upload-movie',

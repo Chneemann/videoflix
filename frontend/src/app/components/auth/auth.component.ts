@@ -1,56 +1,44 @@
-import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { BtnLargeComponent } from '../../shared/components/buttons/btn-large/btn-large.component';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { HeaderComponent } from '../../shared/components/header/header.component';
+import { FooterComponent } from '../../shared/components/footer/footer.component';
+import { ActivatedRoute } from '@angular/router';
+import { RegisterComponent } from '../auth/register/register.component';
 import { CommonModule } from '@angular/common';
+import { LoginComponent } from '../auth/login/login.component';
+import { ForgotPasswordComponent } from '../auth/forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from '../auth/verify-email/verify-email.component';
+import { ErrorToastComponent } from '../../shared/components/error-toast/error-toast.component';
 import { ErrorService } from '../../services/error.service';
-import { AuthService } from '../../services/auth.service';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, BtnLargeComponent, FormsModule],
+  imports: [
+    CommonModule,
+    HeaderComponent,
+    FooterComponent,
+    LandingPageComponent,
+    RegisterComponent,
+    LoginComponent,
+    ForgotPasswordComponent,
+    VerifyEmailComponent,
+    ErrorToastComponent,
+  ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
-export class AuthComponent {
-  authData = {
-    mail: '',
-    send: false,
-  };
+export class AuthComponent implements OnInit {
+  currentRoute: any;
 
   constructor(
-    private router: Router,
-    public errorService: ErrorService,
-    private authService: AuthService
+    private route: ActivatedRoute,
+    public errorService: ErrorService
   ) {}
 
-  isUserEmailValid(emailValue: string) {
-    const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(emailValue);
-  }
-
-  async onSubmit(ngForm: NgForm, mailInput: any) {
-    if (ngForm.submitted && ngForm.form.valid) {
-      await this.checkDuplicatesEmail();
-    } else {
-      mailInput.control.markAsTouched();
-    }
-  }
-
-  async checkDuplicatesEmail() {
-    const body = {
-      email: this.authData.mail,
-    };
-    try {
-      this.authData.send = true;
-      await this.authService.checkAuthUserMail(body);
-      const queryParams = { mail: this.authData.mail };
-      this.router.navigate(['/register'], { queryParams });
-      this.errorService.clearError();
-    } catch (error) {
-      this.authData.send = false;
-      this.errorService.handleError(error);
-    }
+  ngOnInit(): void {
+    this.route.url.subscribe((url) => {
+      this.currentRoute = url[0]?.path || '';
+    });
   }
 }

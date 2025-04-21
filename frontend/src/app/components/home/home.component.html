@@ -1,12 +1,118 @@
-<section class="bg-home">
-  <app-header></app-header>
-  <app-auth *ngIf="currentRoute === ''"></app-auth>
-  <app-login *ngIf="currentRoute === 'login'"></app-login>
-  <app-register *ngIf="currentRoute === 'register'"></app-register>
-  <app-forgot-password
-    *ngIf="currentRoute === 'forgot-password'"
-  ></app-forgot-password>
-  <app-verify-email *ngIf="currentRoute === 'verify-email'"></app-verify-email>
-  <app-footer></app-footer>
-  <app-error-toast *ngIf="errorService.displayError"></app-error-toast>
+<section>
+  <div *ngIf="isLoading"></div>
+  @if (!isLoading && movies.length > 0) {
+  <!-- If at least one film has been uploaded -->
+  @if (playMovie === "") {
+  <app-header
+    (moviesChange)="onMoviesChange($event)"
+    [showFullLogo]="false"
+  ></app-header>
+  <!-- Hero Banner -->
+  <app-hero-banner
+    *ngIf="
+      currentMovie.length === 1 ||
+      (this.isWideScreen() && currentMovie.length > 1)
+    "
+    [isWideScreen]="isWideScreen()"
+    [currentMovie]="currentMovie"
+    [favoriteMovies]="favoriteMovies"
+    [watchedMovies]="watchedMovies"
+    (playMovie)="playVideo($event)"
+    (movieIsUploadedChange)="onMovieIsUploadedChange($event)"
+    (moviesChange)="onMoviesChange($event)"
+    (refreshChange)="onRefreshPage($event)"
+    (favoriteMovieChange)="onFavoriteMovieChange($event)"
+  ></app-hero-banner>
+  <!-- Spacer -->
+  <div *ngIf="!this.isWideScreen()" class="spacer"></div>
+  <!-- Movie Categories -->
+  <app-categories
+    *ngIf="
+      this.isWideScreen() || (!this.isWideScreen() && currentMovie.length === 0)
+    "
+    [movies]="movies"
+    [currentMovie]="currentMovie[0]?.id"
+    [favoriteMovies]="favoriteMovies"
+    [watchedMovies]="watchedMovies"
+    (currentMovieId)="currentMovieId($event)"
+  ></app-categories>
+  } @else {
+  <div class="video-overlay">
+    <div class="video-header">
+      <div class="back-button" (click)="closeVideo()">
+        <img src="./../../../../assets/img/back.svg" alt="Back" />
+      </div>
+      <div class="center">
+        <div class="resolution-controls">
+          <button
+            [ngClass]="{
+              'resolution-btn': true,
+              active: currentResolution === '360p',
+              'not-available': !movieIsUploaded['360']
+            }"
+            [disabled]="!movieIsUploaded['360'] || currentResolution === '360p'"
+            (click)="changeResolution('360p')"
+          >
+            360p
+          </button>
+          <button
+            [ngClass]="{
+              'resolution-btn': true,
+              active: currentResolution === '720p',
+              'not-available': !movieIsUploaded['720']
+            }"
+            [disabled]="!movieIsUploaded['720'] || currentResolution === '720p'"
+            (click)="changeResolution('720p')"
+          >
+            720p
+          </button>
+          <button
+            [ngClass]="{
+              'resolution-btn': true,
+              active: currentResolution === '1080p',
+              'not-available': !movieIsUploaded['1080']
+            }"
+            [disabled]="
+              !movieIsUploaded['1080'] || currentResolution === '1080p'
+            "
+            (click)="changeResolution('1080p')"
+          >
+            1080p
+          </button>
+        </div>
+        <p
+          *ngIf="
+            !movieIsUploaded['360'] ||
+            !movieIsUploaded['720'] ||
+            !movieIsUploaded['1080']
+          "
+        >
+          (If a button cannot be selected, the video will be converted, which
+          may take a few seconds.)
+        </p>
+      </div>
+      <div class="logo">
+        <img src="./../../../../assets/img/logo_ci.svg" alt="Logo" />
+      </div>
+    </div>
+    <app-video-player [playMovie]="playMovie"></app-video-player>
+  </div>
+  } } @if (!isLoading && movies.length === 0) {
+  <!-- If the database is empty -->
+  <app-header [showFullLogo]="false"></app-header>
+  <div class="error">
+    <h2>Unfortunately there are no films available in the database.</h2>
+  </div>
+  }
+  <div class="add-button">
+    <app-btn-small
+      [imgPath]="'add'"
+      (click)="toggleUploadMovieOverview(true)"
+    ></app-btn-small>
+  </div>
 </section>
+@if (uploadMovieOverview) {
+<app-upload-movie
+  (toggleUploadMovieOverview)="toggleUploadMovieOverview($event)"
+></app-upload-movie>
+}

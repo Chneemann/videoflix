@@ -7,7 +7,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { MoviesListComponent } from './movie-list/movie-list.component';
 
 @Component({

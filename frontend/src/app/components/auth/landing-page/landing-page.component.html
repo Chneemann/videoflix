@@ -1,0 +1,48 @@
+<section>
+  <div class="headline">
+    <p>Movies, TV shows, and more</p>
+    <p>Watch whenever you want wherever you want</p>
+    <p>Enter your email to create or restart your subscription.</p>
+  </div>
+  <form
+    #taskForm="ngForm"
+    (ngSubmit)="onSubmit(taskForm, mail)"
+    onsubmit="return false"
+  >
+    <input
+      type="mail"
+      id="mail"
+      name="mail"
+      #mail="ngModel"
+      placeholder="Email Address"
+      class="custom-input"
+      autocomplete="email"
+      [(ngModel)]="authData.mail"
+      [class.error-border]="
+        (!mail.valid && mail.touched) ||
+        (mail.touched &&
+          !isUserEmailValid(authData.mail.toLowerCase()) &&
+          authData.mail.length > 0)
+      "
+      required
+    />
+    <div class="error-msg">
+      @if (!mail.valid && mail.touched) {
+      <p>Please enter your email</p>
+      } @else { @if (mail.touched && authData.mail.length > 0 &&
+      !isUserEmailValid(authData.mail.toLowerCase())) {
+      <p>This is not a valid email format</p>
+      }}
+    </div>
+    <app-btn-large
+      [value]="'Sign Up'"
+      [imgPath]="'play'"
+      [imgPath]="'arrow_right'"
+      [imgReverse]="true"
+      [disabled]="
+        (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
+        authData.send
+      "
+    ></app-btn-large>
+  </form>
+</section>
