@@ -21,7 +21,7 @@ import { LoadingDialogComponent } from '../../../../shared/components/loading-di
 export class UploadMovieComponent {
   @Output() toggleUploadMovieOverview = new EventEmitter<boolean>();
   errorMsgFileSize: string | null = null;
-  maxFileSizeMB = 50;
+  maxFileSizeMB = 20;
 
   movieData = {
     title: '',

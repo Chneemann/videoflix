@@ -65,8 +65,8 @@ export class HeroBannerComponent implements OnChanges {
 
   getVideoUrls() {
     this.playUrl = `${this.environmentBaseUrl}/media/videos/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}`;
-    this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}_video-thumbnail.mp4`;
     this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}_1080p.jpg`;
+    this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}_video-thumbnail.mp4`;
   }
 
   ngOnChanges(changes: SimpleChanges) {

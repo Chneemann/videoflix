@@ -10,7 +10,7 @@ import { UserService } from './user.service';
 export class AuthService {
   errorMsg: string | null = null;
   passwordFieldType: string = 'password';
-  passwordIcon: string = './../../../assets/img/close-eye.svg';
+  passwordIcon: string = './assets/img/close-eye.svg';
 
   constructor(private http: HttpClient, private userService: UserService) {}
 
@@ -22,9 +22,9 @@ export class AuthService {
 
   toggleIcon() {
     this.passwordIcon =
-      this.passwordIcon === './../../../assets/img/close-eye.svg'
-        ? './../../../assets/img/open-eye.svg'
-        : './../../../assets/img/close-eye.svg';
+      this.passwordIcon === './assets/img/close-eye.svg'
+        ? './assets/img/open-eye.svg'
+        : './assets/img/close-eye.svg';
   }
 
   async register(body: any) {
@@ -89,7 +89,7 @@ export class AuthService {
       authToken = sessionStorage.getItem('authToken');
     }
     return new HttpHeaders({
-      Authorization: `Token ${authToken}`, // Ensure this matches your backend
+      Authorization: `Token ${authToken}`,
     });
   }
 }

@@ -29,11 +29,11 @@
   <!-- Genre columns -->
   @for (filmGenre of filmGenres; track filmGenre) {
   <!-- Movies by genre -->
-  @if (allMovies(filmGenre.code).length > 0) {
+  @if (getAllMovies(filmGenre.code).length > 0) {
   <div class="category">
     <p>{{ filmGenre.name }}</p>
     <app-movie-list
-      [movies]="allMovies(filmGenre.code)"
+      [movies]="getAllMovies(filmGenre.code)"
       [currentMovie]="currentMovie"
       [watchedMovies]="watchedMovies"
       (currentMovieId)="openCurrentMovie($event)"

@@ -5,11 +5,7 @@
   [ngClass]="{ reverse: imgReverse }"
 >
   @if(imgPath) {
-  <img
-    src="./../../../../assets/img/{{ imgPath }}.svg"
-    alt="{{ imgPath }}"
-    class="icon"
-  />
+  <img src="./assets/img/{{ imgPath }}.svg" alt="{{ imgPath }}" class="icon" />
   }
   <p>{{ value }}</p>
 </button>

@@ -48,12 +48,6 @@ export class CategoriesComponent implements AfterViewInit {
     { code: 'western', name: 'Western' },
   ];
 
-  getFavoriteMovies() {
-    return this.movies.filter((movie) =>
-      this.favoriteMovies.includes(movie.id)
-    );
-  }
-
   ngAfterViewInit() {
     this.checkScroll();
   }
@@ -63,8 +57,14 @@ export class CategoriesComponent implements AfterViewInit {
     this.currentMovieId.emit(movieId);
   }
 
-  allMovies(filmGenre: string) {
+  getAllMovies(filmGenre: string) {
     return this.movies.filter((movie) => movie.film_genre === filmGenre);
+  }
+
+  getFavoriteMovies() {
+    return this.movies.filter((movie) =>
+      this.favoriteMovies.includes(movie.id)
+    );
   }
 
   recentMovies() {
@@ -79,12 +79,6 @@ export class CategoriesComponent implements AfterViewInit {
       return movieDate >= lastMonday && movieDate <= today;
     });
   }
-
-  getThumbnailUrl(movieId: number, fileName: string): string {
-    return `${environment.baseUrl}/media/thumbnails/${movieId}/${fileName}_480p.jpg`;
-  }
-
-  // Category scroll
 
   @HostListener('window:resize')
   onResize() {
@@ -107,25 +101,5 @@ export class CategoriesComponent implements AfterViewInit {
         }
       }
     });
-  }
-
-  scrollLeft(event: MouseEvent) {
-    const button = event.target as HTMLElement;
-    const container = button
-      .closest('.category')
-      ?.querySelector('.movies') as HTMLElement;
-    if (container) {
-      container.scrollLeft -= 217;
-    }
-  }
-
-  scrollRight(event: MouseEvent) {
-    const button = event.target as HTMLElement;
-    const container = button
-      .closest('.category')
-      ?.querySelector('.movies') as HTMLElement;
-    if (container) {
-      container.scrollLeft += 217;
-    }
   }
 }
