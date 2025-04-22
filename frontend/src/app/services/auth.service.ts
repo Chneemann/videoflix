@@ -1,18 +1,69 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, lastValueFrom, map, Observable, of } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
+import { ApiService } from './api.service';
 import { UserService } from './user.service';
+import { Router } from '@angular/router';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   errorMsg: string | null = null;
-  passwordFieldType: string = 'password';
-  passwordIcon: string = './assets/img/close-eye.svg';
+  passwordFieldType = 'password';
+  passwordIcon = './assets/img/close-eye.svg';
 
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(
+    private router: Router,
+    private apiService: ApiService,
+    private userService: UserService,
+    private tokenService: TokenService
+  ) {}
+
+  async login(body: any, storage: boolean) {
+    const data = await firstValueFrom(
+      this.apiService.post<{ token: string }>('/auth/login/', body)
+    );
+    if (data?.token) {
+      this.tokenService.setToken(data.token, storage);
+    } else {
+      throw new Error('Login failed: No token received');
+    }
+  }
+
+  async logout() {
+    await firstValueFrom(this.apiService.post('/auth/logout/', null, true));
+  }
+
+  async register(body: any) {
+    await firstValueFrom(this.apiService.post('/auth/register/', body));
+  }
+
+  async verifyEmail(body: any) {
+    await firstValueFrom(this.apiService.post('/auth/verify-email/', body));
+  }
+
+  async forgotPassword(body: any) {
+    await firstValueFrom(this.apiService.post('/auth/forgot-password/', body));
+  }
+
+  async changePassword(body: any) {
+    await firstValueFrom(this.apiService.post('/auth/change-password/', body));
+  }
+
+  async checkAuthUserMail(body: any) {
+    await firstValueFrom(this.apiService.post('/auth/', body));
+  }
+
+  checkAuthUser(): Observable<boolean> {
+    return this.apiService.get<any>('/auth/', true).pipe(
+      map((response) => {
+        this.userService.currentUserId = response;
+        return true;
+      }),
+      catchError(() => of(false))
+    );
+  }
 
   togglePasswordVisibility() {
     this.passwordFieldType =
@@ -25,77 +76,5 @@ export class AuthService {
       this.passwordIcon === './assets/img/close-eye.svg'
         ? './assets/img/open-eye.svg'
         : './assets/img/close-eye.svg';
-  }
-
-  async register(body: any) {
-    await lastValueFrom(
-      this.http.post(`${environment.baseUrl}/auth/register/`, body)
-    );
-  }
-
-  async login(body: any, storage: boolean) {
-    const data = (await lastValueFrom(
-      this.http.post(`${environment.baseUrl}/auth/login/`, body)
-    )) as { token: string };
-    this.storeAuthToken(data.token, storage);
-  }
-
-  async logout() {
-    const headers = this.getAuthHeaders();
-    await lastValueFrom(
-      this.http.post(`${environment.baseUrl}/auth/logout/`, null, { headers })
-    );
-  }
-
-  async verifyEmail(body: any) {
-    await lastValueFrom(
-      this.http.post(`${environment.baseUrl}/auth/verify-email/`, body)
-    );
-  }
-
-  async forgotPassword(body: any) {
-    await lastValueFrom(
-      this.http.post(`${environment.baseUrl}/auth/forgot-password/`, body)
-    );
-  }
-
-  async changePassword(body: any) {
-    await lastValueFrom(
-      this.http.post(`${environment.baseUrl}/auth/change-password/`, body)
-    );
-  }
-
-  storeAuthToken(data: any, storage: boolean) {
-    storage
-      ? localStorage.setItem('authToken', data.toString())
-      : sessionStorage.setItem('authToken', data.toString());
-  }
-
-  checkAuthUser(): Observable<boolean> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${environment.baseUrl}/auth/`, { headers }).pipe(
-      map((response) => {
-        this.saveUserId(response);
-        return true;
-      }),
-      catchError(() => of(false))
-    );
-  }
-
-  saveUserId(userId: string): void {
-    this.userService.currentUserId = userId;
-  }
-
-  async checkAuthUserMail(body: any) {
-    await lastValueFrom(this.http.post(`${environment.baseUrl}/auth/`, body));
-  }
-
-  private getAuthHeaders(): HttpHeaders {
-    let authToken =
-      localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-
-    return new HttpHeaders({
-      Authorization: `Token ${authToken}`,
-    });
   }
 }

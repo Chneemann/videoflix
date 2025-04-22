@@ -1,8 +1,14 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
+import {
+  BehaviorSubject,
+  catchError,
+  firstValueFrom,
+  map,
+  Observable,
+  of,
+} from 'rxjs';
+import { ApiService } from './api.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,109 +16,47 @@ import { Router } from '@angular/router';
 export class MovieService {
   private movieCache: { [key: number]: { [resolution: string]: boolean } } = {};
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService
+  ) {}
 
   getAllMovies(): Promise<any> {
-    const url = environment.baseUrl + '/video/';
-    const headers = this.getAuthHeaders();
-    return lastValueFrom(this.http.get(url, { headers }));
+    return firstValueFrom(this.apiService.get('/video/', true));
   }
 
   getMovieFiles(videoUrl: number): Promise<any> {
-    const url = environment.baseUrl + `${videoUrl}`;
-    const headers = this.getAuthHeaders();
-    return lastValueFrom(this.http.get(url, { headers }));
+    return firstValueFrom(this.apiService.get(`/${videoUrl}`, true));
   }
 
-  uploadMovie(formData: FormData) {
-    const url = environment.baseUrl + '/video/upload/';
-    const headers = this.getAuthHeaders();
-    return lastValueFrom(this.http.post(url, formData, { headers }));
+  uploadMovie(formData: FormData): Promise<any> {
+    return firstValueFrom(
+      this.apiService.post('/video/upload/', formData, true)
+    );
   }
 
-  private getAuthHeaders(): HttpHeaders {
-    let authToken =
-      localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-
-    if (!authToken) {
-      this.logout();
-    }
-
-    return new HttpHeaders({
-      Authorization: `Token ${authToken}`,
-    });
-  }
-
-  private logout(): void {
-    localStorage.clear();
-    sessionStorage.clear();
-    this.router.navigate(['/']);
-  }
-
-  /**
-   * Checks if a movie is uploaded in multiple resolutions.
-   *
-   * @param {number} videoID - The ID of the movie to check.
-   * @returns {Observable<{ [resolution: string]: boolean }>} Observable emitting an object with the availability of each resolution.
-   */
   isMovieResolutionUploaded(
     videoID: number
   ): Observable<{ [resolution: string]: boolean }> {
-    if (this.movieCache.hasOwnProperty(videoID)) {
-      const cachedResolutions = this.movieCache[videoID];
-
-      const missingResolutions = Object.keys(cachedResolutions).filter(
-        (res) => !cachedResolutions[res]
-      );
-
-      if (missingResolutions.length === 0) {
-        return new BehaviorSubject(cachedResolutions).asObservable();
-      } else {
-        return this.fetchAndCacheResolutions(videoID);
-      }
-    } else {
-      return this.fetchAndCacheResolutions(videoID);
+    const cachedRes = this.movieCache[videoID];
+    if (cachedRes && Object.values(cachedRes).every(Boolean)) {
+      return new BehaviorSubject(cachedRes).asObservable();
     }
-  }
 
-  /**
-   * Fetches the availability of multiple resolutions for a specific movie.
-   *
-   * @param {number} videoID - The ID of the movie to fetch resolutions for.
-   * @returns {Observable<{ [resolution: string]: boolean }>} Observable emitting an object with the availability of each resolution.
-   */
-  private fetchAndCacheResolutions(
-    videoID: number
-  ): Observable<{ [resolution: string]: boolean }> {
-    const url = `${environment.baseUrl}/video/movie/${videoID}/`;
-    const headers = this.getAuthHeaders();
-
-    return new Observable<{ [resolution: string]: boolean }>((observer) => {
-      this.http.get(url, { headers }).subscribe(
-        (response: any) => {
-          const resolutions = {
-            '360': response['360'] || false,
-            '720': response['720'] || false,
-            '1080': response['1080'] || false,
-          };
-          this.movieCache[videoID] = resolutions;
-          observer.next(resolutions);
-          observer.complete();
-        },
-        (error) => {
-          if (error.status === 401) {
-            this.logout();
-          }
-          observer.next(
-            this.movieCache[videoID] || {
-              '360': false,
-              '720': false,
-              '1080': false,
-            }
-          );
-          observer.complete();
-        }
-      );
-    });
+    return this.apiService.get(`/video/movie/${videoID}/`, true).pipe(
+      map((res: any) => {
+        const resolutions = {
+          '360': res['360'] || false,
+          '720': res['720'] || false,
+          '1080': res['1080'] || false,
+        };
+        this.movieCache[videoID] = resolutions;
+        return resolutions;
+      }),
+      catchError(() => {
+        this.authService.logout();
+        return of({ '360': false, '720': false, '1080': false });
+      })
+    );
   }
 }
