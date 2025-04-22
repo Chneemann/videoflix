@@ -38,7 +38,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@videoflix.com'
 
 ALLOWED_HOSTS = [
-    'videoflix-django.andre-kempf.com', 
+    'videoflix-api.andre-kempf.com', 
     '45.157.177.172',
     'localhost', 
     '127.0.0.1',
@@ -51,7 +51,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://videoflix-django.andre-kempf.com',
+    'https://videoflix-api.andre-kempf.com',
 ]
 
 # Application definition
@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'corsheaders',
-    'debug_toolbar',
     'django_rq',
     'import_export',
     'user_app',
@@ -73,7 +72,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,7 +80,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'videoflix.urls'

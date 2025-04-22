@@ -29,7 +29,6 @@ from auth_app.views import (
     ChangePasswordView
 )
 from video_app import views as video_views
-from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
@@ -55,4 +54,4 @@ urlpatterns = [
     path('auth/verify-email/', VerifyEmailView.as_view(), name='verify_email'),
     path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('auth/change-password/', ChangePasswordView.as_view(), name='change_password'),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + debug_toolbar_urls() + staticfiles_urlpatterns()
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + staticfiles_urlpatterns()

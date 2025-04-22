@@ -5,7 +5,6 @@ click==8.1.7
 diff-match-patch==20230430
 Django==5.0.8
 django-cors-headers==4.4.0
-django-debug-toolbar==4.4.6
 django-grip==3.5.0
 django-import-export==4.1.1
 django-redis==5.4.0
