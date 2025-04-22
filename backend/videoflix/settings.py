@@ -11,31 +11,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
-from pathlib import Path
-from decouple import config
 import sentry_sdk
+from pathlib import Path
+from environ import Env
+from sentry_sdk.integrations.django import DjangoIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*o%q)*3l+9^fs!m0z_h=z9bc)su=%)fv$@ktb#pza-pvi^z*en'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-# EMAIL
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@videoflix.com'
 
 ALLOWED_HOSTS = [
     'videoflix-api.andre-kempf.com', 
@@ -189,7 +171,7 @@ USE_TZ = True
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
@@ -217,10 +199,29 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# Environment variables
+
+env = Env()
+Env.read_env()
+
+DEBUG = env.bool('DEBUG', default=False)
+SECRET_KEY = env('SECRET_KEY')
+
+# Mail
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@videoflix.andre-kempf.com'
+
 # Sentry
 
 sentry_sdk.init(
-    dsn="https://f9cac097dbb7a0d104f07d347e1bd470@o4507955559464960.ingest.de.sentry.io/4507955586138192",
+    dsn=os.getenv("SENTRY_DSN"),
+    integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
     profiles_sample_rate=1.0,
 )
