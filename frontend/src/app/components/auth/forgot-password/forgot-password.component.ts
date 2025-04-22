@@ -68,7 +68,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   async verifyEmail() {
     const body = {
-      email: this.authData.mail,
+      email: this.authData.mail.toLowerCase(),
     };
     try {
       this.authData.send = true;
@@ -84,7 +84,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   async changePassword() {
     const body = {
-      email: this.authData.mail,
+      email: this.authData.mail.toLowerCase(),
       token: this.authData.token,
       new_password: this.authData.password,
     };

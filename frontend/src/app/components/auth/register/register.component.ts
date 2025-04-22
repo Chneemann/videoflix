@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
   async onSubmit(ngForm: NgForm) {
     if (ngForm.submitted && ngForm.form.valid) {
       const body = {
-        email: this.authData.mail,
+        email: this.authData.mail.toLowerCase(),
         username: this.authData.mail.split('@')[0],
         password: this.authData.password,
       };

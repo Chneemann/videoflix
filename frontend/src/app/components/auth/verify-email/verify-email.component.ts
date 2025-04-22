@@ -37,7 +37,7 @@ export class VerifyEmailComponent {
 
   async verifyEmail() {
     const body = {
-      email: this.authData.mail,
+      email: this.authData.mail.toLowerCase(),
       token: this.authData.token,
     };
     try {

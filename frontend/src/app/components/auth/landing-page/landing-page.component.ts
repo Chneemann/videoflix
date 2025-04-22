@@ -40,12 +40,12 @@ export class LandingPageComponent {
 
   async checkDuplicatesEmail() {
     const body = {
-      email: this.authData.mail,
+      email: this.authData.mail.toLowerCase(),
     };
     try {
       this.authData.send = true;
       await this.authService.checkAuthUserMail(body);
-      const queryParams = { mail: this.authData.mail };
+      const queryParams = { mail: this.authData.mail.toLowerCase() };
       this.router.navigate(['/register'], { queryParams });
       this.errorService.clearError();
     } catch (error) {

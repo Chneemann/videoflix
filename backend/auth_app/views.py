@@ -75,7 +75,7 @@ class RegisterView(APIView):
 
         message = EmailMultiAlternatives(
             subject='Confirm your email',
-            body=strip_tags(html_body),  # Plain text fallback
+            body=strip_tags(html_body),
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[user.email]
         )
@@ -153,8 +153,7 @@ class ChangePasswordView(APIView):
 
 class AuthView(ObtainAuthToken):
     authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-    
+
     def get(self, request):
         if request.user.is_authenticated:
             return Response(request.user.id, status=status.HTTP_200_OK)
