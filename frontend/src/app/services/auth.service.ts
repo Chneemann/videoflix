@@ -40,6 +40,13 @@ export class AuthService {
     this.storeAuthToken(data.token, storage);
   }
 
+  async logout() {
+    const headers = this.getAuthHeaders();
+    await lastValueFrom(
+      this.http.post(`${environment.baseUrl}/auth/logout/`, null, { headers })
+    );
+  }
+
   async verifyEmail(body: any) {
     await lastValueFrom(
       this.http.post(`${environment.baseUrl}/auth/verify-email/`, body)
@@ -84,10 +91,9 @@ export class AuthService {
   }
 
   private getAuthHeaders(): HttpHeaders {
-    let authToken = localStorage.getItem('authToken');
-    if (!authToken) {
-      authToken = sessionStorage.getItem('authToken');
-    }
+    let authToken =
+      localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+
     return new HttpHeaders({
       Authorization: `Token ${authToken}`,
     });

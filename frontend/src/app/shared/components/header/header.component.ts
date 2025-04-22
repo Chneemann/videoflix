@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BtnLargeComponent } from '../buttons/btn-large/btn-large.component';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -13,15 +15,20 @@ export class HeaderComponent {
   @Input() showFullLogo: boolean = true;
   @Output() moviesChange = new EventEmitter<any[]>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   backToOverview(newMovies: any[]) {
     this.moviesChange.emit(newMovies);
   }
 
-  logout() {
-    localStorage.clear();
-    sessionStorage.clear();
-    this.router.navigate(['/']);
+  async logout() {
+    try {
+      await this.authService.logout();
+      localStorage.clear();
+      sessionStorage.clear();
+      this.router.navigate(['/']);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

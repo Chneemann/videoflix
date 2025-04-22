@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, lastValueFrom, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class MovieService {
   private movieCache: { [key: number]: { [resolution: string]: boolean } } = {};
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getAllMovies(): Promise<any> {
     const url = environment.baseUrl + '/video/';
@@ -30,13 +31,22 @@ export class MovieService {
   }
 
   private getAuthHeaders(): HttpHeaders {
-    let authToken = localStorage.getItem('authToken');
+    let authToken =
+      localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+
     if (!authToken) {
-      authToken = sessionStorage.getItem('authToken');
+      this.logout();
     }
+
     return new HttpHeaders({
       Authorization: `Token ${authToken}`,
     });
+  }
+
+  private logout(): void {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.router.navigate(['/']);
   }
 
   /**
@@ -90,6 +100,9 @@ export class MovieService {
           observer.complete();
         },
         (error) => {
+          if (error.status === 401) {
+            this.logout();
+          }
           observer.next(
             this.movieCache[videoID] || {
               '360': false,

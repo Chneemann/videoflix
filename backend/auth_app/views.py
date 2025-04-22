@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, authentication
+from rest_framework import status, authentication, permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.contrib.auth import authenticate
@@ -35,6 +35,17 @@ class LoginView(APIView):
     def _create_token_response(self, user):
         token, created = Token.objects.get_or_create(user=user)
         return Response({'token': token.key}, status=status.HTTP_200_OK)
+    
+class LogoutView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            request.user.auth_token.delete()
+        except Token.DoesNotExist:
+            return Response({'detail': 'Token not found.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'detail': 'Successfully logged out.'}, status=status.HTTP_200_OK)
     
 class RegisterView(APIView):
     def post(self, request):
@@ -116,7 +127,7 @@ class ForgotPasswordView(APIView):
 
         message = EmailMultiAlternatives(
             subject='Reset your Password',
-            body=strip_tags(html_body),  # Plain text fallback
+            body=strip_tags(html_body),
             from_email=settings.DEFAULT_FROM_EMAIL,
             to=[user.email]
         )
@@ -142,7 +153,8 @@ class ChangePasswordView(APIView):
 
 class AuthView(ObtainAuthToken):
     authentication_classes = [authentication.TokenAuthentication]
-  
+    permission_classes = [permissions.IsAuthenticated]
+    
     def get(self, request):
         if request.user.is_authenticated:
             return Response(request.user.id, status=status.HTTP_200_OK)
