@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os
 import sentry_sdk
 from pathlib import Path
 from environ import Env
@@ -69,7 +68,7 @@ ROOT_URLCONF = 'videoflix.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -114,11 +113,11 @@ WSGI_APPLICATION = 'videoflix.wsgi.application'
 
 # Media
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
 
-THUMBNAIL_DIR = os.path.join(BASE_DIR, 'media/thumbnails')
+THUMBNAIL_DIR = MEDIA_ROOT / 'thumbnails'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -169,7 +168,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 STATIC_URL = '/static/'
 
@@ -220,7 +219,7 @@ DEFAULT_FROM_EMAIL = 'noreply@videoflix.andre-kempf.com'
 # Sentry
 
 sentry_sdk.init(
-    dsn=os.getenv("SENTRY_DSN"),
+    dsn=env('SENTRY_DSN', default=''),
     integrations=[DjangoIntegration()],
     traces_sample_rate=1.0,
     profiles_sample_rate=1.0,
