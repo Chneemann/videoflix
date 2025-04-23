@@ -146,5 +146,8 @@ GitHub.sublime-settings
 !**/migrations/__init__.py
 videoflix/users/migrations
 
+# Node modules
+node_modules
+
 # Statics
 staticfiles

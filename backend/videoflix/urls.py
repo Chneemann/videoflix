@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import RedirectView
 from user_app import views as user_views
 from auth_app.views import (
     LoginView,
@@ -38,6 +39,8 @@ urlpatterns = [
     path('auth/verify-email/', VerifyEmailView.as_view(), name='verify_email'),
     path('auth/forgot-password/', ForgotPasswordView.as_view(), name='forgot_password'),
     path('auth/change-password/', ChangePasswordView.as_view(), name='change_password'),
+
+    path("favicon.ico", RedirectView.as_view(url="/static/favicon.ico")),
 ]
 
 if settings.DEBUG:
