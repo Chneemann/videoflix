@@ -1,47 +1,59 @@
-# Frontend
+# Videoflix API
 
-## Environment Configuration
+Videoflix is a full-stack video streaming platform with a decoupled frontend and backend architecture. Built with Django, Angular, and RESTful APIs, it enables users to register, log in, browse videos by genre, and stream content in adaptive quality.
 
-In order to manage different configurations for development and production environments, Angular uses the `environment.ts` and `environment.prod.ts` files.
+## Technologies Used
 
-### Step 1: Creating environment files
+**Frontend**
 
-You need to create the following files in the `src/environments/` directory:
+- Angular / TypeScript
+- HTML / SCSS
 
-- `environment.ts` for development
-- `environment.prod.ts` for production
+**Backend**
 
-### Step 2: Add baseUrl and guest account
+- Django / Django REST Framework / Python
+- PostgreSQL, Redis, Django RQ
 
-In the `environment.ts` & `environment.prod.ts` file, add the following content:
+## Features
 
-````typescript
-export const environment = {
-  production: false,
-  baseUrl: 'YOUR_API_URL_HERE',
+### User Authentication
 
-  // Guest account
-  guestMail: 'YOUR_GUEST_EMAIL_HERE',
-  guestPassword: 'YOUR_GUEST_PASSWORD_HERE',
-};
-````
+Secure user management with features like registration, email verification, login, logout, and password reset.
 
-# Backend
+- Secure user registration with email verification
+- Login and logout with generic error messages
+- Password reset via secure email workflow
+- Email confirmation required before first login
 
-## Env Configuration
+### Video Dashboard
 
-To set the mail configuration for the backend, you must create an `.env` file in the root directory of your project. This file should have the following content:
+Discover and browse available videos easily with a dynamic and organized interface.
 
-### Step 1: Creating the `.env` file
+- Categorized video listings grouped by genre
+- Hero section with a featured video teaser
+- Responsive thumbnails and video details, dynamically loaded
 
-Create a file named `.env` in the root directory of the project.
+### Video Playback
 
-### Step 2: Add the e-mail configuration
+Stream videos in your preferred quality with intuitive controls and a smooth viewing experience.
 
-Open the `.env` file and add the following lines:
+- Manual resolution selection (360p, 720p, 1080p)
+- Core video controls (play, pause, skip, fullscreen)
+- Watched videos are visually marked as viewed
 
-````env
-EMAIL_HOST_USER=example@gmail.com
-EMAIL_HOST_PASSWORD=password
+### Responsive Frontend
 
-````
+Enjoy a seamless user experience across all device types.
+
+- Fully responsive UI for desktop, tablet, and mobile devices
+- Clear navigation between registration, login, and dashboard pages
+- Optimized for smooth video streaming across different screen sizes
+
+### REST API Backend
+
+Robust backend architecture providing scalable and efficient services to the frontend.
+
+- Django-based API serving all frontend needs, including user management and video data
+- PostgreSQL as the main database for data storage and scalability
+- Redis caching layer for faster responses and performance optimization
+- Django RQ for handling background tasks such as video processing
