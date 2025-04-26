@@ -14,6 +14,7 @@ import { MovieService } from '../../../services/movie.service';
 import { environment } from '../../../../environments/environment';
 import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
 import { UserService } from '../../../services/user.service';
+import { ResolutionService } from '../../../services/resolution.service';
 
 @Component({
   selector: 'app-hero-banner',
@@ -41,15 +42,19 @@ export class HeroBannerComponent implements OnChanges {
   thumbnailUrl: string = '';
   playUrl: string = '';
   environmentBaseUrl: string = environment.baseUrl;
-  movieIsUploaded: { [resolution: string]: boolean } = {
-    '320p': true,
-    '720p': true,
-    '1080p': true,
-  };
+
+  availableResolutions: string[];
+  movieIsUploaded: { [resolution: string]: boolean };
+
   constructor(
     private movieService: MovieService,
+    private resolutionService: ResolutionService,
     public userService: UserService
-  ) {}
+  ) {
+    this.availableResolutions =
+      this.resolutionService.getAvailableResolutions();
+    this.movieIsUploaded = this.resolutionService.initMovieIsUploaded();
+  }
 
   ngAfterViewInit() {
     this.videoSpeed();
@@ -121,12 +126,8 @@ export class HeroBannerComponent implements OnChanges {
     return this.favoriteMovies.includes(videoId);
   }
 
-  isAnyResolutionUploaded(): boolean {
-    return (
-      this.movieIsUploaded['320p'] ||
-      this.movieIsUploaded['720p'] ||
-      this.movieIsUploaded['1080p']
-    );
+  isAnyResolutionAvailable(): boolean {
+    return Object.values(this.movieIsUploaded).some((available) => available);
   }
 
   refreshPage(newMovies: any[]) {

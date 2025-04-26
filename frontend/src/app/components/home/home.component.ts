@@ -8,6 +8,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
 import { BtnSmallComponent } from '../../shared/components/buttons/btn-small/btn-small.component';
 import { UploadMovieComponent } from './upload-movie/upload-movie.component';
 import { UserService } from '../../services/user.service';
+import { ResolutionService } from '../../services/resolution.service';
 
 @Component({
   selector: 'app-home',
@@ -33,18 +34,21 @@ export class HomeComponent implements OnInit {
   playMovie: string = '';
   isLoading: boolean = true;
   uploadMovieOverview: boolean = false;
-  availableResolutions: string[] = ['360p', '720p', '1080p'];
-  currentResolution = '720p';
-  movieIsUploaded: { [resolution: string]: boolean } = {
-    '360p': false,
-    '720p': false,
-    '1080p': false,
-  };
+
+  availableResolutions: string[];
+  currentResolution: string;
+  movieIsUploaded: { [resolution: string]: boolean };
 
   constructor(
     private movieService: MovieService,
-    public userService: UserService
-  ) {}
+    public userService: UserService,
+    private resolutionService: ResolutionService
+  ) {
+    this.availableResolutions =
+      this.resolutionService.getAvailableResolutions();
+    this.currentResolution = this.resolutionService.getDefaultResolution();
+    this.movieIsUploaded = this.resolutionService.initMovieIsUploaded();
+  }
 
   async ngOnInit() {
     this.loadLikedAndWatchedMovies();
@@ -110,7 +114,6 @@ export class HomeComponent implements OnInit {
     this.isLoading = true;
     try {
       this.movies = await this.movieService.getAllMovies();
-      console.log(this.movies);
     } finally {
       this.isLoading = false;
     }

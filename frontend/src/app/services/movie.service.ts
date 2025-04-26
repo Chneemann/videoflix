@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
+import { ResolutionService } from './resolution.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,12 +11,16 @@ export class MovieService {
   private movieCache: {
     [key: number]: { [resolution: string]: boolean };
   } = {};
-  private readonly availableResolutions = ['360p', '720p', '1080p'];
+  private availableResolutions: string[];
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private resolutionService: ResolutionService
+  ) {
+    this.availableResolutions =
+      this.resolutionService.getAvailableResolutions();
+  }
 
   /**
    * Fetch all movies available on the server

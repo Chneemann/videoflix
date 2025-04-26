@@ -53,7 +53,7 @@
         [value]="'Play'"
         [imgPath]="'play'"
         [imgReverse]="true"
-        [disabled]="!isAnyResolutionUploaded()"
+        [disabled]="!isAnyResolutionAvailable()"
         (click)="playMovieId(playUrl, currentMovie[0].id)"
       ></app-btn-large>
       <div class="favorite-img" (click)="toggleLikeMovie(currentMovie[0].id)">
@@ -71,10 +71,12 @@
         />
         }
       </div>
-      <p *ngIf="!isAnyResolutionUploaded()">
+      @if (!isAnyResolutionAvailable()) {
+      <p>
         (The video is being converted)
         <a (click)="refreshPage(currentMovie)">Refresh</a>
       </p>
+      }
     </div>
   </div>
   }
