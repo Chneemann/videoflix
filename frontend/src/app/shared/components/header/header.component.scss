@@ -13,9 +13,10 @@ header {
   z-index: 1;
 }
 
-.logo,
 .logo-full,
 .logo-mobile {
+  display: flex;
+  align-items: center;
   cursor: pointer;
   img {
     filter: drop-shadow(1px 1px 3px $black);

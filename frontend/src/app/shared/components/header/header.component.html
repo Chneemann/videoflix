@@ -10,7 +10,10 @@
     <app-btn-large [value]="'Log in'" routerLink="/login"></app-btn-large>
   </div>
   } @else {
-  <div class="logo" (click)="backToOverview([])">
+  <div class="logo-full" (click)="backToOverview([])">
+    <img src="./assets/img/logo_full.svg" alt="" />
+  </div>
+  <div class="logo-mobile" (click)="backToOverview([])">
     <img src="./assets/img/logo_ci.svg" alt="" />
   </div>
   <div class="btn">
