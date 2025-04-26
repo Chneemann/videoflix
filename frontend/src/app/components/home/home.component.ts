@@ -33,11 +33,12 @@ export class HomeComponent implements OnInit {
   playMovie: string = '';
   isLoading: boolean = true;
   uploadMovieOverview: boolean = false;
-  currentResolution: '360p' | '720p' | '1080p' = '720p';
+  availableResolutions: string[] = ['360p', '720p', '1080p'];
+  currentResolution = '720p';
   movieIsUploaded: { [resolution: string]: boolean } = {
-    '360': false,
-    '720': false,
-    '1080': false,
+    '360p': false,
+    '720p': false,
+    '1080p': false,
   };
 
   constructor(
@@ -98,8 +99,8 @@ export class HomeComponent implements OnInit {
     this.updateLikeMovies();
   }
 
-  changeResolution(resolution: '360p' | '720p' | '1080p') {
-    if (this.videoPlayer && this.movieIsUploaded[resolution.replace('p', '')]) {
+  changeResolution(resolution: string) {
+    if (this.videoPlayer && this.movieIsUploaded[resolution]) {
       this.videoPlayer.switchResolution(resolution);
       this.currentResolution = resolution;
     }
@@ -109,6 +110,7 @@ export class HomeComponent implements OnInit {
     this.isLoading = true;
     try {
       this.movies = await this.movieService.getAllMovies();
+      console.log(this.movies);
     } finally {
       this.isLoading = false;
     }
@@ -134,6 +136,12 @@ export class HomeComponent implements OnInit {
       this.currentMovie = [];
       this.currentMovie.push(this.movies[index]);
     }
+  }
+
+  isAnyResolutionUnavailable(): boolean {
+    return this.availableResolutions.some(
+      (resolution) => !this.movieIsUploaded[resolution]
+    );
   }
 
   toggleUploadMovieOverview(value: any) {

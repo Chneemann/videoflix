@@ -44,52 +44,30 @@
       </div>
       <div class="center">
         <div class="resolution-controls">
+          <!-- Resolution buttons -->
+          @for (resolution of availableResolutions; track $index) {
           <button
             [ngClass]="{
               'resolution-btn': true,
-              active: currentResolution === '360p',
-              'not-available': !movieIsUploaded['360']
-            }"
-            [disabled]="!movieIsUploaded['360'] || currentResolution === '360p'"
-            (click)="changeResolution('360p')"
-          >
-            360p
-          </button>
-          <button
-            [ngClass]="{
-              'resolution-btn': true,
-              active: currentResolution === '720p',
-              'not-available': !movieIsUploaded['720']
-            }"
-            [disabled]="!movieIsUploaded['720'] || currentResolution === '720p'"
-            (click)="changeResolution('720p')"
-          >
-            720p
-          </button>
-          <button
-            [ngClass]="{
-              'resolution-btn': true,
-              active: currentResolution === '1080p',
-              'not-available': !movieIsUploaded['1080']
+              active: currentResolution === resolution,
+              'not-available': !movieIsUploaded[resolution]
             }"
             [disabled]="
-              !movieIsUploaded['1080'] || currentResolution === '1080p'
+              !movieIsUploaded[resolution] || currentResolution === resolution
             "
-            (click)="changeResolution('1080p')"
+            (click)="changeResolution(resolution)"
           >
-            1080p
+            {{ resolution }}
           </button>
+          }
         </div>
-        <p
-          *ngIf="
-            !movieIsUploaded['360'] ||
-            !movieIsUploaded['720'] ||
-            !movieIsUploaded['1080']
-          "
-        >
+        <!-- Resolution instructions -->
+        @if (isAnyResolutionUnavailable()) {
+        <p>
           (If a button cannot be selected, the video will be converted, which
           may take a few seconds.)
         </p>
+        }
       </div>
       <div class="logo">
         <img src="./../../../../assets/img/logo_ci.svg" alt="Logo" />

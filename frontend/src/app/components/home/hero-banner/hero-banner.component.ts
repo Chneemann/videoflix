@@ -42,9 +42,9 @@ export class HeroBannerComponent implements OnChanges {
   playUrl: string = '';
   environmentBaseUrl: string = environment.baseUrl;
   movieIsUploaded: { [resolution: string]: boolean } = {
-    '320': true,
-    '720': true,
-    '1080': true,
+    '320p': true,
+    '720p': true,
+    '1080p': true,
   };
   constructor(
     private movieService: MovieService,
@@ -123,9 +123,9 @@ export class HeroBannerComponent implements OnChanges {
 
   isAnyResolutionUploaded(): boolean {
     return (
-      this.movieIsUploaded['320'] ||
-      this.movieIsUploaded['720'] ||
-      this.movieIsUploaded['1080']
+      this.movieIsUploaded['320p'] ||
+      this.movieIsUploaded['720p'] ||
+      this.movieIsUploaded['1080p']
     );
   }
 

@@ -51,9 +51,9 @@ def delete_converted_files(video_file_path):
     """
     Delete all converted video files related to the original video file.
     """
-    resolutions = ["360", "720", "1080"]
+    resolutions = ["360p", "720p", "1080p"]
     for resolution in resolutions:
-        converted_video_path = video_file_path + f'_{resolution}p.mp4'
+        converted_video_path = video_file_path + f'_{resolution}.mp4'
         converted_video_path = remove_first_mp4(converted_video_path)
         if os.path.isfile(converted_video_path):
             os.remove(converted_video_path)

@@ -30,7 +30,7 @@ def check_video_resolutions(request, id):
     """
     Check if a specific video exists in different resolutions (360p, 720p, 1080p).
     """
-    resolutions = ['360', '720', '1080']
+    resolutions = ['360p', '720p', '1080p']
     result = {}
 
     try:
@@ -41,7 +41,7 @@ def check_video_resolutions(request, id):
     video_dir = os.path.join(settings.MEDIA_ROOT, 'videos', str(id))
 
     for res in resolutions:
-        video_file_name = f"{video.file_name}_{res}p.m3u8"
+        video_file_name = f"{video.file_name}_{res}.m3u8"
         video_file_path = os.path.join(video_dir, video_file_name)
         result[res] = os.path.exists(video_file_path)
 

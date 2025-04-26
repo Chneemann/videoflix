@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  catchError,
-  firstValueFrom,
-  map,
-  Observable,
-  of,
-} from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 
@@ -14,7 +7,10 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class MovieService {
-  private movieCache: { [key: number]: { [resolution: string]: boolean } } = {};
+  private movieCache: {
+    [key: number]: { [resolution: string]: boolean };
+  } = {};
+  private readonly availableResolutions = ['360p', '720p', '1080p'];
 
   constructor(
     private apiService: ApiService,
@@ -53,35 +49,36 @@ export class MovieService {
   }
 
   /**
-   * Checks if a movie with the given video ID has been uploaded in the following resolutions: 360p, 720p, 1080p.
+   * Check if a movie is available in all resolutions on the server.
+   * This method caches the result to avoid unnecessary requests.
    *
    * @param videoID the ID of the movie to check
-   * @returns an observable that emits an object with the following properties:
-   *  - '360': a boolean indicating whether the movie has been uploaded in 360p resolution
-   *  - '720': a boolean indicating whether the movie has been uploaded in 720p resolution
-   *  - '1080': a boolean indicating whether the movie has been uploaded in 1080p resolution
+   * @returns a promise resolving to an object with the available resolutions
+   * as keys and booleans indicating the availability as values.
    */
   isMovieResolutionUploaded(
     videoID: number
   ): Observable<{ [resolution: string]: boolean }> {
-    const cachedRes = this.movieCache[videoID];
-    if (cachedRes && Object.values(cachedRes).every(Boolean)) {
-      return new BehaviorSubject(cachedRes).asObservable();
+    const cachedResolutions = this.movieCache[videoID];
+
+    if (cachedResolutions && Object.values(cachedResolutions).every(Boolean)) {
+      return of(cachedResolutions);
     }
 
     return this.apiService.get(`/video/movie/${videoID}/`, true).pipe(
       map((res: any) => {
-        const resolutions = {
-          '360': res['360'] || false,
-          '720': res['720'] || false,
-          '1080': res['1080'] || false,
-        };
+        const resolutions = Object.fromEntries(
+          this.availableResolutions.map((r) => [r, !!res[r]])
+        );
         this.movieCache[videoID] = resolutions;
         return resolutions;
       }),
-      catchError(() => {
+      catchError((error) => {
+        console.error('Failed to fetch movie resolutions', error);
         this.authService.logout();
-        return of({ '360': false, '720': false, '1080': false });
+        return of(
+          Object.fromEntries(this.availableResolutions.map((r) => [r, false]))
+        );
       })
     );
   }
