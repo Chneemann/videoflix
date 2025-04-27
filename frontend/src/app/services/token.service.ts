@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 export class TokenService {
   private readonly TOKEN_KEY = 'authToken';
 
+  /**
+   * Initializes the TokenService with the Router.
+   */
   constructor(private router: Router) {}
 
   /**

@@ -8,6 +8,9 @@ import { firstValueFrom } from 'rxjs';
 export class UserService {
   currentUserId: string | null = null;
 
+  /**
+   * Initializes the UserService with ApiService.
+   */
   constructor(private apiService: ApiService) {}
 
   /**
@@ -39,6 +42,12 @@ export class UserService {
     );
   }
 
+  /**
+   * Update the list of watched movies for the current user
+   *
+   * @param watchedMovies a list of movie IDs watched by the current user
+   * @returns a promise resolved when the update is successful
+   */
   updateWatchedMovies(watchedMovies: any): Promise<any> {
     return firstValueFrom(
       this.apiService.put(

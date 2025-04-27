@@ -13,6 +13,12 @@ export class MovieService {
   } = {};
   private availableResolutions: string[];
 
+  /**
+   * Initializes the MovieService with ApiService, AuthService, and ResolutionService
+   *
+   * It fetches the available resolutions from the ResolutionService and stores
+   * them in the availableResolutions field.
+   */
   constructor(
     private apiService: ApiService,
     private authService: AuthService,

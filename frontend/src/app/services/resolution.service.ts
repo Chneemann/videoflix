@@ -7,14 +7,14 @@ export class ResolutionService {
   private readonly AVAILABLE_RESOLUTIONS = ['360p', '720p', '1080p'];
 
   /**
-   * Gibt die zentral definierten verfügbaren Auflösungen zurück
+   * Returns the centrally defined available resolutions
    */
   getAvailableResolutions(): string[] {
     return this.AVAILABLE_RESOLUTIONS;
   }
 
   /**
-   * Initialisiert ein Objekt, das alle Auflösungen auf `false` setzt
+   * Initializes an object that sets all resolutions to `false`
    */
   initMovieIsUploaded(): { [resolution: string]: boolean } {
     return Object.fromEntries(
@@ -23,7 +23,7 @@ export class ResolutionService {
   }
 
   /**
-   * Gibt eine Standardauflösung zurück (z.B. '720p'), oder die erste verfügbare
+   * Returns a default resolution (e.g. '720p'), or the first available resolution.
    */
   getDefaultResolution(): string {
     return this.AVAILABLE_RESOLUTIONS.includes('720p')
