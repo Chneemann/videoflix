@@ -31,12 +31,28 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 export class AuthComponent implements OnInit {
   currentRoute: any;
 
+  /**
+   * Initializes the AuthComponent with the ActivatedRoute and ErrorService.
+   */
   constructor(
     private route: ActivatedRoute,
     public errorService: ErrorService
   ) {}
 
+  /**
+   * Angular lifecycle hook: Called once the component is initialized.
+   * It calls the subscribeToRoute method to update the currentRoute variable
+   * based on the route parameters.
+   */
   ngOnInit(): void {
+    this.subscribeToRoute();
+  }
+
+  /**
+   * Subscribe to the route parameter changes and update the currentRoute variable.
+   * This is needed to display the correct auth component based on the route.
+   */
+  private subscribeToRoute(): void {
     this.route.url.subscribe((url) => {
       this.currentRoute = url[0]?.path || '';
     });
