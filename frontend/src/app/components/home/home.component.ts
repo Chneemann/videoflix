@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
 import { CategoriesComponent } from './categories/categories.component';
-import { MovieService } from '../../services/movie.service';
+import { VideoService } from '../../services/video.service';
 import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { BtnSmallComponent } from '../../shared/components/buttons/btn-small/btn-small.component';
@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   movieIsUploaded: { [resolution: string]: boolean };
 
   constructor(
-    private movieService: MovieService,
+    private videoService: VideoService,
     public userService: UserService,
     private resolutionService: ResolutionService
   ) {
@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit {
   async loadAllMovies() {
     this.isLoading = true;
     try {
-      this.movies = await this.movieService.getAllMovies();
+      this.movies = await this.videoService.getAllVideos();
     } finally {
       this.isLoading = false;
     }

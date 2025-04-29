@@ -10,7 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
-import { MovieService } from '../../../services/movie.service';
+import { VideoService } from '../../../services/video.service';
 import { environment } from '../../../../environments/environment';
 import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
 import { UserService } from '../../../services/user.service';
@@ -47,7 +47,7 @@ export class HeroBannerComponent implements OnChanges {
   movieIsUploaded: { [resolution: string]: boolean };
 
   constructor(
-    private movieService: MovieService,
+    private videoService: VideoService,
     private resolutionService: ResolutionService,
     public userService: UserService
   ) {
@@ -78,8 +78,8 @@ export class HeroBannerComponent implements OnChanges {
     if (changes['currentMovie'] && this.currentMovie.length > 0) {
       const movieId = this.currentMovie[0]?.id;
       if (movieId) {
-        this.movieService
-          .isMovieResolutionUploaded(movieId)
+        this.videoService
+          .isVideoResolutionUploaded(movieId)
           .subscribe((resolutions) => {
             this.movieIsUploaded = resolutions;
             this.movieIsUploadedChange.emit(this.movieIsUploaded);

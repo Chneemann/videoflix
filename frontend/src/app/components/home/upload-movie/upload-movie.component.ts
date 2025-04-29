@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ErrorService } from '../../../services/error.service';
 import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
-import { MovieService } from '../../../services/movie.service';
+import { VideoService } from '../../../services/video.service';
 import { LoadingDialogComponent } from '../../../shared/components/loading-dialog/loading-dialog.component';
 
 @Component({
@@ -33,7 +33,7 @@ export class UploadMovieComponent {
 
   constructor(
     public errorService: ErrorService,
-    private movieService: MovieService
+    private videoService: VideoService
   ) {}
 
   stopPropagation(event: MouseEvent) {
@@ -74,7 +74,7 @@ export class UploadMovieComponent {
     try {
       this.movieData.send = true;
       let formData = this.createFormData();
-      await this.movieService.uploadMovie(formData);
+      await this.videoService.uploadVideo(formData);
       ngForm.resetForm();
       this.closeMovieUploadOverview();
       this.movieData.send = false;

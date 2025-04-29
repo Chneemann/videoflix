@@ -21,9 +21,9 @@ urlpatterns = [
     path('django-rq/', include('django_rq.urls')),
     
     # Content URLs
-    path('video/', video_views.video_list, name='video_list'),
+    path('videos/', video_views.video_list, name='video_list'),
     path('video/upload/', video_views.video_upload, name='video_upload'),
-    path('video/movie/<int:id>/', video_views.check_video_resolutions, name='check_video_resolutions'),
+    path('video/<int:id>/', video_views.check_video_resolutions, name='check_video_resolutions'),
  
     # Users URLs
     path('users/', user_views.user_list, name='user_list'),
