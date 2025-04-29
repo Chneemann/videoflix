@@ -8,21 +8,21 @@ import {
   Output,
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { MoviesListComponent } from './movie-list/movie-list.component';
+import { VideoListComponent } from './video-list/video-list.component';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule, MoviesListComponent],
+  imports: [CommonModule, VideoListComponent],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
 export class CategoriesComponent implements AfterViewInit {
-  @Input() movies: any[] = [];
-  @Input() currentMovie: number = 0;
-  @Input() favoriteMovies: any[] = [];
-  @Input() watchedMovies: any[] = [];
-  @Output() currentMovieId = new EventEmitter<number>();
+  @Input() videos: any[] = [];
+  @Input() currentVideo: number = 0;
+  @Input() favoriteVideos: any[] = [];
+  @Input() watchedVideos: any[] = [];
+  @Output() currentVideoId = new EventEmitter<number>();
 
   environmentBaseUrl: string = environment.baseUrl;
   isScrollable: boolean = false;
@@ -52,31 +52,31 @@ export class CategoriesComponent implements AfterViewInit {
     this.checkScroll();
   }
 
-  openCurrentMovie(movieId: number) {
-    this.currentMovie = movieId;
-    this.currentMovieId.emit(movieId);
+  openCurrentVideo(videoId: number) {
+    this.currentVideo = videoId;
+    this.currentVideoId.emit(videoId);
   }
 
-  getAllMovies(filmGenre: string) {
-    return this.movies.filter((movie) => movie.film_genre === filmGenre);
+  getAllVideos(filmGenre: string) {
+    return this.videos.filter((video) => video.film_genre === filmGenre);
   }
 
-  getFavoriteMovies() {
-    return this.movies.filter((movie) =>
-      this.favoriteMovies.includes(movie.id)
+  getFavoriteVideos() {
+    return this.videos.filter((video) =>
+      this.favoriteVideos.includes(video.id)
     );
   }
 
-  recentMovies() {
+  recentVideos() {
     const today = new Date();
     const dayOfWeek = today.getDay();
 
     const lastMonday = new Date(today);
     lastMonday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
 
-    return this.movies.filter((movie) => {
-      const movieDate = new Date(movie.created_at);
-      return movieDate >= lastMonday && movieDate <= today;
+    return this.videos.filter((video) => {
+      const videoDate = new Date(video.created_at);
+      return videoDate >= lastMonday && videoDate <= today;
     });
   }
 
@@ -87,7 +87,7 @@ export class CategoriesComponent implements AfterViewInit {
 
   checkScroll() {
     const containers = document.querySelectorAll(
-      '.movies'
+      '.videos'
     ) as NodeListOf<HTMLElement>;
     containers.forEach((container) => {
       const scrollButtons = container.parentElement?.querySelector(

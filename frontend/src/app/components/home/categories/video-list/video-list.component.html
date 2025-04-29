@@ -1,15 +1,15 @@
-<div class="movies">
-  <!-- List of movies -->
-  @for (movie of movies; track movie) {
-  <div class="movie" (click)="openCurrentMovie(movie.id)">
+<div class="videos">
+  <!-- List of videos -->
+  @for (video of videos; track video) {
+  <div class="video" (click)="openCurrentVideo(video.id)">
     <div class="banner">
       <img
-        [ngClass]="{ selected: movie.id === currentMovie }"
-        [src]="getThumbnailUrl(movie.id, movie.file_name)"
+        [ngClass]="{ selected: video.id === currentVideo }"
+        [src]="getThumbnailUrl(video.id, video.file_name)"
         alt=""
       />
     </div>
-    <div *ngIf="watchedMovies.includes(movie.id)" class="watched">
+    <div *ngIf="watchedVideos.includes(video.id)" class="watched">
       <img src="./assets/img/open-eye.svg" alt="" />
     </div>
   </div>

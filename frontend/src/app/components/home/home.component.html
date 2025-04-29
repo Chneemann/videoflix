@@ -30,11 +30,11 @@
     *ngIf="
       this.isWideScreen() || (!this.isWideScreen() && currentMovie.length === 0)
     "
-    [movies]="movies"
-    [currentMovie]="currentMovie[0]?.id"
-    [favoriteMovies]="favoriteMovies"
-    [watchedMovies]="watchedMovies"
-    (currentMovieId)="currentMovieId($event)"
+    [videos]="movies"
+    [currentVideo]="currentMovie[0]?.id"
+    [favoriteVideos]="favoriteMovies"
+    [watchedVideos]="watchedMovies"
+    (currentVideoId)="currentMovieId($event)"
   ></app-categories>
   } @else {
   <div class="video-overlay">

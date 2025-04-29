@@ -1,43 +1,42 @@
-@if (movies.length > 0) {
+@if (videos.length > 0) {
 <section class="hide-scrollbar">
-  <!--  New movies this week -->
-  @if (recentMovies().length > 0) {
+  <!--  New videos this week -->
+  @if (recentVideos().length > 0) {
   <div class="category">
-    <p>New movies added this week</p>
-    <app-movie-list
-      [movies]="recentMovies()"
-      [currentMovie]="currentMovie"
-      [watchedMovies]="watchedMovies"
-      (currentMovieId)="openCurrentMovie($event)"
-    ></app-movie-list>
+    <p>New videos added this week</p>
+    <app-video-list
+      [videos]="recentVideos()"
+      [currentVideo]="currentVideo"
+      [watchedVideos]="watchedVideos"
+      (currentVideoId)="openCurrentVideo($event)"
+    ></app-video-list>
   </div>
   }
 
   <!-- Favorites -->
-  @if (favoriteMovies.length > 0) {
+  @if (favoriteVideos.length > 0) {
   <div class="category">
     <p>Favorites</p>
-    <app-movie-list
-      [movies]="getFavoriteMovies()"
-      [currentMovie]="currentMovie"
-      [watchedMovies]="watchedMovies"
-      (currentMovieId)="openCurrentMovie($event)"
-    ></app-movie-list>
+    <app-video-list
+      [videos]="getFavoriteVideos()"
+      [currentVideo]="currentVideo"
+      [watchedVideos]="watchedVideos"
+      (currentVideoId)="openCurrentVideo($event)"
+    ></app-video-list>
   </div>
   }
 
   <!-- Genre columns -->
   @for (filmGenre of filmGenres; track filmGenre) {
-  <!-- Movies by genre -->
-  @if (getAllMovies(filmGenre.code).length > 0) {
+  <!-- Videos by genre -->
+  @if (getAllVideos(filmGenre.code).length > 0) {
   <div class="category">
-    <p>{{ filmGenre.name }}</p>
-    <app-movie-list
-      [movies]="getAllMovies(filmGenre.code)"
-      [currentMovie]="currentMovie"
-      [watchedMovies]="watchedMovies"
-      (currentMovieId)="openCurrentMovie($event)"
-    ></app-movie-list>
+    <app-video-list
+      [videos]="getAllVideos(filmGenre.code)"
+      [currentVideo]="currentVideo"
+      [watchedVideos]="watchedVideos"
+      (currentVideoId)="openCurrentVideo($event)"
+    ></app-video-list>
   </div>
   } }
 </section>

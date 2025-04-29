@@ -1,6 +1,6 @@
 @use "./../../../../../assets/style/colors.scss" as *;
 
-.movies {
+.videos {
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
@@ -9,11 +9,11 @@
   padding-bottom: 24px;
 }
 
-.movies::-webkit-scrollbar {
+.videos::-webkit-scrollbar {
   display: none;
 }
 
-.movie {
+.video {
   position: relative;
   width: 213px;
   height: 120px;
