@@ -31,6 +31,7 @@
   <!-- Videos by genre -->
   @if (getAllVideos(filmGenre.code).length > 0) {
   <div class="category">
+    <p>{{ filmGenre.name }}</p>
     <app-video-list
       [videos]="getAllVideos(filmGenre.code)"
       [currentVideo]="currentVideo"
