@@ -1,40 +1,40 @@
 <section>
   <div *ngIf="isLoading"></div>
-  @if (!isLoading && movies.length > 0) {
+  @if (!isLoading && videos.length > 0) {
   <!-- If at least one film has been uploaded -->
-  @if (playMovie === "") {
+  @if (playVideo === "") {
   <app-header
-    (moviesChange)="onMoviesChange($event)"
+    (videosChange)="onVideosChange($event)"
     [showFullLogo]="false"
   ></app-header>
   <!-- Hero Banner -->
   <app-hero-banner
     *ngIf="
-      currentMovie.length === 1 ||
-      (this.isWideScreen() && currentMovie.length > 1)
+      currentVideo.length === 1 ||
+      (this.isWideScreen() && currentVideo.length > 1)
     "
     [isWideScreen]="isWideScreen()"
-    [currentMovie]="currentMovie"
-    [favoriteMovies]="favoriteMovies"
-    [watchedMovies]="watchedMovies"
-    (playMovie)="playVideo($event)"
-    (movieIsUploadedChange)="onMovieIsUploadedChange($event)"
-    (moviesChange)="onMoviesChange($event)"
+    [currentVideo]="currentVideo"
+    [favoriteVideos]="favoriteVideos"
+    [watchedVideos]="watchedVideos"
+    (playVideo)="playVideoPath($event)"
+    (videoIsUploadedChange)="onVideoIsUploadedChange($event)"
+    (videosChange)="onVideosChange($event)"
     (refreshChange)="onRefreshPage($event)"
-    (favoriteMovieChange)="onFavoriteMovieChange($event)"
+    (favoriteVideoChange)="onFavoriteVideoChange($event)"
   ></app-hero-banner>
   <!-- Spacer -->
   <div *ngIf="!this.isWideScreen()" class="spacer"></div>
-  <!-- Movie Categories -->
+  <!-- Video Categories -->
   <app-categories
     *ngIf="
-      this.isWideScreen() || (!this.isWideScreen() && currentMovie.length === 0)
+      this.isWideScreen() || (!this.isWideScreen() && currentVideo.length === 0)
     "
-    [videos]="movies"
-    [currentVideo]="currentMovie[0]?.id"
-    [favoriteVideos]="favoriteMovies"
-    [watchedVideos]="watchedMovies"
-    (currentVideoId)="currentMovieId($event)"
+    [videos]="videos"
+    [currentVideo]="currentVideo[0]?.id"
+    [favoriteVideos]="favoriteVideos"
+    [watchedVideos]="watchedVideos"
+    (currentVideoId)="currentVideoId($event)"
   ></app-categories>
   } @else {
   <div class="video-overlay">
@@ -50,10 +50,10 @@
             [ngClass]="{
               'resolution-btn': true,
               active: currentResolution === resolution,
-              'not-available': !movieIsUploaded[resolution]
+              'not-available': !videoIsUploaded[resolution]
             }"
             [disabled]="
-              !movieIsUploaded[resolution] || currentResolution === resolution
+              !videoIsUploaded[resolution] || currentResolution === resolution
             "
             (click)="changeResolution(resolution)"
           >
@@ -73,9 +73,9 @@
         <img src="./../../../../assets/img/logo_ci.svg" alt="Logo" />
       </div>
     </div>
-    <app-video-player [playMovie]="playMovie"></app-video-player>
+    <app-video-player [playVideo]="playVideo"></app-video-player>
   </div>
-  } } @if (!isLoading && movies.length === 0) {
+  } } @if (!isLoading && videos.length === 0) {
   <!-- If the database is empty -->
   <app-header [showFullLogo]="false"></app-header>
   <div class="error">
@@ -85,12 +85,12 @@
   <div class="add-button">
     <app-btn-small
       [imgPath]="'add'"
-      (click)="toggleUploadMovieOverview(true)"
+      (click)="toggleUploadVideoOverview(true)"
     ></app-btn-small>
   </div>
 </section>
-@if (uploadMovieOverview) {
-<app-upload-movie
-  (toggleUploadMovieOverview)="toggleUploadMovieOverview($event)"
-></app-upload-movie>
+@if (uploadVideoOverview) {
+<app-upload-video
+  (toggleUploadVideoOverview)="toggleUploadVideoOverview($event)"
+></app-upload-video>
 }

@@ -16,7 +16,7 @@ export class ResolutionService {
   /**
    * Initializes an object that sets all resolutions to `false`
    */
-  initMovieIsUploaded(): { [resolution: string]: boolean } {
+  initVideoIsUploaded(): { [resolution: string]: boolean } {
     return Object.fromEntries(
       this.AVAILABLE_RESOLUTIONS.map((resolution) => [resolution, false])
     );

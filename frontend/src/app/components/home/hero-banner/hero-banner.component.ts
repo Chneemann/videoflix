@@ -25,17 +25,17 @@ import { ResolutionService } from '../../../services/resolution.service';
 })
 export class HeroBannerComponent implements OnChanges {
   @ViewChild('videoElement') videoElementRef!: ElementRef<HTMLVideoElement>;
-  @Input() currentMovie: any[] = [];
+  @Input() currentVideo: any[] = [];
   @Input() isWideScreen: boolean = false;
-  @Input() favoriteMovies: any[] = [];
-  @Input() watchedMovies: any[] = [];
-  @Output() playMovie = new EventEmitter<string>();
-  @Output() movieIsUploadedChange = new EventEmitter<{
+  @Input() favoriteVideos: any[] = [];
+  @Input() watchedVideos: any[] = [];
+  @Output() playVideo = new EventEmitter<string>();
+  @Output() videoIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;
   }>();
   @Output() refreshChange = new EventEmitter<any[]>();
-  @Output() moviesChange = new EventEmitter<any[]>();
-  @Output() favoriteMovieChange = new EventEmitter<any[]>();
+  @Output() videosChange = new EventEmitter<any[]>();
+  @Output() favoriteVideoChange = new EventEmitter<any[]>();
 
   isVideoLoaded: boolean = false;
   videoUrl: string = '';
@@ -44,7 +44,7 @@ export class HeroBannerComponent implements OnChanges {
   environmentBaseUrl: string = environment.baseUrl;
 
   availableResolutions: string[];
-  movieIsUploaded: { [resolution: string]: boolean };
+  videoIsUploaded: { [resolution: string]: boolean };
 
   constructor(
     private videoService: VideoService,
@@ -53,7 +53,7 @@ export class HeroBannerComponent implements OnChanges {
   ) {
     this.availableResolutions =
       this.resolutionService.getAvailableResolutions();
-    this.movieIsUploaded = this.resolutionService.initMovieIsUploaded();
+    this.videoIsUploaded = this.resolutionService.initVideoIsUploaded();
   }
 
   ngAfterViewInit() {
@@ -69,20 +69,20 @@ export class HeroBannerComponent implements OnChanges {
   }
 
   getVideoUrls() {
-    this.playUrl = `${this.environmentBaseUrl}/media/videos/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}`;
-    this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}_1080p.jpg`;
-    this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentMovie[0]?.id}/${this.currentMovie[0]?.file_name}_video-thumbnail.mp4`;
+    this.playUrl = `${this.environmentBaseUrl}/media/videos/${this.currentVideo[0]?.id}/${this.currentVideo[0]?.file_name}`;
+    this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo[0]?.id}/${this.currentVideo[0]?.file_name}_1080p.jpg`;
+    this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo[0]?.id}/${this.currentVideo[0]?.file_name}_video-thumbnail.mp4`;
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['currentMovie'] && this.currentMovie.length > 0) {
-      const movieId = this.currentMovie[0]?.id;
-      if (movieId) {
+    if (changes['currentVideo'] && this.currentVideo.length > 0) {
+      const videoId = this.currentVideo[0]?.id;
+      if (videoId) {
         this.videoService
-          .isVideoResolutionUploaded(movieId)
+          .isVideoResolutionUploaded(videoId)
           .subscribe((resolutions) => {
-            this.movieIsUploaded = resolutions;
-            this.movieIsUploadedChange.emit(this.movieIsUploaded);
+            this.videoIsUploaded = resolutions;
+            this.videoIsUploadedChange.emit(this.videoIsUploaded);
           });
         setTimeout(() => this.videoSpeed(), 0);
         this.getVideoUrls();
@@ -97,49 +97,49 @@ export class HeroBannerComponent implements OnChanges {
     }
   }
 
-  toggleLikeMovie(movieId: number): void {
-    if (this.favoriteMovies.includes(movieId)) {
-      this.favoriteMovies = this.favoriteMovies.filter((id) => id !== movieId);
+  toggleLikeVideo(videoId: number): void {
+    if (this.favoriteVideos.includes(videoId)) {
+      this.favoriteVideos = this.favoriteVideos.filter((id) => id !== videoId);
     } else {
-      this.favoriteMovies.push(movieId);
+      this.favoriteVideos.push(videoId);
     }
-    this.favoriteMovieChange.emit(this.favoriteMovies);
+    this.favoriteVideoChange.emit(this.favoriteVideos);
   }
 
-  toggleWatchedMovie(movieId: number): void {
-    if (this.watchedMovies.includes(movieId)) {
-      this.watchedMovies = this.watchedMovies.filter((id) => id !== movieId);
+  toggleWatchedVideo(videoId: number): void {
+    if (this.watchedVideos.includes(videoId)) {
+      this.watchedVideos = this.watchedVideos.filter((id) => id !== videoId);
     } else {
-      this.watchedMovies.push(movieId);
+      this.watchedVideos.push(videoId);
     }
-    this.updateWatchedMovies();
+    this.updateWatchedVideos();
   }
 
-  updateWatchedMovies() {
+  updateWatchedVideos() {
     const body = {
-      watched_videos: this.watchedMovies,
+      watched_videos: this.watchedVideos,
     };
-    this.userService.updateWatchedMovies(body);
+    this.userService.updateWatchedVideos(body);
   }
 
-  checkLikeMovies(videoId: number) {
-    return this.favoriteMovies.includes(videoId);
+  checkLikeVideos(videoId: number) {
+    return this.favoriteVideos.includes(videoId);
   }
 
   isAnyResolutionAvailable(): boolean {
-    return Object.values(this.movieIsUploaded).some((available) => available);
+    return Object.values(this.videoIsUploaded).some((available) => available);
   }
 
-  refreshPage(newMovies: any[]) {
-    this.refreshChange.emit(newMovies);
+  refreshPage(newVideos: any[]) {
+    this.refreshChange.emit(newVideos);
   }
 
-  backToCategory(newMovies: any[]) {
-    this.moviesChange.emit(newMovies);
+  backToCategory(newVideos: any[]) {
+    this.videosChange.emit(newVideos);
   }
 
-  playMovieId(videoPath: string, videoId: number) {
-    this.playMovie.emit(videoPath);
-    this.toggleWatchedMovie(videoId);
+  playVideoId(videoPath: string, videoId: number) {
+    this.playVideo.emit(videoPath);
+    this.toggleWatchedVideo(videoId);
   }
 }

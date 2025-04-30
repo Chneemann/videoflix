@@ -14,45 +14,45 @@ export class UserService {
   constructor(private apiService: ApiService) {}
 
   /**
-   * Fetch the list of movies liked and watched by the current user
+   * Fetch the list of videos liked and watched by the current user
    *
    * @returns a promise resolving to an object with two properties:
-   *   - `liked_movies`: a list of movie IDs liked by the current user
-   *   - `watched_movies`: a list of movie IDs watched by the current user
+   *   - `liked_videos`: a list of video IDs liked by the current user
+   *   - `watched_videos`: a list of video IDs watched by the current user
    */
-  getLikedAndWatchedMovies(): Promise<any> {
+  getLikedAndWatchedVideos(): Promise<any> {
     return firstValueFrom(
       this.apiService.get(`/users/${this.currentUserId}/`, true)
     );
   }
 
   /**
-   * Update the list of liked movies for the current user
+   * Update the list of liked videos for the current user
    *
-   * @param likedMovies a list of movie IDs liked by the current user
+   * @param likedVideos a list of video IDs liked by the current user
    * @returns a promise resolved when the update is successful
    */
-  updateLikedMovies(likedMovies: any): Promise<any> {
+  updateLikedVideos(likedVideos: any): Promise<any> {
     return firstValueFrom(
       this.apiService.put(
         `/users/liked/${this.currentUserId}/`,
-        likedMovies,
+        likedVideos,
         true
       )
     );
   }
 
   /**
-   * Update the list of watched movies for the current user
+   * Update the list of watched videos for the current user
    *
-   * @param watchedMovies a list of movie IDs watched by the current user
+   * @param watchedVideos a list of video IDs watched by the current user
    * @returns a promise resolved when the update is successful
    */
-  updateWatchedMovies(watchedMovies: any): Promise<any> {
+  updateWatchedVideos(watchedVideos: any): Promise<any> {
     return firstValueFrom(
       this.apiService.put(
         `/users/watched/${this.currentUserId}/`,
-        watchedMovies,
+        watchedVideos,
         true
       )
     );

@@ -13,7 +13,7 @@ import { TokenService } from '../../../services/token.service';
 })
 export class HeaderComponent {
   @Input() showFullLogo: boolean = true;
-  @Output() moviesChange = new EventEmitter<any[]>();
+  @Output() videosChange = new EventEmitter<any[]>();
 
   constructor(
     private authService: AuthService,
@@ -21,12 +21,12 @@ export class HeaderComponent {
   ) {}
 
   /**
-   * Emits the moviesChange event with the newMovies array as the payload.
-   * This is used to reset the movies displayed in the movie-list component.
-   * @param newMovies The new array of movies to be displayed.
+   * Emits the videosChange event with the newVideos array as the payload.
+   * This is used to reset the videos displayed in the video-list component.
+   * @param newVideos The new array of videos to be displayed.
    */
-  backToOverview(newMovies: any[]) {
-    this.moviesChange.emit(newMovies);
+  backToOverview(newVideos: any[]) {
+    this.videosChange.emit(newVideos);
   }
 
   /**

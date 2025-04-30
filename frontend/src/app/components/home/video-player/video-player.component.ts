@@ -10,7 +10,7 @@ import Hls from 'hls.js';
   styleUrls: ['./video-player.component.scss'],
 })
 export class VideoPlayerComponent implements OnInit, OnDestroy {
-  @Input() playMovie: string = '';
+  @Input() playVideo: string = '';
 
   private hls: Hls | null = null;
   private videoElement: HTMLVideoElement | null = null;
@@ -52,7 +52,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
    */
   private initializePlayer(): void {
     this.videoElement = this.elementRef.nativeElement.querySelector('video');
-    if (!this.playMovie || !this.videoElement) return;
+    if (!this.playVideo || !this.videoElement) return;
 
     this.resolutionUrls = this.getResolutionUrls();
     const defaultUrl = this.resolutionUrls[this.defaultResolution];
@@ -74,7 +74,7 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
     return Object.fromEntries(
       this.resolutionService
         .getAvailableResolutions()
-        .map((res) => [res, `${this.playMovie}_${res}.m3u8`])
+        .map((res) => [res, `${this.playVideo}_${res}.m3u8`])
     );
   }
 

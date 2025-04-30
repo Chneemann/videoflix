@@ -1,10 +1,10 @@
-<div class="overlay" (click)="closeMovieUploadOverview()">
+<div class="overlay" (click)="closeVideoUploadOverview()">
   <div class="center" (click)="stopPropagation($event)">
     <div class="content">
-      <div class="headline">Upload Movie</div>
+      <div class="headline">Upload Video</div>
       <form
-        #movieForm="ngForm"
-        (ngSubmit)="onSubmit(movieForm)"
+        #videoForm="ngForm"
+        (ngSubmit)="onSubmit(videoForm)"
         onsubmit="return false"
         (input)="this.errorService.clearError()"
       >
@@ -14,13 +14,13 @@
           name="title"
           #title="ngModel"
           placeholder="Title"
-          [(ngModel)]="movieData.title"
+          [(ngModel)]="videoData.title"
           [class.error-border]="!title.valid && title.touched"
           required
         />
         <div class="error-msg">
           @if (!title.valid && title.touched) {
-          <p>Please enter a movie title</p>
+          <p>Please enter a video title</p>
           }
         </div>
         <textarea
@@ -28,21 +28,21 @@
           name="description"
           #description="ngModel"
           placeholder="Description"
-          [(ngModel)]="movieData.description"
+          [(ngModel)]="videoData.description"
           [class.error-border]="!description.valid && description.touched"
           rows="4"
           required
         ></textarea>
         <div class="error-msg">
           @if (!description.valid && description.touched) {
-          <p>Please enter a movie description</p>
+          <p>Please enter a video description</p>
           }
         </div>
         <select
           id="filmGenre"
           name="filmGenre"
           #filmGenre="ngModel"
-          [(ngModel)]="movieData.filmGenre"
+          [(ngModel)]="videoData.filmGenre"
           [class.error-border]="!filmGenre.valid && filmGenre.touched"
           required
         >
@@ -86,17 +86,17 @@
           <app-btn-large
             [type]="'button'"
             [value]="'Close'"
-            (click)="closeMovieUploadOverview()"
+            (click)="closeVideoUploadOverview()"
           ></app-btn-large>
           <app-btn-large
             [type]="'submit'"
-            [value]="'Upload Movie'"
+            [value]="'Upload Video'"
             [disabled]="
-              !movieData.title ||
-              !movieData.description ||
-              !movieData.filmGenre ||
-              !movieData.videoFile ||
-              movieData.send
+              !videoData.title ||
+              !videoData.description ||
+              !videoData.filmGenre ||
+              !videoData.videoFile ||
+              videoData.send
             "
           ></app-btn-large>
         </div>
@@ -104,8 +104,8 @@
     </div>
   </div>
 </div>
-@if(movieData.send){
+@if(videoData.send){
 <app-loading-dialog
-  loadingMsg="Movie is uploading, please be patient a moment."
+  loadingMsg="Video is uploading, please be patient a moment."
 ></app-loading-dialog>
 }

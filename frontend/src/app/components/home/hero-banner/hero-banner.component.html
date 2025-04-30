@@ -4,7 +4,7 @@
   }"
 >
   <div
-    class="movie-banner"
+    class="video-banner"
     [ngClass]="{
       fullVhBanner: !isWideScreen
     }"
@@ -13,7 +13,7 @@
     <img *ngIf="!isVideoLoaded" [src]="thumbnailUrl" class="fallback-image" />
     <video
       #videoElement
-      *ngIf="currentMovie[0].id"
+      *ngIf="currentVideo[0].id"
       [src]="videoUrl"
       poster="{{ thumbnailUrl }}"
       autoplay
@@ -26,21 +26,21 @@
     ></video>
   </div>
 
-  @if (currentMovie.length > 0) {
+  @if (currentVideo.length > 0) {
   <div
     class="content"
     [ngClass]="{
       fullVhContent: !isWideScreen
     }"
   >
-    <div class="title">{{ currentMovie[0].title }}</div>
+    <div class="title">{{ currentVideo[0].title }}</div>
     <div
       class="description hide-scrollbar"
       [ngClass]="{
         fullVhDescription: !isWideScreen
       }"
     >
-      {{ currentMovie[0].description }}
+      {{ currentVideo[0].description }}
     </div>
     <div class="buttons">
       <app-btn-small
@@ -54,10 +54,10 @@
         [imgPath]="'play'"
         [imgReverse]="true"
         [disabled]="!isAnyResolutionAvailable()"
-        (click)="playMovieId(playUrl, currentMovie[0].id)"
+        (click)="playVideoId(playUrl, currentVideo[0].id)"
       ></app-btn-large>
-      <div class="favorite-img" (click)="toggleLikeMovie(currentMovie[0].id)">
-        @if(checkLikeMovies(currentMovie[0].id)) {
+      <div class="favorite-img" (click)="toggleLikeVideo(currentVideo[0].id)">
+        @if(checkLikeVideos(currentVideo[0].id)) {
         <img
           class="filled"
           src="./../../../../assets/img/favorite-filled.svg"
@@ -74,7 +74,7 @@
       @if (!isAnyResolutionAvailable()) {
       <p>
         (The video is being converted)
-        <a (click)="refreshPage(currentMovie)">Refresh</a>
+        <a (click)="refreshPage(currentVideo)">Refresh</a>
       </p>
       }
     </div>

@@ -7,7 +7,7 @@ import { VideoService } from '../../../services/video.service';
 import { LoadingDialogComponent } from '../../../shared/components/loading-dialog/loading-dialog.component';
 
 @Component({
-  selector: 'app-upload-movie',
+  selector: 'app-upload-video',
   standalone: true,
   imports: [
     CommonModule,
@@ -15,15 +15,15 @@ import { LoadingDialogComponent } from '../../../shared/components/loading-dialo
     BtnLargeComponent,
     LoadingDialogComponent,
   ],
-  templateUrl: './upload-movie.component.html',
-  styleUrl: './upload-movie.component.scss',
+  templateUrl: './upload-video.component.html',
+  styleUrl: './upload-video.component.scss',
 })
-export class UploadMovieComponent {
-  @Output() toggleUploadMovieOverview = new EventEmitter<boolean>();
+export class UploadVideoComponent {
+  @Output() toggleUploadVideoOverview = new EventEmitter<boolean>();
   errorMsgFileSize: string | null = null;
   maxFileSizeMB = 20;
 
-  movieData = {
+  videoData = {
     title: '',
     description: '',
     filmGenre: '',
@@ -40,8 +40,8 @@ export class UploadMovieComponent {
     event.stopPropagation();
   }
 
-  closeMovieUploadOverview() {
-    this.toggleUploadMovieOverview.emit(false);
+  closeVideoUploadOverview() {
+    this.toggleUploadVideoOverview.emit(false);
   }
 
   onFileChange(event: any) {
@@ -52,7 +52,7 @@ export class UploadMovieComponent {
   isOneFile(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.movieData.videoFile = file;
+      this.videoData.videoFile = file;
     }
   }
   isFileSize(event: any) {
@@ -72,12 +72,12 @@ export class UploadMovieComponent {
     if (!ngForm.submitted || !ngForm.form.valid) return;
 
     try {
-      this.movieData.send = true;
+      this.videoData.send = true;
       let formData = this.createFormData();
       await this.videoService.uploadVideo(formData);
       ngForm.resetForm();
-      this.closeMovieUploadOverview();
-      this.movieData.send = false;
+      this.closeVideoUploadOverview();
+      this.videoData.send = false;
       window.location.reload();
       this.errorService.clearError();
     } catch (error) {
@@ -87,11 +87,11 @@ export class UploadMovieComponent {
 
   private createFormData(): FormData {
     const formData = new FormData();
-    formData.append('title', this.movieData.title);
-    formData.append('description', this.movieData.description);
-    formData.append('film_genre', this.movieData.filmGenre);
-    if (this.movieData.videoFile) {
-      formData.append('video_file', this.movieData.videoFile);
+    formData.append('title', this.videoData.title);
+    formData.append('description', this.videoData.description);
+    formData.append('film_genre', this.videoData.filmGenre);
+    if (this.videoData.videoFile) {
+      formData.append('video_file', this.videoData.videoFile);
     }
     return formData;
   }

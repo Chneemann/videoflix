@@ -6,7 +6,7 @@ import { VideoService } from '../../services/video.service';
 import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { BtnSmallComponent } from '../../shared/components/buttons/btn-small/btn-small.component';
-import { UploadMovieComponent } from './upload-movie/upload-movie.component';
+import { UploadVideoComponent } from './upload-video/upload-video.component';
 import { UserService } from '../../services/user.service';
 import { ResolutionService } from '../../services/resolution.service';
 
@@ -20,24 +20,24 @@ import { ResolutionService } from '../../services/resolution.service';
     CategoriesComponent,
     VideoPlayerComponent,
     BtnSmallComponent,
-    UploadMovieComponent,
+    UploadVideoComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   @ViewChild(VideoPlayerComponent) videoPlayer!: VideoPlayerComponent;
-  movies: any[] = [];
-  favoriteMovies: number[] = [];
-  watchedMovies: number[] = [];
-  currentMovie: any[] = [];
-  playMovie: string = '';
+  videos: any[] = [];
+  favoriteVideos: number[] = [];
+  watchedVideos: number[] = [];
+  currentVideo: any[] = [];
+  playVideo: string = '';
   isLoading: boolean = true;
-  uploadMovieOverview: boolean = false;
+  uploadVideoOverview: boolean = false;
 
   availableResolutions: string[];
   currentResolution: string;
-  movieIsUploaded: { [resolution: string]: boolean };
+  videoIsUploaded: { [resolution: string]: boolean };
 
   constructor(
     private videoService: VideoService,
@@ -47,46 +47,46 @@ export class HomeComponent implements OnInit {
     this.availableResolutions =
       this.resolutionService.getAvailableResolutions();
     this.currentResolution = this.resolutionService.getDefaultResolution();
-    this.movieIsUploaded = this.resolutionService.initMovieIsUploaded();
+    this.videoIsUploaded = this.resolutionService.initVideoIsUploaded();
   }
 
   async ngOnInit() {
-    this.loadLikedAndWatchedMovies();
-    await this.loadAllMovies();
+    this.loadLikedAndWatchedVideos();
+    await this.loadAllVideos();
     if (this.isWideScreen()) {
-      this.currentMovie.length === 0 ? this.loadRandomMovie() : null;
+      this.currentVideo.length === 0 ? this.loadRandomVideo() : null;
     }
   }
 
-  async loadLikedAndWatchedMovies() {
+  async loadLikedAndWatchedVideos() {
     try {
-      const userData = await this.userService.getLikedAndWatchedMovies();
-      this.favoriteMovies = userData.liked_videos;
-      this.watchedMovies = userData.watched_videos;
+      const userData = await this.userService.getLikedAndWatchedVideos();
+      this.favoriteVideos = userData.liked_videos;
+      this.watchedVideos = userData.watched_videos;
     } catch (error) {
       console.error(error);
     }
   }
 
-  updateLikeMovies() {
+  updateLikeVideos() {
     const body = {
-      liked_videos: this.favoriteMovies,
+      liked_videos: this.favoriteVideos,
     };
-    this.userService.updateLikedMovies(body);
+    this.userService.updateLikedVideos(body);
   }
 
-  onRefreshPage(updatedMovies: any[]) {
-    this.currentMovie = [];
+  onRefreshPage(updatedVideos: any[]) {
+    this.currentVideo = [];
     setTimeout(() => {
-      this.currentMovie = updatedMovies;
+      this.currentVideo = updatedVideos;
     }, 1);
   }
 
-  onMoviesChange(updatedMovies: any[]) {
+  onVideosChange(updatedVideos: any[]) {
     if (this.isWideScreen()) {
-      this.loadRandomMovie();
+      this.loadRandomVideo();
     } else {
-      this.currentMovie = updatedMovies;
+      this.currentVideo = updatedVideos;
     }
   }
 
@@ -94,60 +94,60 @@ export class HomeComponent implements OnInit {
     return window.innerWidth > 600;
   }
 
-  onMovieIsUploadedChange(newStatus: { [resolution: string]: boolean }) {
-    this.movieIsUploaded = newStatus;
+  onVideoIsUploadedChange(newStatus: { [resolution: string]: boolean }) {
+    this.videoIsUploaded = newStatus;
   }
 
-  onFavoriteMovieChange(favoriteMovies: any) {
-    this.favoriteMovies = favoriteMovies;
-    this.updateLikeMovies();
+  onFavoriteVideoChange(favoriteVideos: any) {
+    this.favoriteVideos = favoriteVideos;
+    this.updateLikeVideos();
   }
 
   changeResolution(resolution: string) {
-    if (this.videoPlayer && this.movieIsUploaded[resolution]) {
+    if (this.videoPlayer && this.videoIsUploaded[resolution]) {
       this.videoPlayer.switchResolution(resolution);
       this.currentResolution = resolution;
     }
   }
 
-  async loadAllMovies() {
+  async loadAllVideos() {
     this.isLoading = true;
     try {
-      this.movies = await this.videoService.getAllVideos();
+      this.videos = await this.videoService.getAllVideos();
     } finally {
       this.isLoading = false;
     }
   }
 
   closeVideo(): void {
-    this.playMovie = '';
+    this.playVideo = '';
   }
 
-  playVideo(videoPath: string) {
+  playVideoPath(videoPath: string) {
     this.currentResolution = '720p';
-    this.playMovie = videoPath;
+    this.playVideo = videoPath;
   }
 
-  loadRandomMovie(): void {
-    const randomIndex = Math.floor(Math.random() * this.movies.length);
-    this.currentMovie = [this.movies[randomIndex]];
+  loadRandomVideo(): void {
+    const randomIndex = Math.floor(Math.random() * this.videos.length);
+    this.currentVideo = [this.videos[randomIndex]];
   }
 
-  currentMovieId(movieId: number) {
-    let index = this.movies.findIndex((movie) => movie.id === movieId);
+  currentVideoId(videoId: number) {
+    let index = this.videos.findIndex((video) => video.id === videoId);
     if (index !== -1) {
-      this.currentMovie = [];
-      this.currentMovie.push(this.movies[index]);
+      this.currentVideo = [];
+      this.currentVideo.push(this.videos[index]);
     }
   }
 
   isAnyResolutionUnavailable(): boolean {
     return this.availableResolutions.some(
-      (resolution) => !this.movieIsUploaded[resolution]
+      (resolution) => !this.videoIsUploaded[resolution]
     );
   }
 
-  toggleUploadMovieOverview(value: any) {
-    this.uploadMovieOverview = value;
+  toggleUploadVideoOverview(value: any) {
+    this.uploadVideoOverview = value;
   }
 }
