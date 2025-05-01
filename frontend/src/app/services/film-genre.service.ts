@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
-
-export interface FilmGenre {
-  code: string;
-  name: string;
-}
+import { FilmGenre } from '../interfaces/film-genre.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class GenreService {
+export class FilmGenreService {
   private genres: FilmGenre[] = [];
 
   constructor(private apiService: ApiService) {}

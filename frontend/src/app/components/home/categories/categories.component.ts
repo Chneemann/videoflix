@@ -10,8 +10,9 @@ import {
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { VideoListComponent } from './video-list/video-list.component';
-import { FilmGenre, GenreService } from '../../../services/genre.service';
+import { FilmGenreService } from '../../../services/film-genre.service';
 import { Subject, takeUntil } from 'rxjs';
+import { FilmGenre } from '../../../interfaces/film-genre.interface';
 
 @Component({
   selector: 'app-categories',
@@ -20,7 +21,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent implements OnInit, AfterViewInit {
+export class CategoriesComponent implements AfterViewInit {
   @Input() videos: any[] = [];
   @Input() currentVideo: number = 0;
   @Input() favoriteVideos: any[] = [];
@@ -29,32 +30,13 @@ export class CategoriesComponent implements OnInit, AfterViewInit {
 
   environmentBaseUrl: string = environment.baseUrl;
   isScrollable: boolean = false;
-  filmGenres: FilmGenre[] = [];
 
-  private destroy$ = new Subject<void>();
+  genres$ = this.filmGenreService.getGenres();
 
-  constructor(private genreService: GenreService) {}
-
-  ngOnInit(): void {
-    this.getFilmGenreNames();
-  }
+  constructor(private filmGenreService: FilmGenreService) {}
 
   ngAfterViewInit(): void {
     this.checkScroll();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  getFilmGenreNames(): void {
-    this.genreService
-      .getGenres()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((genres) => {
-        this.filmGenres = genres;
-      });
   }
 
   openCurrentVideo(videoId: number) {

@@ -27,8 +27,12 @@
   }
 
   <!-- Genre columns -->
-  @for (filmGenre of filmGenres; track filmGenre) {
-  <!-- Videos by genre -->
+  @if (genres$ | async; as genres) {
+
+  <!-- Loop through genres -->
+  @for (filmGenre of genres; track filmGenre) {
+
+  <!-- If genre has videos -->
   @if (getAllVideos(filmGenre.code).length > 0) {
   <div class="category">
     <p>{{ filmGenre.name }}</p>
@@ -39,6 +43,8 @@
       (currentVideoId)="openCurrentVideo($event)"
     ></app-video-list>
   </div>
-  } }
+  } } } @else {
+  <div class="category"><p>Loading...</p></div>
+  }
 </section>
 }
