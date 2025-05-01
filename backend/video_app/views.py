@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializer import VideoSerializer
 from .models import Video
+from .class_assets import FILM_GENRES
 from django.core.cache.backends.base import DEFAULT_TIMEOUT 
 from django.views.decorators.cache import cache_page 
 from django.conf import settings
@@ -23,6 +24,15 @@ def video_list(request):
     videos = Video.objects.all()
     serializer = VideoSerializer(videos, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def genre_list(request):
+    """
+    Return a list of film genres from static choices.
+    """
+    genres = [{'code': code, 'name': name} for code, name in FILM_GENRES]
+    return Response(genres)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

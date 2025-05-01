@@ -5,10 +5,13 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnInit,
   Output,
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { VideoListComponent } from './video-list/video-list.component';
+import { FilmGenre, GenreService } from '../../../services/genre.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-categories',
@@ -17,7 +20,7 @@ import { VideoListComponent } from './video-list/video-list.component';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent implements AfterViewInit {
+export class CategoriesComponent implements OnInit, AfterViewInit {
   @Input() videos: any[] = [];
   @Input() currentVideo: number = 0;
   @Input() favoriteVideos: any[] = [];
@@ -26,30 +29,32 @@ export class CategoriesComponent implements AfterViewInit {
 
   environmentBaseUrl: string = environment.baseUrl;
   isScrollable: boolean = false;
+  filmGenres: FilmGenre[] = [];
 
-  filmGenres = [
-    { code: 'action', name: 'Action' },
-    { code: 'adventure', name: 'Adventure' },
-    { code: 'animation', name: 'Animation' },
-    { code: 'anime', name: 'Anime' },
-    { code: 'comedy', name: 'Comedy' },
-    { code: 'crime', name: 'Crime' },
-    { code: 'documentary', name: 'Documentary' },
-    { code: 'drama', name: 'Drama' },
-    { code: 'fantasy', name: 'Fantasy' },
-    { code: 'horror', name: 'Horror' },
-    { code: 'musical', name: 'Musical' },
-    { code: 'mystery', name: 'Mystery' },
-    { code: 'other', name: 'Miscellaneous' },
-    { code: 'romance', name: 'Romance' },
-    { code: 'science_fiction', name: 'Science Fiction' },
-    { code: 'thriller', name: 'Thriller' },
-    { code: 'war', name: 'War' },
-    { code: 'western', name: 'Western' },
-  ];
+  private destroy$ = new Subject<void>();
 
-  ngAfterViewInit() {
+  constructor(private genreService: GenreService) {}
+
+  ngOnInit(): void {
+    this.getFilmGenreNames();
+  }
+
+  ngAfterViewInit(): void {
     this.checkScroll();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  getFilmGenreNames(): void {
+    this.genreService
+      .getGenres()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((genres) => {
+        this.filmGenres = genres;
+      });
   }
 
   openCurrentVideo(videoId: number) {

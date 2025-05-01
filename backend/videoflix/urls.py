@@ -23,8 +23,9 @@ urlpatterns = [
     # Content URLs
     path('videos/', video_views.video_list, name='video_list'),
     path('video/upload/', video_views.video_upload, name='video_upload'),
+    path('video/genres/', video_views.genre_list, name='genre_list'),
     path('video/<int:id>/', video_views.check_video_resolutions, name='check_video_resolutions'),
- 
+    
     # Users URLs
     path('users/', user_views.user_list, name='user_list'),
     path('users/<int:id>/', user_views.user_detail, name='user_detail'),
