@@ -15,6 +15,7 @@ import { environment } from '../../../../environments/environment';
 import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/btn-small.component';
 import { UserService } from '../../../services/user.service';
 import { ResolutionService } from '../../../services/resolution.service';
+import { Video } from '../../../interfaces/video.interface';
 
 @Component({
   selector: 'app-hero-banner',
@@ -25,15 +26,16 @@ import { ResolutionService } from '../../../services/resolution.service';
 })
 export class HeroBannerComponent implements OnChanges {
   @ViewChild('videoElement') videoElementRef!: ElementRef<HTMLVideoElement>;
-  @Input() currentVideo: any[] = [];
+  @Input() videos: Video[] = [];
+  @Input() currentVideo: Video | null = null;
   @Input() isWideScreen: boolean = false;
-  @Input() favoriteVideos: any[] = [];
-  @Input() watchedVideos: any[] = [];
+  @Input() favoriteVideos: number[] = [];
+  @Input() watchedVideos: number[] = [];
   @Output() playVideo = new EventEmitter<string>();
   @Output() videoIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;
   }>();
-  @Output() refreshChange = new EventEmitter<any[]>();
+  @Output() refreshChange = new EventEmitter<Video[]>();
   @Output() videosChange = new EventEmitter<any[]>();
   @Output() favoriteVideoChange = new EventEmitter<any[]>();
 
@@ -69,14 +71,16 @@ export class HeroBannerComponent implements OnChanges {
   }
 
   getVideoUrls() {
-    this.playUrl = `${this.environmentBaseUrl}/media/videos/${this.currentVideo[0]?.id}/${this.currentVideo[0]?.file_name}`;
-    this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo[0]?.id}/${this.currentVideo[0]?.file_name}_1080p.jpg`;
-    this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo[0]?.id}/${this.currentVideo[0]?.file_name}_video-thumbnail.mp4`;
+    if (this.currentVideo) {
+      this.playUrl = `${this.environmentBaseUrl}/media/videos/${this.currentVideo.id}/${this.currentVideo.file_name}`;
+      this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo.id}/${this.currentVideo.file_name}_1080p.jpg`;
+      this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo.id}/${this.currentVideo.file_name}_video-thumbnail.mp4`;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['currentVideo'] && this.currentVideo.length > 0) {
-      const videoId = this.currentVideo[0]?.id;
+    if (changes['currentVideo'] && this.currentVideo !== null) {
+      const videoId = this.currentVideo.id;
       if (videoId) {
         this.videoService
           .isVideoResolutionUploaded(videoId)
@@ -97,13 +101,19 @@ export class HeroBannerComponent implements OnChanges {
     }
   }
 
-  toggleLikeVideo(videoId: number): void {
-    if (this.favoriteVideos.includes(videoId)) {
-      this.favoriteVideos = this.favoriteVideos.filter((id) => id !== videoId);
-    } else {
-      this.favoriteVideos.push(videoId);
+  toggleLikeVideo(video: Video): void {
+    if (video.id !== undefined) {
+      const videoId = video.id;
+
+      if (this.favoriteVideos.includes(videoId)) {
+        this.favoriteVideos = this.favoriteVideos.filter(
+          (id) => id !== videoId
+        );
+      } else {
+        this.favoriteVideos.push(videoId);
+      }
+      this.favoriteVideoChange.emit(this.favoriteVideos);
     }
-    this.favoriteVideoChange.emit(this.favoriteVideos);
   }
 
   toggleWatchedVideo(videoId: number): void {
@@ -122,24 +132,29 @@ export class HeroBannerComponent implements OnChanges {
     this.userService.updateWatchedVideos(body);
   }
 
-  checkLikeVideos(videoId: number) {
-    return this.favoriteVideos.includes(videoId);
+  checkLikeVideos(video: Video) {
+    if (video.id !== undefined) {
+      return this.favoriteVideos.includes(video.id);
+    }
+    return false;
   }
 
   isAnyResolutionAvailable(): boolean {
     return Object.values(this.videoIsUploaded).some((available) => available);
   }
 
-  refreshPage(newVideos: any[]) {
-    this.refreshChange.emit(newVideos);
+  refreshPage() {
+    this.refreshChange.emit(this.currentVideo ? [this.currentVideo] : []);
   }
 
-  backToCategory(newVideos: any[]) {
-    this.videosChange.emit(newVideos);
+  backToCategory() {
+    this.videosChange.emit([]);
   }
 
-  playVideoId(videoPath: string, videoId: number) {
-    this.playVideo.emit(videoPath);
-    this.toggleWatchedVideo(videoId);
+  playVideoId(videoPath: string, video: Video) {
+    if (video.id !== undefined) {
+      this.playVideo.emit(videoPath);
+      this.toggleWatchedVideo(video.id);
+    }
   }
 }

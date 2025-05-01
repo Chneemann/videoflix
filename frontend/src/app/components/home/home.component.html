@@ -10,9 +10,9 @@
   <!-- Hero Banner -->
   <app-hero-banner
     *ngIf="
-      currentVideo.length === 1 ||
-      (this.isWideScreen() && currentVideo.length > 1)
+      currentVideo !== null || (this.isWideScreen() && currentVideo !== null)
     "
+    [videos]="videos"
     [isWideScreen]="isWideScreen()"
     [currentVideo]="currentVideo"
     [favoriteVideos]="favoriteVideos"
@@ -28,10 +28,10 @@
   <!-- Video Categories -->
   <app-categories
     *ngIf="
-      this.isWideScreen() || (!this.isWideScreen() && currentVideo.length === 0)
+      this.isWideScreen() || (!this.isWideScreen() && currentVideo !== null)
     "
     [videos]="videos"
-    [currentVideo]="currentVideo[0]?.id"
+    [currentVideo]="currentVideo"
     [favoriteVideos]="favoriteVideos"
     [watchedVideos]="watchedVideos"
     (currentVideoId)="currentVideoId($event)"

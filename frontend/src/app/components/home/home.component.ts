@@ -9,6 +9,7 @@ import { BtnSmallComponent } from '../../shared/components/buttons/btn-small/btn
 import { UploadVideoComponent } from './upload-video/upload-video.component';
 import { UserService } from '../../services/user.service';
 import { ResolutionService } from '../../services/resolution.service';
+import { Video } from '../../interfaces/video.interface';
 
 @Component({
   selector: 'app-home',
@@ -27,10 +28,10 @@ import { ResolutionService } from '../../services/resolution.service';
 })
 export class HomeComponent implements OnInit {
   @ViewChild(VideoPlayerComponent) videoPlayer!: VideoPlayerComponent;
-  videos: any[] = [];
+  videos: Video[] = [];
+  currentVideo: Video | null = null;
   favoriteVideos: number[] = [];
   watchedVideos: number[] = [];
-  currentVideo: any[] = [];
   playVideo: string = '';
   isLoading: boolean = true;
   uploadVideoOverview: boolean = false;
@@ -53,8 +54,8 @@ export class HomeComponent implements OnInit {
   async ngOnInit() {
     this.loadLikedAndWatchedVideos();
     await this.loadAllVideos();
-    if (this.isWideScreen()) {
-      this.currentVideo.length === 0 ? this.loadRandomVideo() : null;
+    if (this.isWideScreen() && !this.currentVideo) {
+      this.loadRandomVideo();
     }
   }
 
@@ -75,18 +76,19 @@ export class HomeComponent implements OnInit {
     this.userService.updateLikedVideos(body);
   }
 
-  onRefreshPage(updatedVideos: any[]) {
-    this.currentVideo = [];
+  onRefreshPage(updatedVideos: Video[] | undefined) {
+    this.currentVideo = null;
     setTimeout(() => {
-      this.currentVideo = updatedVideos;
+      this.currentVideo =
+        updatedVideos && updatedVideos.length > 0 ? updatedVideos[0] : null;
     }, 1);
   }
 
-  onVideosChange(updatedVideos: any[]) {
+  onVideosChange(updatedVideos: Video[]) {
     if (this.isWideScreen()) {
       this.loadRandomVideo();
     } else {
-      this.currentVideo = updatedVideos;
+      this.currentVideo = updatedVideos[0] || null;
     }
   }
 
@@ -98,7 +100,7 @@ export class HomeComponent implements OnInit {
     this.videoIsUploaded = newStatus;
   }
 
-  onFavoriteVideoChange(favoriteVideos: any) {
+  onFavoriteVideoChange(favoriteVideos: number[]) {
     this.favoriteVideos = favoriteVideos;
     this.updateLikeVideos();
   }
@@ -130,14 +132,13 @@ export class HomeComponent implements OnInit {
 
   loadRandomVideo(): void {
     const randomIndex = Math.floor(Math.random() * this.videos.length);
-    this.currentVideo = [this.videos[randomIndex]];
+    this.currentVideo = this.videos[randomIndex] || null;
   }
 
   currentVideoId(videoId: number) {
-    let index = this.videos.findIndex((video) => video.id === videoId);
-    if (index !== -1) {
-      this.currentVideo = [];
-      this.currentVideo.push(this.videos[index]);
+    const video = this.videos.find((v) => v.id === videoId);
+    if (video) {
+      this.currentVideo = video;
     }
   }
 
@@ -147,7 +148,7 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  toggleUploadVideoOverview(value: any) {
+  toggleUploadVideoOverview(value: boolean) {
     this.uploadVideoOverview = value;
   }
 }

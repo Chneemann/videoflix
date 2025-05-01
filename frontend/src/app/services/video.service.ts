@@ -3,6 +3,7 @@ import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { ResolutionService } from './resolution.service';
+import { Video } from '../interfaces/video.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +34,7 @@ export class VideoService {
    *
    * @returns a promise resolving to an array of video objects
    */
-  getAllVideos(): Promise<any> {
+  getAllVideos(): Promise<Video[]> {
     return firstValueFrom(this.apiService.get('/videos/', true));
   }
 
@@ -53,7 +54,7 @@ export class VideoService {
    * @param formData the FormData object representing the video to upload
    * @returns a promise resolved when the upload is successful
    */
-  uploadVideo(formData: FormData): Promise<any> {
+  uploadVideo(formData: FormData): Promise<Video> {
     return firstValueFrom(
       this.apiService.post('/video/upload/', formData, true)
     );

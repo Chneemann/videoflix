@@ -11,8 +11,7 @@ import {
 import { environment } from '../../../../environments/environment';
 import { VideoListComponent } from './video-list/video-list.component';
 import { FilmGenreService } from '../../../services/film-genre.service';
-import { Subject, takeUntil } from 'rxjs';
-import { FilmGenre } from '../../../interfaces/film-genre.interface';
+import { Video } from '../../../interfaces/video.interface';
 
 @Component({
   selector: 'app-categories',
@@ -22,8 +21,8 @@ import { FilmGenre } from '../../../interfaces/film-genre.interface';
   styleUrl: './categories.component.scss',
 })
 export class CategoriesComponent implements AfterViewInit {
-  @Input() videos: any[] = [];
-  @Input() currentVideo: number = 0;
+  @Input() videos: Video[] = [];
+  @Input() currentVideo: Video | null = null;
   @Input() favoriteVideos: any[] = [];
   @Input() watchedVideos: any[] = [];
   @Output() currentVideoId = new EventEmitter<number>();
@@ -40,8 +39,11 @@ export class CategoriesComponent implements AfterViewInit {
   }
 
   openCurrentVideo(videoId: number) {
-    this.currentVideo = videoId;
-    this.currentVideoId.emit(videoId);
+    const video = this.videos.find((v) => v.id === videoId);
+    if (video) {
+      this.currentVideo = video;
+      this.currentVideoId.emit(videoId);
+    }
   }
 
   getAllVideos(filmGenre: string) {

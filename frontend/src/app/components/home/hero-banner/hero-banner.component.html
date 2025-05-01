@@ -10,10 +10,14 @@
     }"
   >
     <!-- Fallback image is displayed before the video is loaded -->
-    <img *ngIf="!isVideoLoaded" [src]="thumbnailUrl" class="fallback-image" />
+    @if (!isVideoLoaded) {
+    <img [src]="thumbnailUrl" class="fallback-image" />
+    }
+
+    <!-- Video player -->
+    @if (currentVideo) {
     <video
       #videoElement
-      *ngIf="currentVideo[0].id"
       [src]="videoUrl"
       poster="{{ thumbnailUrl }}"
       autoplay
@@ -24,40 +28,42 @@
       (canplay)="onVideoLoad()"
       (error)="onVideoError()"
     ></video>
+    }
   </div>
 
-  @if (currentVideo.length > 0) {
+  @if (currentVideo !== null) {
   <div
     class="content"
     [ngClass]="{
       fullVhContent: !isWideScreen
     }"
   >
-    <div class="title">{{ currentVideo[0].title }}</div>
+    <div class="title">{{ currentVideo.title }}</div>
     <div
       class="description hide-scrollbar"
       [ngClass]="{
         fullVhDescription: !isWideScreen
       }"
     >
-      {{ currentVideo[0].description }}
+      {{ currentVideo.description }}
     </div>
     <div class="buttons">
+      @if (!isWideScreen) {
       <app-btn-small
-        *ngIf="!isWideScreen"
         [imgPath]="'back'"
         [imgRadius]="'24px'"
-        (click)="backToCategory([])"
+        (click)="backToCategory()"
       ></app-btn-small>
+      }
       <app-btn-large
         [value]="'Play'"
         [imgPath]="'play'"
         [imgReverse]="true"
         [disabled]="!isAnyResolutionAvailable()"
-        (click)="playVideoId(playUrl, currentVideo[0].id)"
+        (click)="playVideoId(playUrl, currentVideo)"
       ></app-btn-large>
-      <div class="favorite-img" (click)="toggleLikeVideo(currentVideo[0].id)">
-        @if(checkLikeVideos(currentVideo[0].id)) {
+      <div class="favorite-img" (click)="toggleLikeVideo(currentVideo)">
+        @if(checkLikeVideos(currentVideo)) {
         <img
           class="filled"
           src="./../../../../assets/img/favorite-filled.svg"
@@ -74,7 +80,7 @@
       @if (!isAnyResolutionAvailable()) {
       <p>
         (The video is being converted)
-        <a (click)="refreshPage(currentVideo)">Refresh</a>
+        <a (click)="refreshPage()">Refresh</a>
       </p>
       }
     </div>

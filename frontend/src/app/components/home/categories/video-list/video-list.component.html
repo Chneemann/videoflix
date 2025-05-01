@@ -4,7 +4,7 @@
   <div class="video" (click)="openCurrentVideo(video.id)">
     <div class="banner">
       <img
-        [ngClass]="{ selected: video.id === currentVideo }"
+        [ngClass]="{ selected: video.id === currentVideo?.id }"
         [src]="getThumbnailUrl(video.id, video.file_name)"
         alt=""
       />
