@@ -5,6 +5,7 @@ import { ErrorService } from '../../../services/error.service';
 import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
 import { VideoService } from '../../../services/video.service';
 import { LoadingDialogComponent } from '../../../shared/components/loading-dialog/loading-dialog.component';
+import { Video } from '../../../interfaces/video.interface';
 
 @Component({
   selector: 'app-upload-video',
@@ -20,6 +21,7 @@ import { LoadingDialogComponent } from '../../../shared/components/loading-dialo
 })
 export class UploadVideoComponent {
   @Output() toggleUploadVideoOverview = new EventEmitter<boolean>();
+  @Output() uploadedVideo = new EventEmitter<Video>();
   errorMsgFileSize: string | null = null;
   maxFileSizeMB = 20;
 
@@ -73,12 +75,14 @@ export class UploadVideoComponent {
 
     try {
       this.videoData.send = true;
-      let formData = this.createFormData();
-      await this.videoService.uploadVideo(formData);
+      const formData = this.createFormData();
+      const uploaded = await this.videoService.uploadVideo(formData);
+
+      this.uploadedVideo.emit(uploaded);
+
       ngForm.resetForm();
       this.closeVideoUploadOverview();
       this.videoData.send = false;
-      window.location.reload();
       this.errorService.clearError();
     } catch (error) {
       this.errorService.handleError(error);

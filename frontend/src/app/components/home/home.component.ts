@@ -92,6 +92,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  onVideoUploaded(video: Video) {
+    this.currentVideo = null;
+    setTimeout(() => {
+      this.currentVideo = video;
+      this.videos.push(video);
+    }, 1);
+  }
+
   isWideScreen() {
     return window.innerWidth > 600;
   }

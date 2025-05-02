@@ -92,5 +92,6 @@
 @if (uploadVideoOverview) {
 <app-upload-video
   (toggleUploadVideoOverview)="toggleUploadVideoOverview($event)"
+  (uploadedVideo)="onVideoUploaded($event)"
 ></app-upload-video>
 }
