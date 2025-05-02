@@ -3,7 +3,7 @@ import { ImprintComponent } from './shared/components/legal-information/imprint/
 import { PrivacyPolicyComponent } from './shared/components/legal-information/privacy-policy/privacy-policy.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthComponent } from './components/auth/auth.component';
-import { AuthGuard } from './auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: AuthComponent },
