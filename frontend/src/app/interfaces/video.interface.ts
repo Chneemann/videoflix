@@ -4,7 +4,7 @@ export interface Video {
   created_at: string;
   title: string;
   description: string;
-  film_genre: string;
-  video_file: string;
+  genre: string;
+  file_path: string;
   file_name: string;
 }

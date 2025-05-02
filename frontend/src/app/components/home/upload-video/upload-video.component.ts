@@ -28,8 +28,8 @@ export class UploadVideoComponent {
   videoData = {
     title: '',
     description: '',
-    filmGenre: '',
-    videoFile: null as File | null,
+    genre: '',
+    file: null as File | null,
     send: false,
   };
 
@@ -54,7 +54,7 @@ export class UploadVideoComponent {
   isOneFile(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.videoData.videoFile = file;
+      this.videoData.file = file;
     }
   }
   isFileSize(event: any) {
@@ -93,9 +93,9 @@ export class UploadVideoComponent {
     const formData = new FormData();
     formData.append('title', this.videoData.title);
     formData.append('description', this.videoData.description);
-    formData.append('film_genre', this.videoData.filmGenre);
-    if (this.videoData.videoFile) {
-      formData.append('video_file', this.videoData.videoFile);
+    formData.append('genre', this.videoData.genre);
+    if (this.videoData.file) {
+      formData.append('file_path', this.videoData.file);
     }
     return formData;
   }

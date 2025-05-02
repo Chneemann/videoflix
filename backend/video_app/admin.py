@@ -10,5 +10,5 @@ class VideoResource(resources.ModelResource):
 @admin.register(Video)
 class VideoAdmin(ImportExportModelAdmin):
     resource_class = VideoResource
-    readonly_fields = ('file_name',)
-    list_display = ('title', 'file_name', 'created_at') 
+    readonly_fields = ('file_path',)
+    list_display = ('title', 'file_path', 'created_at') 

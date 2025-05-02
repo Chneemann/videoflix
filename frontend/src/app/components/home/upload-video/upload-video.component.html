@@ -39,11 +39,11 @@
           }
         </div>
         <select
-          id="filmGenre"
-          name="filmGenre"
-          #filmGenre="ngModel"
-          [(ngModel)]="videoData.filmGenre"
-          [class.error-border]="!filmGenre.valid && filmGenre.touched"
+          id="genre"
+          name="genre"
+          #genre="ngModel"
+          [(ngModel)]="videoData.genre"
+          [class.error-border]="!genre.valid && genre.touched"
           required
         >
           <option value="action">Action</option>
@@ -66,8 +66,8 @@
           <option value="western">Western</option>
         </select>
         <div class="error-msg">
-          @if (!filmGenre.valid && filmGenre.touched) {
-          <p>Please enter a movie genre</p>
+          @if (!genre.valid && genre.touched) {
+          <p>Please enter a genre</p>
           }
         </div>
         <input
@@ -94,8 +94,8 @@
             [disabled]="
               !videoData.title ||
               !videoData.description ||
-              !videoData.filmGenre ||
-              !videoData.videoFile ||
+              !videoData.genre ||
+              !videoData.file ||
               videoData.send
             "
           ></app-btn-large>

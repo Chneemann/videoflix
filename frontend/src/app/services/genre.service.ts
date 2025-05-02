@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, tap } from 'rxjs';
 import { ApiService } from './api.service';
-import { FilmGenre } from '../interfaces/film-genre.interface';
+import { Genre } from '../interfaces/genre.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class FilmGenreService {
-  private genres: FilmGenre[] = [];
+export class GenreService {
+  private genres: Genre[] = [];
 
   constructor(private apiService: ApiService) {}
 
@@ -15,12 +15,12 @@ export class FilmGenreService {
    * Returns the genres either from the cache or from the API endpoint.
    * @returns observable of movie genres
    */
-  getGenres(): Observable<FilmGenre[]> {
+  getGenres(): Observable<Genre[]> {
     if (this.genres.length > 0) {
       return of(this.genres);
     }
 
-    return this.apiService.get<FilmGenre[]>('/video/genres/', true).pipe(
+    return this.apiService.get<Genre[]>('/video/genres/', true).pipe(
       tap((data) => {
         this.genres = data;
       })

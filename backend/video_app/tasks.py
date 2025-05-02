@@ -46,7 +46,7 @@ def create_thumbnails(instance, model_id):
     """
     Creates high-resolution and low-resolution thumbnails from a video file.
     """
-    video_file_path = instance.video_file.path
+    video_file_path = instance.file_path.path
     thumbnail_dir = os.path.join(settings.THUMBNAIL_DIR, str(model_id))
 
     base_filename = os.path.splitext(os.path.basename(video_file_path))[0]

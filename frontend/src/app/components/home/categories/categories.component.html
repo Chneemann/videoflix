@@ -30,14 +30,14 @@
   @if (genres$ | async; as genres) {
 
   <!-- Loop through genres -->
-  @for (filmGenre of genres; track filmGenre) {
+  @for (genre of genres; track genre) {
 
   <!-- If genre has videos -->
-  @if (getAllVideos(filmGenre.code).length > 0) {
+  @if (getAllVideos(genre.code).length > 0) {
   <div class="category">
-    <p>{{ filmGenre.name }}</p>
+    <p>{{ genre.name }}</p>
     <app-video-list
-      [videos]="getAllVideos(filmGenre.code)"
+      [videos]="getAllVideos(genre.code)"
       [currentVideo]="currentVideo"
       [watchedVideos]="watchedVideos"
       (currentVideoId)="openCurrentVideo($event)"

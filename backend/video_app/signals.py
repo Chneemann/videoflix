@@ -19,10 +19,10 @@ def video_post_save(sender, instance, created, **kwargs):
         
         #Convert video
         for resolution in ["1280x720", "640x360", "1920x1080"]:
-            queue.enqueue(convert_video_to_hls, instance.video_file.path, resolution, instance.id)
+            queue.enqueue(convert_video_to_hls, instance.file_path.path, resolution, instance.id)
             
         #Delete the original video file
-        queue.enqueue(delete_original_video, instance.video_file.path)
+        queue.enqueue(delete_original_video, instance.file_path.path)
         
 @receiver(post_delete, sender=Video)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
@@ -30,7 +30,7 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     Deletes the video and all converted files from the file system,
     when the corresponding `Video` object is deleted.
     """
-    main_directory = os.path.dirname(instance.video_file.path)
+    main_directory = os.path.dirname(instance.file_path.path)
     parent_directory = os.path.dirname(main_directory)
     model_directory = os.path.join(main_directory, str(instance.id))
     thumbnail_directory = os.path.join(parent_directory, 'thumbnails', str(instance.id))

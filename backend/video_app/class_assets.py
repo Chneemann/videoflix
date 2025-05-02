@@ -1,4 +1,4 @@
-FILM_GENRES = [
+VIDEO_GENRES = [
     ('action', 'Action'),
     ('adventure', 'Adventure'),
     ('animation', 'Animation'),

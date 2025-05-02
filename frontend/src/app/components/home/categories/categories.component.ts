@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { VideoListComponent } from './video-list/video-list.component';
-import { FilmGenreService } from '../../../services/film-genre.service';
 import { Video } from '../../../interfaces/video.interface';
+import { GenreService } from '../../../services/genre.service';
 
 @Component({
   selector: 'app-categories',
@@ -30,9 +30,9 @@ export class CategoriesComponent implements AfterViewInit {
   environmentBaseUrl: string = environment.baseUrl;
   isScrollable: boolean = false;
 
-  genres$ = this.filmGenreService.getGenres();
+  genres$ = this.genreService.getGenres();
 
-  constructor(private filmGenreService: FilmGenreService) {}
+  constructor(private genreService: GenreService) {}
 
   ngAfterViewInit(): void {
     this.checkScroll();
@@ -46,8 +46,8 @@ export class CategoriesComponent implements AfterViewInit {
     }
   }
 
-  getAllVideos(filmGenre: string) {
-    return this.videos.filter((video) => video.film_genre === filmGenre);
+  getAllVideos(genre: string) {
+    return this.videos.filter((video) => video.genre === genre);
   }
 
   getFavoriteVideos() {
