@@ -6,6 +6,7 @@ import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/
 import { VideoService } from '../../../services/video.service';
 import { LoadingDialogComponent } from '../../../shared/components/loading-dialog/loading-dialog.component';
 import { Video } from '../../../interfaces/video.interface';
+import { GenreService } from '../../../services/genre.service';
 
 @Component({
   selector: 'app-upload-video',
@@ -33,9 +34,12 @@ export class UploadVideoComponent {
     send: false,
   };
 
+  genres$ = this.genreService.getGenres();
+
   constructor(
     public errorService: ErrorService,
-    private videoService: VideoService
+    private videoService: VideoService,
+    private genreService: GenreService
   ) {}
 
   stopPropagation(event: MouseEvent) {
