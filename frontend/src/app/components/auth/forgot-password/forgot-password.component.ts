@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ErrorService } from '../../../services/error.service';
 
@@ -26,52 +26,88 @@ export class ForgotPasswordComponent implements OnInit {
   queryEmail: boolean = false;
   queryEmailSuccess: boolean = false;
 
+  /**
+   * Initializes the VerifyEmailComponent with ActivatedRoute, AuthService, and ErrorService.
+   */
   constructor(
     private route: ActivatedRoute,
     public authService: AuthService,
     public errorService: ErrorService
   ) {}
 
+  /**
+   * Lifecycle hook that initializes the component.
+   * Extracts query parameters and triggers email query flag if needed.
+   */
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.authData.mail = params['email'] || '';
-      this.authData.token = params['token'] || '';
-      this.queryEmailSuccess = params['pw-change'] || '';
-    });
-    if (this.authData.mail && this.authData.token) {
-      this.queryEmail = true;
-    }
+    this.handleQueryParams();
   }
 
-  isUserEmailValid(emailValue: string) {
+  /**
+   * Subscribes to query parameters and sets internal flags based on them.
+   */
+  private handleQueryParams(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.extractAuthParams(params);
+      this.queryEmailSuccess = params['pw-change'] || '';
+      if (this.authData.mail && this.authData.token) {
+        this.queryEmail = true;
+      }
+    });
+  }
+
+  /**
+   * Extracts email and token from route parameters and stores them in authData.
+   *
+   * @param params The query parameters from the URL.
+   */
+  private extractAuthParams(params: Params): void {
+    this.authData.mail = params['email'] || '';
+    this.authData.token = params['token'] || '';
+  }
+
+  /**
+   * Validates the given email address.
+   *
+   * @param emailValue The email to validate.
+   * @returns True if the email is valid, false otherwise.
+   */
+  isUserEmailValid(emailValue: string): boolean {
     const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(emailValue);
   }
 
-  async onSubmit(ngForm: NgForm, mailInput: any) {
+  /**
+   * Handles form submission based on which field was used (email or password).
+   *
+   * @param ngForm The form group.
+   * @param mailInput The input field triggering the submit.
+   */
+  async onSubmit(ngForm: NgForm, mailInput: any): Promise<void> {
     if (ngForm.submitted && ngForm.form.valid) {
-      if (mailInput.name === 'mail') {
-        try {
+      try {
+        if (mailInput.name === 'mail') {
           await this.verifyEmail();
-          ngForm.form.reset();
-        } catch {}
-      } else if (mailInput.name === 'password') {
-        try {
+        } else if (mailInput.name === 'password') {
           await this.changePassword();
-          ngForm.form.reset();
-        } catch {}
-      }
+        }
+        ngForm.form.reset();
+      } catch {}
     } else {
       mailInput.control.markAsTouched();
     }
   }
 
-  async verifyEmail() {
+  /**
+   * Sends a request to start the forgot-password process.
+   * Updates flags and handles errors accordingly.
+   */
+  private async verifyEmail(): Promise<void> {
     const body = {
       email: this.authData.mail.toLowerCase(),
     };
+    this.authData.send = true;
     try {
-      this.authData.send = true;
       await this.authService.forgotPassword(body);
       this.sendMailSuccess = true;
       this.errorService.clearError();
@@ -82,14 +118,18 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
-  async changePassword() {
+  /**
+   * Sends a request to update the user's password using the token.
+   * Updates flags and handles errors accordingly.
+   */
+  private async changePassword(): Promise<void> {
     const body = {
       email: this.authData.mail.toLowerCase(),
       token: this.authData.token,
       new_password: this.authData.password,
     };
+    this.authData.send = true;
     try {
-      this.authData.send = true;
       await this.authService.changePassword(body);
       this.queryEmail = false;
       this.queryEmailSuccess = true;
