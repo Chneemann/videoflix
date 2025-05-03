@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ErrorService } from '../../../services/error.service';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-verify-email',
@@ -21,27 +20,56 @@ export class VerifyEmailComponent {
     send: false,
   };
 
+  /**
+   * Initializes the VerifyEmailComponent with ActivatedRoute, AuthService, and ErrorService.
+   */
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     public errorService: ErrorService
   ) {}
 
+  /**
+   * Lifecycle hook that is called after data-bound properties are initialized.
+   * Subscribes to query parameters and triggers email verification.
+   */
   ngOnInit(): void {
+    this.handleQueryParams();
+  }
+
+  /**
+   * Subscribes to the query parameters from the route and extracts authentication data.
+   * Then triggers the email verification process.
+   */
+  private handleQueryParams(): void {
     this.route.queryParams.subscribe((params) => {
-      this.authData.mail = params['email'] || '';
-      this.authData.token = params['token'] || '';
+      this.extractAuthParams(params);
       this.verifyEmail();
     });
   }
 
-  async verifyEmail() {
+  /**
+   * Extracts the 'email' and 'token' parameters from the query and assigns them to authData.
+   *
+   * @param params The query parameters from the route.
+   */
+  private extractAuthParams(params: Params): void {
+    this.authData.mail = params['email'] || '';
+    this.authData.token = params['token'] || '';
+  }
+
+  /**
+   * Sends a request to verify the user's email using the extracted authentication data.
+   * Sets the appropriate flags based on the result and handles errors if any occur.
+   */
+  private async verifyEmail(): Promise<void> {
     const body = {
       email: this.authData.mail.toLowerCase(),
       token: this.authData.token,
     };
+
+    this.authData.send = true;
     try {
-      this.authData.send = true;
       await this.authService.verifyEmail(body);
       this.verified = true;
       this.errorService.clearError();
