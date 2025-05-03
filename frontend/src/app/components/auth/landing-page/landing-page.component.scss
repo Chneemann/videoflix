@@ -1,11 +1,7 @@
+@use "./../../../../assets/style/backgrounds.scss" as *;
 @use "./../../../../assets/style/colors.scss" as *;
 @use "./../../../../assets/style/form.scss" as *;
 @use "./../../../../assets/style/auth-layout.scss" as *;
-
-section {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url(./../../../../assets/img/backgrounds/home.jpeg);
-}
 
 .headline {
   p:nth-child(1) {

@@ -1,8 +1,4 @@
+@use "./../../../../assets/style/backgrounds.scss" as *;
 @use "./../../../../assets/style/form.scss" as *;
 @use "./../../../../assets/style/auth-layout.scss" as *;
 @use "./../../../../assets/style/checkbox.scss" as *;
-
-section {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url(./../../../../assets/img/backgrounds/register.jpeg);
-}

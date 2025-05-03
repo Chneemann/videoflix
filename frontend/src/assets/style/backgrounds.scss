@@ -1,0 +1,19 @@
+@mixin background-image($path, $opacity) {
+  background-image: linear-gradient(
+      rgba(0, 0, 0, $opacity),
+      rgba(0, 0, 0, $opacity)
+    ),
+    url($path);
+}
+
+.login-background {
+  @include background-image("/assets/img/backgrounds/login.jpeg", 0.3);
+}
+
+.register-background {
+  @include background-image("/assets/img/backgrounds/register.jpeg", 0.3);
+}
+
+.home-background {
+  @include background-image("/assets/img/backgrounds/home.jpeg", 0.4);
+}
