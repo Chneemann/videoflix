@@ -19,7 +19,7 @@
           [class.error-border]="
             (!mail.valid && mail.touched) ||
             (mail.touched &&
-              !isUserEmailValid(authData.mail.toLowerCase()) &&
+              !isUserEmailValid(authData.mail) &&
               authData.mail.length > 0)
           "
           required
@@ -30,7 +30,7 @@
         @if (!mail.valid && mail.touched) {
         <p>Please enter your email</p>
         } @else { @if (mail.touched && authData.mail.length > 0 &&
-        !isUserEmailValid(authData.mail.toLowerCase())) {
+        !isUserEmailValid(authData.mail)) {
         <p>This is not a valid email format</p>
         }}
       </div>

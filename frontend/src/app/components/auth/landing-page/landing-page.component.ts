@@ -19,18 +19,35 @@ export class LandingPageComponent {
     send: false,
   };
 
+  /**
+   * Initializes the LandingPageComponent with Router, AuthService, and ErrorService.
+   */
   constructor(
     private router: Router,
-    public errorService: ErrorService,
-    private authService: AuthService
+    private authService: AuthService,
+    public errorService: ErrorService
   ) {}
 
-  isUserEmailValid(emailValue: string) {
+  /**
+   * Validates the given email address.
+   * Converts to lowercase before checking against the regex.
+   *
+   * @param emailValue The email address to validate.
+   * @returns True if the email format is valid, false otherwise.
+   */
+  isUserEmailValid(emailValue: string): boolean {
     const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(emailValue);
+    return emailRegex.test(emailValue.toLowerCase());
   }
 
-  async onSubmit(ngForm: NgForm, mailInput: any) {
+  /**
+   * Handles form submission.
+   * If the form is valid, checks for duplicate email addresses.
+   *
+   * @param ngForm The submitted form.
+   * @param mailInput The input field for the email.
+   */
+  async onSubmit(ngForm: NgForm, mailInput: any): Promise<void> {
     if (ngForm.submitted && ngForm.form.valid) {
       await this.checkDuplicatesEmail();
     } else {
@@ -38,19 +55,25 @@ export class LandingPageComponent {
     }
   }
 
-  async checkDuplicatesEmail() {
-    const body = {
-      email: this.authData.mail.toLowerCase(),
-    };
+  /**
+   * Checks whether the entered email already exists.
+   * Navigates to the registration page if it's available.
+   * Handles UI state and errors accordingly.
+   */
+  private async checkDuplicatesEmail(): Promise<void> {
+    const email = this.authData.mail.trim().toLowerCase();
+    if (!email) return;
+
+    this.authData.send = true;
+
     try {
-      this.authData.send = true;
-      await this.authService.checkAuthUserMail(body);
-      const queryParams = { mail: this.authData.mail.toLowerCase() };
-      this.router.navigate(['/register'], { queryParams });
+      await this.authService.checkAuthUserMail({ email });
       this.errorService.clearError();
+      this.router.navigate(['/register'], { queryParams: { mail: email } });
     } catch (error) {
-      this.authData.send = false;
       this.errorService.handleError(error);
+    } finally {
+      this.authData.send = false;
     }
   }
 }
