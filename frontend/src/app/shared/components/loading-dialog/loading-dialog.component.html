@@ -1,6 +1,12 @@
 <div class="loading-dialog">
   <div class="loading-content">
     <div id="loading" class="loader"></div>
+
+    <!-- Progress indicator -->
+    @if (uploadProgress !== null) {
+    <div class="loader-text">{{ uploadProgress }}%</div>
+    }
+
     <div id="loadingText" class="loading-text">
       <p>{{ loadingMsg }}</p>
     </div>

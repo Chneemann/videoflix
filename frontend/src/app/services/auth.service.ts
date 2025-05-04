@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { UserService } from './user.service';
-import { Router } from '@angular/router';
 import { TokenService } from './token.service';
 
 @Injectable({

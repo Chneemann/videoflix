@@ -7,6 +7,7 @@ import { VideoService } from '../../../services/video.service';
 import { LoadingDialogComponent } from '../../../shared/components/loading-dialog/loading-dialog.component';
 import { Video } from '../../../interfaces/video.interface';
 import { GenreService } from '../../../services/genre.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload-video',
@@ -25,6 +26,8 @@ export class UploadVideoComponent {
   @Output() uploadedVideo = new EventEmitter<Video>();
 
   errorMsgFileSize: string | null = null;
+  uploadProgress: number | null = null;
+
   readonly maxFileSizeMB = 20;
 
   videoData = {
@@ -102,26 +105,49 @@ export class UploadVideoComponent {
   }
 
   /**
-   * Handles the video upload form submission.
-   * @param ngForm The video upload form
+   * Handles form submission by validating the form and uploading the video.
+   * @param ngForm - The submitted Angular form
    */
   async onSubmit(ngForm: NgForm): Promise<void> {
     if (ngForm.submitted && ngForm.form.valid) {
-      try {
-        this.videoData.send = true;
-        const uploadedVideo = await this.videoService.uploadVideo(
-          this.createFormData()
-        );
-        this.uploadedVideo.emit(uploadedVideo);
-        ngForm.resetForm();
-        this.closeVideoUploadOverview();
-        this.errorService.clearError();
-      } catch (error) {
-        this.errorService.handleError(error);
-      } finally {
-        this.videoData.send = false;
-      }
+      this.videoData.send = true;
+      this.uploadProgress = 0;
+
+      this.videoService
+        .uploadVideoWithProgress(this.createFormData())
+        .subscribe({
+          next: (event) => this.handleUploadEvent(event, ngForm),
+          error: (err) => this.handleUploadError(err),
+        });
     }
+  }
+
+  /**
+   * Handles upload progress and response events.
+   * @param event - The HTTP event from the upload observable
+   * @param ngForm - The form instance used for resetting after upload
+   */
+  private handleUploadEvent(event: HttpEvent<any>, ngForm: NgForm): void {
+    if (event.type === HttpEventType.UploadProgress && event.total) {
+      this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+    } else if (event.type === HttpEventType.Response) {
+      this.uploadedVideo.emit(event.body);
+      ngForm.resetForm();
+      this.closeVideoUploadOverview();
+      this.errorService.clearError();
+      this.uploadProgress = null;
+      this.videoData.send = false;
+    }
+  }
+
+  /**
+   * Handles upload errors and resets UI state.
+   * @param err - The error from the upload observable
+   */
+  private handleUploadError(err: any): void {
+    this.errorService.handleError(err);
+    this.uploadProgress = null;
+    this.videoData.send = false;
   }
 
   /**

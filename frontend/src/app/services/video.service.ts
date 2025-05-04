@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
+import { catchError, filter, firstValueFrom, map, Observable, of } from 'rxjs';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { ResolutionService } from './resolution.service';
 import { Video } from '../interfaces/video.interface';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +16,13 @@ export class VideoService {
   private availableResolutions: string[];
 
   /**
-   * Initializes the VideoService with ApiService, AuthService, and ResolutionService
+   * Initializes the VideoService with HttpClient,ApiService, AuthService, and ResolutionService
    *
    * It fetches the available resolutions from the ResolutionService and stores
    * them in the availableResolutions field.
    */
   constructor(
+    private http: HttpClient,
     private apiService: ApiService,
     private authService: AuthService,
     private resolutionService: ResolutionService
@@ -54,9 +56,15 @@ export class VideoService {
    * @param formData the FormData object representing the video to upload
    * @returns a promise resolved when the upload is successful
    */
-  uploadVideo(formData: FormData): Promise<Video> {
-    return firstValueFrom(
-      this.apiService.post('/video/upload/', formData, true)
+  uploadVideoWithProgress(formData: FormData): Observable<any> {
+    return this.apiService.postWithProgress<any>(
+      '/video/upload/',
+      formData,
+      true,
+      {
+        reportProgress: true,
+        observe: 'events',
+      }
     );
   }
 

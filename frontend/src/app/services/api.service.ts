@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { TokenService } from './token.service';
 import { environment } from '../../environments/environment';
 import { Observable, throwError } from 'rxjs';
@@ -42,6 +42,30 @@ export class ApiService {
     const headers = auth ? { headers: this.getAuthHeaders() } : {};
     return this.http
       .post<T>(`${environment.baseUrl}${endpoint}`, body, headers)
+      .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * Sends a POST request to the specified endpoint with a request body.
+   *
+   * @template T The expected type of the response.
+   * @param endpoint The API endpoint to send the request to.
+   * @param body The request payload to send.
+   * @param auth Whether to include authentication headers. Defaults to false.
+   * @param options Additional options for the request.
+   * @returns An Observable of type HttpEvent<T>.
+   */
+  postWithProgress<T>(
+    endpoint: string,
+    body: any,
+    auth: boolean = false,
+    options: any = {}
+  ): Observable<HttpEvent<T>> {
+    const baseOptions = auth ? { headers: this.getAuthHeaders() } : {};
+    const mergedOptions = { ...baseOptions, ...options };
+
+    return this.http
+      .post<T>(`${environment.baseUrl}${endpoint}`, body, mergedOptions)
       .pipe(catchError(this.handleError));
   }
 

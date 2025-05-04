@@ -51,7 +51,7 @@
 
           <!-- Loop through genres -->
           @for (genre of genres; track genre) {
-          <option [value]="genre.name">{{ genre.name }}</option>
+          <option [value]="genre.code">{{ genre.name }}</option>
           } }
         </select>
         <div class="error-msg">
@@ -96,5 +96,6 @@
 @if(videoData.send){
 <app-loading-dialog
   loadingMsg="Video is uploading, please be patient a moment."
+  [uploadProgress]="uploadProgress"
 ></app-loading-dialog>
 }
