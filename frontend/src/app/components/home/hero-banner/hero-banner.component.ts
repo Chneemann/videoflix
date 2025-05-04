@@ -26,11 +26,13 @@ import { Video } from '../../../interfaces/video.interface';
 })
 export class HeroBannerComponent implements OnChanges {
   @ViewChild('videoElement') videoElementRef!: ElementRef<HTMLVideoElement>;
+
   @Input() videos: Video[] = [];
   @Input() currentVideo: Video | null = null;
   @Input() isWideScreen: boolean = false;
   @Input() favoriteVideos: number[] = [];
   @Input() watchedVideos: number[] = [];
+
   @Output() playVideo = new EventEmitter<string>();
   @Output() videoIsUploadedChange = new EventEmitter<{
     [resolution: string]: boolean;
@@ -48,6 +50,9 @@ export class HeroBannerComponent implements OnChanges {
   availableResolutions: string[];
   videoIsUploaded: { [resolution: string]: boolean };
 
+  /**
+   * Initializes the HomeComponent with the VideoService, ResolutionService and UserService.
+   */
   constructor(
     private videoService: VideoService,
     private resolutionService: ResolutionService,
@@ -58,100 +63,140 @@ export class HeroBannerComponent implements OnChanges {
     this.videoIsUploaded = this.resolutionService.initVideoIsUploaded();
   }
 
+  /**
+   * Sets the playback rate of the video once the component is initialized.
+   */
   ngAfterViewInit() {
-    this.videoSpeed();
+    this.setVideoSpeed();
   }
 
-  onVideoLoad() {
-    this.isVideoLoaded = true;
-  }
-
-  onVideoError() {
-    this.isVideoLoaded = false;
-  }
-
-  getVideoUrls() {
-    if (this.currentVideo) {
-      this.playUrl = `${this.environmentBaseUrl}/media/videos/${this.currentVideo.id}/${this.currentVideo.file_name}`;
-      this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo.id}/${this.currentVideo.file_name}_1080p.jpg`;
-      this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${this.currentVideo.id}/${this.currentVideo.file_name}_video-thumbnail.mp4`;
-    }
-  }
-
+  /**
+   * Loads the resolution status of the video, sets the video speed and updates the video URLs.
+   * @param changes SimpleChanges object containing the changed input properties.
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentVideo'] && this.currentVideo !== null) {
       const videoId = this.currentVideo.id;
       if (videoId) {
-        this.videoService
-          .isVideoResolutionUploaded(videoId)
-          .subscribe((resolutions) => {
-            this.videoIsUploaded = resolutions;
-            this.videoIsUploadedChange.emit(this.videoIsUploaded);
-          });
-        setTimeout(() => this.videoSpeed(), 0);
-        this.getVideoUrls();
+        this.loadVideoResolutionStatus(videoId);
+        setTimeout(() => this.setVideoSpeed(), 0);
+        this.updateVideoUrls();
       }
     }
   }
 
-  videoSpeed() {
+  /**
+   * Updates the URLs for the video, thumbnail, and video thumbnail.
+   */
+  private updateVideoUrls(): void {
+    if (this.currentVideo) {
+      const videoId = this.currentVideo.id;
+      const fileName = this.currentVideo.file_name;
+      this.playUrl = `${this.environmentBaseUrl}/media/videos/${videoId}/${fileName}`;
+      this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${videoId}/${fileName}_1080p.jpg`;
+      this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${videoId}/${fileName}_video-thumbnail.mp4`;
+    }
+  }
+
+  /**
+   * Loads the resolution status of the video.
+   */
+  private loadVideoResolutionStatus(videoId: number): void {
+    this.videoService
+      .isVideoResolutionUploaded(videoId)
+      .subscribe((resolutions) => {
+        this.videoIsUploaded = resolutions;
+        this.videoIsUploadedChange.emit(this.videoIsUploaded);
+      });
+  }
+
+  /**
+   * Sets the playback rate of the video.
+   */
+  private setVideoSpeed(): void {
     if (this.videoElementRef) {
       const videoElement = this.videoElementRef.nativeElement;
       videoElement.playbackRate = 0.5;
     }
   }
 
+  /**
+   * Called when the video has successfully loaded.
+   */
+  onVideoLoad(): void {
+    this.isVideoLoaded = true;
+  }
+
+  /**
+   * Called when an error occurs while loading the video.
+   */
+  onVideoError(): void {
+    this.isVideoLoaded = false;
+  }
+
+  /**
+   * Toggles the like status of the video.
+   */
   toggleLikeVideo(video: Video): void {
     if (video.id !== undefined) {
       const videoId = video.id;
-
-      if (this.favoriteVideos.includes(videoId)) {
-        this.favoriteVideos = this.favoriteVideos.filter(
-          (id) => id !== videoId
-        );
-      } else {
-        this.favoriteVideos.push(videoId);
-      }
+      this.favoriteVideos = this.favoriteVideos.includes(videoId)
+        ? this.favoriteVideos.filter((id) => id !== videoId)
+        : [...this.favoriteVideos, videoId];
       this.favoriteVideoChange.emit(this.favoriteVideos);
     }
   }
 
+  /**
+   * Toggles the watched status of the video.
+   */
   toggleWatchedVideo(videoId: number): void {
-    if (this.watchedVideos.includes(videoId)) {
-      this.watchedVideos = this.watchedVideos.filter((id) => id !== videoId);
-    } else {
-      this.watchedVideos.push(videoId);
-    }
+    this.watchedVideos = this.watchedVideos.includes(videoId)
+      ? this.watchedVideos.filter((id) => id !== videoId)
+      : [...this.watchedVideos, videoId];
     this.updateWatchedVideos();
   }
 
-  updateWatchedVideos() {
-    const body = {
-      watched_videos: this.watchedVideos,
-    };
+  /**
+   * Updates the watched videos list on the server.
+   */
+  private updateWatchedVideos(): void {
+    const body = { watched_videos: this.watchedVideos };
     this.userService.updateWatchedVideos(body);
   }
 
-  checkLikeVideos(video: Video) {
-    if (video.id !== undefined) {
-      return this.favoriteVideos.includes(video.id);
-    }
-    return false;
+  /**
+   * Checks if the video is marked as a favorite.
+   */
+  checkLikeVideos(video: Video): boolean {
+    return video.id !== undefined && this.favoriteVideos.includes(video.id);
   }
 
+  /**
+   * Checks if any resolution is available.
+   */
   isAnyResolutionAvailable(): boolean {
     return Object.values(this.videoIsUploaded).some((available) => available);
   }
 
-  refreshPage() {
+  /**
+   * Refreshes the page with the current video.
+   */
+  refreshPage(): void {
     this.refreshChange.emit(this.currentVideo ? [this.currentVideo] : []);
   }
 
-  backToCategory() {
+  /**
+   * Navigates back to the category list.
+   */
+  backToCategory(): void {
     this.videosChange.emit([]);
   }
 
-  playVideoId(videoPath: string, video: Video) {
+  /**
+   * Plays the video and marks it as watched.
+   */
+  playVideoId(videoPath: string, video: Video): void {
     if (video.id !== undefined) {
       this.playVideo.emit(videoPath);
       this.toggleWatchedVideo(video.id);
