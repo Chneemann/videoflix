@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { HeaderComponent } from '../../shared/components/header/header.component';
 import { HeroBannerComponent } from './hero-banner/hero-banner.component';
 import { CategoriesComponent } from './categories/categories.component';
@@ -232,5 +232,24 @@ export class HomeComponent implements OnInit {
    */
   toggleUploadVideoOverview(value: boolean): void {
     this.uploadVideoOverview = value;
+  }
+
+  /**
+   * Listens for window resize events and triggers the screen size check.
+   *
+   * @param event The resize event triggered when the window is resized.
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
+  }
+
+  /**
+   * Checks the screen size and selects a random video if wide screen and no video is selected.
+   */
+  private checkScreenSize(): void {
+    if (this.isWideScreenView && !this.currentVideo) {
+      this.selectRandomVideoAsCurrent();
+    }
   }
 }

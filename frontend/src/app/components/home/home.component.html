@@ -9,7 +9,7 @@
   ></app-header>
   <!-- Hero Banner -->
   <app-hero-banner
-    *ngIf="currentVideo !== null || (isWideScreenView && currentVideo !== null)"
+    *ngIf="currentVideo || (isWideScreenView && currentVideo)"
     [videos]="videos"
     [isWideScreen]="isWideScreenView"
     [currentVideo]="currentVideo"
@@ -25,7 +25,7 @@
   <div *ngIf="!isWideScreenView" class="spacer"></div>
   <!-- Video Categories -->
   <app-categories
-    *ngIf="isWideScreenView || (!isWideScreenView && currentVideo !== null)"
+    *ngIf="isWideScreenView || (!isWideScreenView && !currentVideo)"
     [videos]="videos"
     [currentVideo]="currentVideo"
     [favoriteVideos]="favoriteVideos"
