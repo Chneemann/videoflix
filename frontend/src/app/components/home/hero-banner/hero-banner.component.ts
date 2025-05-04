@@ -64,6 +64,7 @@ export class HeroBannerComponent implements OnChanges {
   }
 
   /**
+   * Lifecycle hook called after the view has been initialized.
    * Sets the playback rate of the video once the component is initialized.
    */
   ngAfterViewInit() {

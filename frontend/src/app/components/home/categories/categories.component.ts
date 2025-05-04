@@ -5,7 +5,6 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnInit,
   Output,
 } from '@angular/core';
 import { environment } from '../../../../environments/environment';
@@ -25,6 +24,7 @@ export class CategoriesComponent implements AfterViewInit {
   @Input() currentVideo: Video | null = null;
   @Input() favoriteVideos: any[] = [];
   @Input() watchedVideos: any[] = [];
+
   @Output() currentVideoId = new EventEmitter<number>();
 
   environmentBaseUrl: string = environment.baseUrl;
@@ -32,13 +32,25 @@ export class CategoriesComponent implements AfterViewInit {
 
   genres$ = this.genreService.getGenres();
 
+  /**
+   * Initializes the HomeComponent with the GenreService.
+   */
   constructor(private genreService: GenreService) {}
 
+  /**
+   * Lifecycle hook called after the view has been initialized.
+   * Calls `checkScroll()` to evaluate if scrolling buttons should be shown.
+   */
   ngAfterViewInit(): void {
     this.checkScroll();
   }
 
-  openCurrentVideo(videoId: number) {
+  /**
+   * Opens a specific video by its ID and emits the video ID through the event emitter.
+   *
+   * @param videoId The ID of the video to be opened
+   */
+  openCurrentVideo(videoId: number): void {
     const video = this.videos.find((v) => v.id === videoId);
     if (video) {
       this.currentVideo = video;
@@ -46,17 +58,33 @@ export class CategoriesComponent implements AfterViewInit {
     }
   }
 
-  getAllVideos(genre: string) {
+  /**
+   * Filters and returns all videos of a specific genre.
+   *
+   * @param genre The genre of videos to filter by
+   * @returns An array of videos belonging to the specified genre
+   */
+  getAllVideos(genre: string): Video[] {
     return this.videos.filter((video) => video.genre === genre);
   }
 
-  getFavoriteVideos() {
+  /**
+   * Filters and returns all favorite videos.
+   *
+   * @returns An array of favorite videos
+   */
+  getFavoriteVideos(): Video[] {
     return this.videos.filter((video) =>
       this.favoriteVideos.includes(video.id)
     );
   }
 
-  recentVideos() {
+  /**
+   * Filters and returns all videos that have been created in the last week (from Monday to today).
+   *
+   * @returns An array of videos created in the past week
+   */
+  recentVideos(): Video[] {
     const today = new Date();
     const dayOfWeek = today.getDay();
 
@@ -69,12 +97,18 @@ export class CategoriesComponent implements AfterViewInit {
     });
   }
 
+  /**
+   * Event listener for window resize to check scrollable status and adjust the UI.
+   */
   @HostListener('window:resize')
-  onResize() {
+  onResize(): void {
     this.checkScroll();
   }
 
-  checkScroll() {
+  /**
+   * Checks whether the videos container is scrollable and displays or hides the scroll buttons accordingly.
+   */
+  checkScroll(): void {
     const containers = document.querySelectorAll(
       '.videos'
     ) as NodeListOf<HTMLElement>;
