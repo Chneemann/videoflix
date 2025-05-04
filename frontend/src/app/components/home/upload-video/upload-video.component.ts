@@ -23,8 +23,9 @@ import { GenreService } from '../../../services/genre.service';
 export class UploadVideoComponent {
   @Output() toggleUploadVideoOverview = new EventEmitter<boolean>();
   @Output() uploadedVideo = new EventEmitter<Video>();
+
   errorMsgFileSize: string | null = null;
-  maxFileSizeMB = 20;
+  readonly maxFileSizeMB = 20;
 
   videoData = {
     title: '',
@@ -36,63 +37,97 @@ export class UploadVideoComponent {
 
   genres$ = this.genreService.getGenres();
 
+  /**
+   * Initializes the HomeComponent with the ErrorService, VideoService and GenreService.
+   */
   constructor(
     public errorService: ErrorService,
     private videoService: VideoService,
     private genreService: GenreService
   ) {}
 
-  stopPropagation(event: MouseEvent) {
+  /**
+   * Stops event propagation for click events
+   * @param event MouseEvent
+   */
+  stopPropagation(event: MouseEvent): void {
     event.stopPropagation();
   }
 
-  closeVideoUploadOverview() {
+  /**
+   * Close the video upload overview when the user decides
+   */
+  closeVideoUploadOverview(): void {
     this.toggleUploadVideoOverview.emit(false);
   }
 
-  onFileChange(event: any) {
-    this.isOneFile(event);
-    this.isFileSize(event);
+  /**
+   * Handles file input changes. Checks for single file selection and file size validation.
+   * @param event File input change event
+   */
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      this.isOneFile(input);
+      this.isFileSize(input);
+    }
   }
 
-  isOneFile(event: any) {
-    const file = event.target.files[0];
+  /**
+   * Validates that only one file is selected
+   * @param input File input element
+   */
+  private isOneFile(input: HTMLInputElement): void {
+    const file = input.files?.[0];
     if (file) {
       this.videoData.file = file;
     }
   }
-  isFileSize(event: any) {
-    const file = event.target.files[0];
+
+  /**
+   * Validates the size of the selected file
+   * @param input File input element
+   */
+  private isFileSize(input: HTMLInputElement): void {
+    const file = input.files?.[0];
     if (file) {
       const fileSizeMB = file.size / (1024 * 1024);
       if (fileSizeMB > this.maxFileSizeMB) {
         this.errorMsgFileSize = `The file must not be larger than ${this.maxFileSizeMB} MB.`;
-        event.target.value = '';
+        input.value = '';
       } else {
         this.errorMsgFileSize = null;
       }
     }
   }
 
-  async onSubmit(ngForm: NgForm) {
-    if (!ngForm.submitted || !ngForm.form.valid) return;
-
-    try {
-      this.videoData.send = true;
-      const formData = this.createFormData();
-      const uploaded = await this.videoService.uploadVideo(formData);
-
-      this.uploadedVideo.emit(uploaded);
-
-      ngForm.resetForm();
-      this.closeVideoUploadOverview();
-      this.videoData.send = false;
-      this.errorService.clearError();
-    } catch (error) {
-      this.errorService.handleError(error);
+  /**
+   * Handles the video upload form submission.
+   * @param ngForm The video upload form
+   */
+  async onSubmit(ngForm: NgForm): Promise<void> {
+    if (ngForm.submitted && ngForm.form.valid) {
+      try {
+        this.videoData.send = true;
+        const uploadedVideo = await this.videoService.uploadVideo(
+          this.createFormData()
+        );
+        this.uploadedVideo.emit(uploadedVideo);
+        ngForm.resetForm();
+        this.closeVideoUploadOverview();
+        this.errorService.clearError();
+      } catch (error) {
+        this.errorService.handleError(error);
+      } finally {
+        this.videoData.send = false;
+      }
     }
   }
 
+  /**
+   * Creates a FormData object containing the video data.
+   * @returns The FormData for the video upload
+   */
   private createFormData(): FormData {
     const formData = new FormData();
     formData.append('title', this.videoData.title);
