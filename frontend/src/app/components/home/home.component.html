@@ -9,11 +9,9 @@
   ></app-header>
   <!-- Hero Banner -->
   <app-hero-banner
-    *ngIf="
-      currentVideo !== null || (this.isWideScreen() && currentVideo !== null)
-    "
+    *ngIf="currentVideo !== null || (isWideScreenView && currentVideo !== null)"
     [videos]="videos"
-    [isWideScreen]="isWideScreen()"
+    [isWideScreen]="isWideScreenView"
     [currentVideo]="currentVideo"
     [favoriteVideos]="favoriteVideos"
     [watchedVideos]="watchedVideos"
@@ -24,12 +22,10 @@
     (favoriteVideoChange)="onFavoriteVideoChange($event)"
   ></app-hero-banner>
   <!-- Spacer -->
-  <div *ngIf="!this.isWideScreen()" class="spacer"></div>
+  <div *ngIf="!isWideScreenView" class="spacer"></div>
   <!-- Video Categories -->
   <app-categories
-    *ngIf="
-      this.isWideScreen() || (!this.isWideScreen() && currentVideo !== null)
-    "
+    *ngIf="isWideScreenView || (!isWideScreenView && currentVideo !== null)"
     [videos]="videos"
     [currentVideo]="currentVideo"
     [favoriteVideos]="favoriteVideos"

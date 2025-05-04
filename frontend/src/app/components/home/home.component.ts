@@ -28,10 +28,12 @@ import { Video } from '../../interfaces/video.interface';
 })
 export class HomeComponent implements OnInit {
   @ViewChild(VideoPlayerComponent) videoPlayer!: VideoPlayerComponent;
+
   videos: Video[] = [];
   currentVideo: Video | null = null;
   favoriteVideos: number[] = [];
   watchedVideos: number[] = [];
+
   playVideo: string = '';
   isLoading: boolean = true;
   uploadVideoOverview: boolean = false;
@@ -40,6 +42,11 @@ export class HomeComponent implements OnInit {
   currentResolution: string;
   videoIsUploaded: { [resolution: string]: boolean };
 
+  private readonly SCREEN_WIDTH_THRESHOLD = 600;
+
+  /**
+   * Initializes the HomeComponent with the VideoService, UserService and ResolutionService.
+   */
   constructor(
     private videoService: VideoService,
     public userService: UserService,
@@ -51,76 +58,34 @@ export class HomeComponent implements OnInit {
     this.videoIsUploaded = this.resolutionService.initVideoIsUploaded();
   }
 
-  async ngOnInit() {
-    this.loadLikedAndWatchedVideos();
-    await this.loadAllVideos();
-    if (this.isWideScreen() && !this.currentVideo) {
-      this.loadRandomVideo();
-    }
+  /**
+   * Lifecycle hook: Called once the component is initialized.
+   * Initializes the component by loading user data and videos.
+   */
+  async ngOnInit(): Promise<void> {
+    await this.initializeComponent();
   }
 
-  async loadLikedAndWatchedVideos() {
-    try {
-      const userData = await this.userService.getLikedAndWatchedVideos();
-      this.favoriteVideos = userData.liked_videos;
-      this.watchedVideos = userData.watched_videos;
-    } catch (error) {
-      console.error(error);
-    }
+  /**
+   * Determines whether the screen is considered wide.
+   */
+  get isWideScreenView(): boolean {
+    return window.innerWidth > this.SCREEN_WIDTH_THRESHOLD;
   }
 
-  updateLikeVideos() {
-    const body = {
-      liked_videos: this.favoriteVideos,
-    };
-    this.userService.updateLikedVideos(body);
+  /**
+   * Initializes the component by loading user data and videos.
+   */
+  private async initializeComponent(): Promise<void> {
+    await this.fetchAllVideos();
+    await this.loadUserVideoPreferences();
+    this.autoSelectRandomVideoIfWideScreen();
   }
 
-  onRefreshPage(updatedVideos: Video[] | undefined) {
-    this.currentVideo = null;
-    setTimeout(() => {
-      this.currentVideo =
-        updatedVideos && updatedVideos.length > 0 ? updatedVideos[0] : null;
-    }, 1);
-  }
-
-  onVideosChange(updatedVideos: Video[]) {
-    if (this.isWideScreen()) {
-      this.loadRandomVideo();
-    } else {
-      this.currentVideo = updatedVideos[0] || null;
-    }
-  }
-
-  onVideoUploaded(video: Video) {
-    this.currentVideo = null;
-    setTimeout(() => {
-      this.currentVideo = video;
-      this.videos.push(video);
-    }, 1);
-  }
-
-  isWideScreen() {
-    return window.innerWidth > 600;
-  }
-
-  onVideoIsUploadedChange(newStatus: { [resolution: string]: boolean }) {
-    this.videoIsUploaded = newStatus;
-  }
-
-  onFavoriteVideoChange(favoriteVideos: number[]) {
-    this.favoriteVideos = favoriteVideos;
-    this.updateLikeVideos();
-  }
-
-  changeResolution(resolution: string) {
-    if (this.videoPlayer && this.videoIsUploaded[resolution]) {
-      this.videoPlayer.switchResolution(resolution);
-      this.currentResolution = resolution;
-    }
-  }
-
-  async loadAllVideos() {
+  /**
+   * Fetches all available videos from the server.
+   */
+  private async fetchAllVideos(): Promise<void> {
     this.isLoading = true;
     try {
       this.videos = await this.videoService.getAllVideos();
@@ -129,34 +94,143 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  closeVideo(): void {
-    this.playVideo = '';
-  }
-
-  playVideoPath(videoPath: string) {
-    this.currentResolution = '720p';
-    this.playVideo = videoPath;
-  }
-
-  loadRandomVideo(): void {
-    const randomIndex = Math.floor(Math.random() * this.videos.length);
-    this.currentVideo = this.videos[randomIndex] || null;
-  }
-
-  currentVideoId(videoId: number) {
-    const video = this.videos.find((v) => v.id === videoId);
-    if (video) {
-      this.currentVideo = video;
+  /**
+   * Loads the user's liked and watched video IDs.
+   */
+  private async loadUserVideoPreferences(): Promise<void> {
+    try {
+      const { liked_videos, watched_videos } =
+        await this.userService.getLikedAndWatchedVideos();
+      this.favoriteVideos = liked_videos;
+      this.watchedVideos = watched_videos;
+    } catch (error) {
+      console.error('Failed to load user video preferences:', error);
     }
   }
 
+  /**
+   * Automatically selects a random video if screen is wide and no video is selected.
+   */
+  private autoSelectRandomVideoIfWideScreen(): void {
+    if (this.isWideScreenView && !this.currentVideo) {
+      this.selectRandomVideoAsCurrent();
+    }
+  }
+
+  /**
+   * Updates user's liked videos in the backend.
+   */
+  private updateLikedVideos(): void {
+    const body = {
+      liked_videos: this.favoriteVideos,
+    };
+    this.userService.updateLikedVideos(body);
+  }
+
+  /**
+   * Called when favorite videos change.
+   */
+  onFavoriteVideoChange(favorites: number[]): void {
+    this.favoriteVideos = favorites;
+    this.updateLikedVideos();
+  }
+
+  /**
+   * Updates current video after refresh.
+   */
+  onRefreshPage(updatedVideos: Video[] | undefined): void {
+    this.currentVideo = null;
+    setTimeout(() => {
+      this.currentVideo =
+        updatedVideos && updatedVideos.length > 0 ? updatedVideos[0] : null;
+    }, 0);
+  }
+
+  /**
+   * Called when the video list changes.
+   */
+  onVideosChange(updatedVideos: Video[]): void {
+    if (this.isWideScreenView) {
+      this.selectRandomVideoAsCurrent();
+    } else {
+      this.currentVideo = updatedVideos[0] || null;
+    }
+  }
+
+  /**
+   * Called after a video upload is completed.
+   */
+  onVideoUploaded(video: Video): void {
+    this.currentVideo = null;
+    setTimeout(() => {
+      this.currentVideo = video;
+      this.videos.push(video);
+    }, 1);
+  }
+
+  /**
+   * Handles resolution switching.
+   */
+  changeResolution(resolution: string): void {
+    if (this.videoPlayer && this.videoIsUploaded[resolution]) {
+      this.videoPlayer.switchResolution(resolution);
+      this.currentResolution = resolution;
+    }
+  }
+
+  /**
+   * Checks if any resolution is unavailable.
+   */
   isAnyResolutionUnavailable(): boolean {
     return this.availableResolutions.some(
       (resolution) => !this.videoIsUploaded[resolution]
     );
   }
 
-  toggleUploadVideoOverview(value: boolean) {
+  /**
+   * Sets the current video to the given video ID.
+   */
+  currentVideoId(videoId: number): void {
+    const video = this.videos.find((v) => v.id === videoId);
+    if (video) {
+      this.currentVideo = video;
+    }
+  }
+
+  /**
+   * Selects a random video from the list as current video.
+   */
+  private selectRandomVideoAsCurrent(): void {
+    const randomIndex = Math.floor(Math.random() * this.videos.length);
+    this.currentVideo = this.videos[randomIndex] || null;
+  }
+
+  /**
+   * Plays a video by path and sets resolution to default.
+   */
+  playVideoPath(videoPath: string): void {
+    this.currentResolution = this.resolutionService.getDefaultResolution();
+    this.playVideo = videoPath;
+  }
+
+  /**
+   * Closes the currently playing video.
+   */
+  closeVideo(): void {
+    this.playVideo = '';
+  }
+
+  /**
+   * Updates the state of uploaded resolutions.
+   */
+  onVideoIsUploadedChange(newStatus: { [resolution: string]: boolean }): void {
+    this.videoIsUploaded = newStatus;
+  }
+
+  /**
+   * Toggles the upload video UI overview.
+   */
+  toggleUploadVideoOverview(value: boolean): void {
     this.uploadVideoOverview = value;
   }
 }
