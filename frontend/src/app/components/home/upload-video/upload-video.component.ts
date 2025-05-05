@@ -41,7 +41,7 @@ export class UploadVideoComponent {
   genres$ = this.genreService.getGenres();
 
   /**
-   * Initializes the HomeComponent with the ErrorService, VideoService and GenreService.
+   * Initializes the UploadVideoComponent with the ErrorService, VideoService and GenreService.
    */
   constructor(
     public errorService: ErrorService,

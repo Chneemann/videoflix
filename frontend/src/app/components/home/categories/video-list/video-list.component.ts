@@ -15,6 +15,7 @@ export class VideoListComponent {
   @Input() currentVideo: Video | null = null;
   @Input() watchedVideos: any[] = [];
   @Input() videoCategory: string = '';
+
   @Output() currentVideoId = new EventEmitter<number>();
 
   /**

@@ -18,11 +18,8 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   private defaultResolution: string;
 
   /**
-   * Creates a new instance of the VideoPlayerComponent and sets the default
-   * resolution by fetching it from the ResolutionService.
-   *
-   * @param elementRef A reference to the DOM element which hosts the video player.
-   * @param resolutionService A service which provides the available resolutions.
+   * Initializes the VideoPlayerComponent with the ElementRef and ResolutionService.
+   * Get the default resolution.
    */
   constructor(
     private elementRef: ElementRef,

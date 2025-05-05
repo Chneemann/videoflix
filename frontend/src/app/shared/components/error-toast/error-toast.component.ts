@@ -11,6 +11,9 @@ import { ErrorService } from '../../../services/error.service';
 export class ErrorToastComponent implements OnInit {
   errorText: string = '';
 
+  /**
+   * Initializes the ErrorToastComponent with ErrorService.
+   */
   constructor(private errorService: ErrorService) {}
 
   /**

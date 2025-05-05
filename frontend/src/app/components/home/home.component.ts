@@ -46,6 +46,7 @@ export class HomeComponent implements OnInit {
 
   /**
    * Initializes the HomeComponent with the VideoService, UserService and ResolutionService.
+   * Get the available resolutions, current resolution, and video upload status.
    */
   constructor(
     private videoService: VideoService,

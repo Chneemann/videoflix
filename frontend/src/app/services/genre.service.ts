@@ -9,6 +9,9 @@ import { Genre } from '../interfaces/genre.interface';
 export class GenreService {
   private genres: Genre[] = [];
 
+  /**
+   * Initializes the GenreService with ApiService.
+   */
   constructor(private apiService: ApiService) {}
 
   /**

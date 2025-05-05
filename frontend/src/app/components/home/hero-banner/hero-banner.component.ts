@@ -51,7 +51,8 @@ export class HeroBannerComponent implements OnChanges {
   videoIsUploaded: { [resolution: string]: boolean };
 
   /**
-   * Initializes the HomeComponent with the VideoService, ResolutionService and UserService.
+   * Initializes the HeroBannerComponent with the VideoService, ResolutionService and UserService.
+   * Gets the available resolutions and video upload status.
    */
   constructor(
     private videoService: VideoService,

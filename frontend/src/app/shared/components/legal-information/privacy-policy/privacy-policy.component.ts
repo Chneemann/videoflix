@@ -9,8 +9,14 @@ import { CommonModule, Location } from '@angular/common';
   styleUrl: './privacy-policy.component.scss',
 })
 export class PrivacyPolicyComponent {
+  /**
+   * Initializes the PrivacyPolicyComponent with Location.
+   */
   constructor(private location: Location) {}
 
+  /**
+   * Navigate back to the previous page.
+   */
   backClicked() {
     this.location.back();
   }

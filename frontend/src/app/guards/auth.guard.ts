@@ -8,7 +8,10 @@ import { AuthService } from '../services/auth.service';
   providedIn: 'root',
 })
 export class AuthGuard {
-  constructor(private authService: AuthService, private router: Router) {}
+  /**
+   * Initializes the AuthGuard with Router and AuthService.
+   */
+  constructor(private router: Router, private authService: AuthService) {}
 
   /**
    * Determines if the route can be activated by checking if the user is authenticated.

@@ -14,6 +14,10 @@ import { ErrorService } from '../../../services/error.service';
   styleUrl: './forgot-password.component.scss',
 })
 export class ForgotPasswordComponent implements OnInit {
+  sendMailSuccess: boolean = false;
+  queryEmail: boolean = false;
+  queryEmailSuccess: boolean = false;
+
   authData = {
     mail: '',
     token: '',
@@ -22,12 +26,8 @@ export class ForgotPasswordComponent implements OnInit {
     send: false,
   };
 
-  sendMailSuccess: boolean = false;
-  queryEmail: boolean = false;
-  queryEmailSuccess: boolean = false;
-
   /**
-   * Initializes the VerifyEmailComponent with ActivatedRoute, AuthService, and ErrorService.
+   * Initializes the ForgotPasswordComponent with ActivatedRoute, AuthService, and ErrorService.
    */
   constructor(
     private route: ActivatedRoute,

@@ -13,8 +13,12 @@ import { TokenService } from '../../../services/token.service';
 })
 export class HeaderComponent {
   @Input() showFullLogo: boolean = true;
+
   @Output() videosChange = new EventEmitter<any[]>();
 
+  /**
+   * Initializes the HeaderComponent with AuthService and TokenService.
+   */
   constructor(
     private authService: AuthService,
     private tokenService: TokenService

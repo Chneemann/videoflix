@@ -9,8 +9,14 @@ import { CommonModule, Location } from '@angular/common';
   styleUrl: './imprint.component.scss',
 })
 export class ImprintComponent {
+  /**
+   * Initializes the ImprintComponent with Location.
+   */
   constructor(private location: Location) {}
 
+  /**
+   * Navigate back to the previous page.
+   */
   backClicked() {
     this.location.back();
   }

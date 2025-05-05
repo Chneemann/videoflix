@@ -33,7 +33,7 @@ export class CategoriesComponent implements AfterViewInit {
   genres$ = this.genreService.getGenres();
 
   /**
-   * Initializes the HomeComponent with the GenreService.
+   * Initializes the CategoriesComponent with the GenreService.
    */
   constructor(private genreService: GenreService) {}
 

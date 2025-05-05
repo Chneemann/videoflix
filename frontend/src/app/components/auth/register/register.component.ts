@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
   };
 
   /**
-   * Initializes the LoginComponent with ActivatedRoute, AuthService, and ErrorService.
+   * Initializes the RegisterComponent with ActivatedRoute, AuthService, and ErrorService.
    */
   constructor(
     private route: ActivatedRoute,
