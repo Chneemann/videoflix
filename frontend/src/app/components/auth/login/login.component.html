@@ -1,55 +1,50 @@
 <section class="login-background">
   <div class="content">
     <div class="headline">Log in</div>
+
     <form
-      #loginForm="ngForm"
-      (ngSubmit)="onSubmit(loginForm)"
-      onsubmit="return false"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
       (input)="this.errorService.clearError()"
     >
-      <div class="mail-field">
+      <div class="email-field">
         <input
-          type="mail"
-          id="mail"
-          name="mail"
-          #mail="ngModel"
+          formControlName="email"
+          type="email"
+          id="email"
           placeholder="Email Address"
           autocomplete="email"
-          [(ngModel)]="authData.mail"
           [class.error-border]="
-            (!mail.valid && mail.touched) ||
-            (mail.touched &&
-              !isUserEmailValid(authData.mail) &&
-              authData.mail.length > 0)
+            form.controls['email'].invalid && form.controls['email'].touched
           "
-          required
         />
-        <img class="mail-icon" src="./assets/img/mail.svg" />
+        <img class="email-icon" src="./assets/img/email.svg" />
       </div>
-      <div class="error-msg">
-        @if (!mail.valid && mail.touched) {
-        <p>Please enter your email</p>
-        } @else { @if (mail.touched && authData.mail.length > 0 &&
-        !isUserEmailValid(authData.mail)) {
-        <p>This is not a valid email format</p>
-        }}
+
+      <div class="error-container">
+        @if (form.controls['email'].touched && form.controls['email'].invalid) {
+        <div class="error-msg">
+          @if (form.controls['email'].errors?.['required']) {
+          <p role="alert">Please enter your email</p>
+          } @if (form.controls['email'].errors?.['invalidEmailFormat']) {
+          <p role="alert">This is not a valid email format</p>
+          }
+        </div>
+        }
       </div>
+
       <div class="password-field">
         <input
           [type]="authService.passwordFieldType"
           id="password"
-          name="password"
-          class="password-input"
-          #password="ngModel"
+          formControlName="password"
           placeholder="Enter a password"
           autocomplete="new-password"
-          [(ngModel)]="authData.password"
-          pattern="[^<>]*"
-          minlength="6"
+          minlength="8"
           [class.error-border]="
-            password.invalid && password.touched && authData.password.length < 6
+            form.controls['password'].invalid &&
+            form.controls['password'].touched
           "
-          required
         />
         <img class="password-icon" src="./assets/img/password.svg" />
         <img
@@ -58,50 +53,46 @@
           [src]="authService.passwordIcon"
         />
       </div>
-      <div class="error-msg">
-        @if (!password.valid && password.touched && authData.password.length <
-        1) {
-        <p>Please enter your password</p>
-        } @else { @if (authData.password && authData.password.length < 6 &&
-        password.touched) {
-        <p>Password is too short, min 6 characters</p>
-        } }
+
+      <div class="error-container">
+        @if (form.controls['password'].touched &&
+        form.controls['password'].invalid) {
+        <div class="error-msg">
+          @if (form.controls['password'].errors?.['required']) {
+          <p role="alert">Please enter a password</p>
+          } @if (form.controls['password'].errors?.['minlength']) {
+          <p role="alert">Password is too short, min 8 characters</p>
+          }
+        </div>
+        }
       </div>
+
       <div class="checkbox">
-        <label class="container"
-          >Remember me
+        <label class="container">
+          Stay signed in?
           <input
-            type="checkbox"
             id="checkbox"
             name="checkbox"
-            #checkbox
-            [(ngModel)]="authData.checkbox"
+            type="checkbox"
+            formControlName="keepLoggedIn"
           />
           <span class="checkmark"></span>
         </label>
       </div>
+
       <div class="buttons">
         <app-btn-large
           [value]="'Log in'"
-          [disabled]="
-            !authData.mail ||
-            (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
-            !password.valid ||
-            authData.guestLogin ||
-            authData.send
-          "
+          [disabled]="form.invalid"
         ></app-btn-large>
         <app-btn-large
           [value]="'Guest Log in'"
-          [disabled]="
-            authData.guestLogin ||
-            (!!authData.mail && !!authData.password) ||
-            authData.send
-          "
-          (click)="guestLogin(loginForm)"
+          [disabled]="form.value.mail || form.value.password"
+          (click)="guestLogin()"
         ></app-btn-large>
       </div>
     </form>
+
     <div class="footer">
       <a routerLink="/forgot-password">Forgot password?</a>
       <div class="footer-content">

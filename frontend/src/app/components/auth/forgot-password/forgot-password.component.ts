@@ -14,12 +14,12 @@ import { ErrorService } from '../../../services/error.service';
   styleUrl: './forgot-password.component.scss',
 })
 export class ForgotPasswordComponent implements OnInit {
-  sendMailSuccess: boolean = false;
+  sendEmailSuccess: boolean = false;
   queryEmail: boolean = false;
   queryEmailSuccess: boolean = false;
 
   authData = {
-    mail: '',
+    email: '',
     token: '',
     password: '',
     passwordConfirm: '',
@@ -50,7 +50,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.extractAuthParams(params);
       this.queryEmailSuccess = params['pw-change'] || '';
-      if (this.authData.mail && this.authData.token) {
+      if (this.authData.email && this.authData.token) {
         this.queryEmail = true;
       }
     });
@@ -62,7 +62,7 @@ export class ForgotPasswordComponent implements OnInit {
    * @param params The query parameters from the URL.
    */
   private extractAuthParams(params: Params): void {
-    this.authData.mail = params['email'] || '';
+    this.authData.email = params['email'] || '';
     this.authData.token = params['token'] || '';
   }
 
@@ -81,20 +81,20 @@ export class ForgotPasswordComponent implements OnInit {
    * Handles form submission based on which field was used (email or password).
    *
    * @param ngForm The form group.
-   * @param mailInput The input field triggering the submit.
+   * @param emailInput The input field triggering the submit.
    */
-  async onSubmit(ngForm: NgForm, mailInput: any): Promise<void> {
+  async onSubmit(ngForm: NgForm, emailInput: any): Promise<void> {
     if (ngForm.submitted && ngForm.form.valid) {
       try {
-        if (mailInput.name === 'mail') {
+        if (emailInput.name === 'email') {
           await this.verifyEmail();
-        } else if (mailInput.name === 'password') {
+        } else if (emailInput.name === 'password') {
           await this.changePassword();
         }
         ngForm.form.reset();
       } catch {}
     } else {
-      mailInput.control.markAsTouched();
+      emailInput.control.markAsTouched();
     }
   }
 
@@ -104,16 +104,16 @@ export class ForgotPasswordComponent implements OnInit {
    */
   private async verifyEmail(): Promise<void> {
     const body = {
-      email: this.authData.mail.toLowerCase(),
+      email: this.authData.email.toLowerCase(),
     };
     this.authData.send = true;
     try {
       await this.authService.forgotPassword(body);
-      this.sendMailSuccess = true;
+      this.sendEmailSuccess = true;
       this.errorService.clearError();
     } catch (error) {
       this.authData.send = false;
-      this.sendMailSuccess = false;
+      this.sendEmailSuccess = false;
       this.errorService.handleError(error);
     }
   }
@@ -124,7 +124,7 @@ export class ForgotPasswordComponent implements OnInit {
    */
   private async changePassword(): Promise<void> {
     const body = {
-      email: this.authData.mail.toLowerCase(),
+      email: this.authData.email.toLowerCase(),
       token: this.authData.token,
       new_password: this.authData.password,
     };

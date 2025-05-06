@@ -21,7 +21,7 @@ export const environment = {
   baseUrl: "YOUR_API_URL_HERE",
 
   // Guest account
-  guestMail: "YOUR_GUEST_EMAIL_HERE",
+  guestEmail: "YOUR_GUEST_EMAIL_HERE",
   guestPassword: "YOUR_GUEST_PASSWORD_HERE",
 };
 ```

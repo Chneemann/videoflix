@@ -16,26 +16,26 @@
       (ngSubmit)="onSubmit()"
       (input)="this.errorService.clearError()"
     >
-      <div class="mail-field">
+      <div class="email-field">
         <input
-          formControlName="mail"
+          formControlName="email"
           type="email"
-          id="mail"
+          id="email"
           placeholder="Email Address"
           autocomplete="email"
           [class.error-border]="
-            form.controls['mail'].invalid && form.controls['mail'].touched
+            form.controls['email'].invalid && form.controls['email'].touched
           "
         />
-        <img class="mail-icon" src="./assets/img/mail.svg" />
+        <img class="email-icon" src="./assets/img/email.svg" />
       </div>
 
       <div class="error-container">
-        @if (form.controls['mail'].touched && form.controls['mail'].invalid) {
+        @if (form.controls['email'].touched && form.controls['email'].invalid) {
         <div class="error-msg">
-          @if (form.controls['mail'].errors?.['required']) {
+          @if (form.controls['email'].errors?.['required']) {
           <p role="alert">Please enter your email</p>
-          } @if (form.controls['mail'].errors?.['invalidEmailFormat']) {
+          } @if (form.controls['email'].errors?.['invalidEmailFormat']) {
           <p role="alert">This is not a valid email format</p>
           }
         </div>
@@ -102,11 +102,11 @@
         form.controls['passwordConfirm'].invalid ) {
         <div class="error-msg">
           @if (form.controls['passwordConfirm'].errors?.['required']) {
-          <p>Please confirm your password</p>
+          <p role="alert">Please confirm your password</p>
           } @if ( form.controls['password'].value !==
           form.controls['passwordConfirm'].value &&
           form.controls['passwordConfirm'].touched ) {
-          <p>The passwords do not match</p>
+          <p role="alert">The passwords do not match</p>
           }
         </div>
         }
@@ -116,16 +116,19 @@
         <label class="container">
           I agree to the&nbsp;
           <a routerLink="/privacy-policy">Privacy policy</a>.
-          <input type="checkbox" formControlName="privacyPolicy" />
+          <input
+            id="checkbox"
+            name="checkbox"
+            type="checkbox"
+            formControlName="privacyPolicy"
+          />
           <span class="checkmark"></span>
         </label>
       </div>
 
       <app-btn-large
         [value]="'Get Started'"
-        [disabled]="
-          form.invalid || form.controls['privacyPolicy'].value === false
-        "
+        [disabled]="form.invalid"
       ></app-btn-large>
     </form>
     }

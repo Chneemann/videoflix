@@ -28,12 +28,12 @@ export class AuthService {
    * @param storage Whether to persist the token in local storage.
    * @throws Error if no token is received upon successful login.
    */
-  async login(body: any, storage: boolean) {
+  async login(body: any) {
     const data = await firstValueFrom(
       this.apiService.post<{ token: string }>('/auth/login/', body)
     );
     if (data?.token) {
-      this.tokenService.setToken(data.token, storage);
+      this.tokenService.setToken(data.token, body.keepLoggedIn);
     } else {
       throw new Error('Login failed: No token received');
     }
@@ -87,7 +87,7 @@ export class AuthService {
    *
    * @param body The email to verify.
    */
-  async checkAuthUserMail(body: any) {
+  async checkAuthUserEmail(body: any) {
     await firstValueFrom(this.apiService.post('/auth/', body));
   }
 

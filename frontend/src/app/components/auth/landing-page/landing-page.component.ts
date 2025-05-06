@@ -15,7 +15,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class LandingPageComponent {
   authData = {
-    mail: '',
+    email: '',
     send: false,
   };
 
@@ -45,13 +45,13 @@ export class LandingPageComponent {
    * If the form is valid, checks for duplicate email addresses.
    *
    * @param ngForm The submitted form.
-   * @param mailInput The input field for the email.
+   * @param emailInput The input field for the email.
    */
-  async onSubmit(ngForm: NgForm, mailInput: any): Promise<void> {
+  async onSubmit(ngForm: NgForm, emailInput: any): Promise<void> {
     if (ngForm.submitted && ngForm.form.valid) {
       await this.checkDuplicatesEmail();
     } else {
-      mailInput.control.markAsTouched();
+      emailInput.control.markAsTouched();
     }
   }
 
@@ -61,15 +61,15 @@ export class LandingPageComponent {
    * Handles UI state and errors accordingly.
    */
   private async checkDuplicatesEmail(): Promise<void> {
-    const email = this.authData.mail.trim().toLowerCase();
+    const email = this.authData.email.trim().toLowerCase();
     if (!email) return;
 
     this.authData.send = true;
 
     try {
-      await this.authService.checkAuthUserMail({ email });
+      await this.authService.checkAuthUserEmail({ email });
       this.errorService.clearError();
-      this.router.navigate(['/register'], { queryParams: { mail: email } });
+      this.router.navigate(['/register'], { queryParams: { email: email } });
     } catch (error) {
       this.errorService.handleError(error);
     } finally {

@@ -15,7 +15,7 @@ export class VerifyEmailComponent {
   verified: boolean = false;
 
   authData = {
-    mail: '',
+    email: '',
     token: '',
     send: false,
   };
@@ -54,7 +54,7 @@ export class VerifyEmailComponent {
    * @param params The query parameters from the route.
    */
   private extractAuthParams(params: Params): void {
-    this.authData.mail = params['email'] || '';
+    this.authData.email = params['email'] || '';
     this.authData.token = params['token'] || '';
   }
 
@@ -64,7 +64,7 @@ export class VerifyEmailComponent {
    */
   private async verifyEmail(): Promise<void> {
     const body = {
-      email: this.authData.mail.toLowerCase(),
+      email: this.authData.email.toLowerCase(),
       token: this.authData.token,
     };
 

@@ -6,31 +6,31 @@
   </div>
   <form
     #taskForm="ngForm"
-    (ngSubmit)="onSubmit(taskForm, mail)"
+    (ngSubmit)="onSubmit(taskForm, email)"
     onsubmit="return false"
   >
     <input
-      type="mail"
-      id="mail"
-      name="mail"
-      #mail="ngModel"
+      type="email"
+      id="email"
+      name="email"
+      #email="ngModel"
       placeholder="Email Address"
       class="custom-input"
       autocomplete="email"
-      [(ngModel)]="authData.mail"
+      [(ngModel)]="authData.email"
       [class.error-border]="
-        (!mail.valid && mail.touched) ||
-        (mail.touched &&
-          !isUserEmailValid(authData.mail) &&
-          authData.mail.length > 0)
+        (!email.valid && email.touched) ||
+        (email.touched &&
+          !isUserEmailValid(authData.email) &&
+          authData.email.length > 0)
       "
       required
     />
     <div class="error-msg">
-      @if (!mail.valid && mail.touched) {
+      @if (!email.valid && email.touched) {
       <p>Please enter your email</p>
-      } @else { @if (mail.touched && authData.mail.length > 0 &&
-      !isUserEmailValid(authData.mail)) {
+      } @else { @if (email.touched && authData.email.length > 0 &&
+      !isUserEmailValid(authData.email)) {
       <p>This is not a valid email format</p>
       }}
     </div>
@@ -40,7 +40,7 @@
       [imgPath]="'arrow_right'"
       [imgReverse]="true"
       [disabled]="
-        (!isUserEmailValid(authData.mail) && authData.mail.length > 0) ||
+        (!isUserEmailValid(authData.email) && authData.email.length > 0) ||
         authData.send
       "
     ></app-btn-large>

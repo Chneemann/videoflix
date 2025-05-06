@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
    */
   private createRegisterForm(): void {
     this.form = this.fb.group({
-      mail: ['', [Validators.required, emailFormatValidator()]],
+      email: ['', [Validators.required, emailFormatValidator()]],
       password: ['', Validators.required],
       passwordConfirm: ['', Validators.required],
       privacyPolicy: [false, Validators.requiredTrue],
@@ -61,12 +61,12 @@ export class RegisterComponent implements OnInit {
   }
 
   /**
-   * Sets the email address from the query parameters in the URL.
+   * Sets the mail address from the query parameters in the URL.
    */
   private setEmailFromQueryParams(): void {
     this.route.queryParams.subscribe((params) => {
-      const email = params['mail'] || '';
-      this.form.patchValue({ mail: email });
+      const email = params['email'] || '';
+      this.form.patchValue({ email: email });
     });
   }
 
@@ -104,8 +104,8 @@ export class RegisterComponent implements OnInit {
   } {
     const formValue = this.form.value;
     return {
-      email: formValue.mail.toLowerCase(),
-      username: formValue.mail.split('@')[0],
+      email: formValue.email.toLowerCase(),
+      username: formValue.email.split('@')[0],
       password: formValue.password,
     };
   }
