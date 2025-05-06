@@ -47,6 +47,14 @@ form {
   }
 }
 
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 9px;
+}
+
 .error-msg {
   display: flex;
   align-items: center;
