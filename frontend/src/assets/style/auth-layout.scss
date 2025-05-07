@@ -53,15 +53,15 @@ section {
 @media screen and (max-width: 660px) {
   .content {
     padding: 28px;
-    .headline {
-      font-size: 36px;
-    }
   }
 }
 
 @media screen and (max-width: 600px) {
   .content {
     width: 80%;
+    .headline {
+      font-size: 36px;
+    }
   }
 }
 
