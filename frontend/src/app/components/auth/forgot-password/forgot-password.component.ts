@@ -5,11 +5,18 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ErrorService } from '../../../services/error.service';
+import { EmailRequestComponent } from './email-request/email-request.component';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [CommonModule, BtnLargeComponent, FormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    BtnLargeComponent,
+    FormsModule,
+    RouterLink,
+    EmailRequestComponent,
+  ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
 })
@@ -41,6 +48,10 @@ export class ForgotPasswordComponent implements OnInit {
    */
   ngOnInit(): void {
     this.handleQueryParams();
+  }
+
+  submittedChange(value: boolean): void {
+    this.sendEmailSuccess = value;
   }
 
   /**

@@ -1,0 +1,36 @@
+<div class="note">
+  <p>We will send you an email with instructions to reset your password.</p>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="email-field">
+    <input
+      formControlName="email"
+      type="email"
+      id="email"
+      placeholder="Email Address"
+      autocomplete="email"
+      [class.error-border]="
+        form.controls['email'].invalid && form.controls['email'].touched
+      "
+    />
+    <img class="email-icon" src="./assets/img/email.svg" />
+  </div>
+
+  <div class="error-container">
+    @if (form.controls['email'].touched && form.controls['email'].invalid) {
+    <div class="error-msg">
+      @if (form.controls['email'].errors?.['required']) {
+      <p role="alert">Please enter your email</p>
+      } @if (form.controls['email'].errors?.['invalidEmailFormat']) {
+      <p role="alert">This is not a valid email format</p>
+      }
+    </div>
+    }
+  </div>
+
+  <app-btn-large
+    [value]="'Send Email'"
+    [disabled]="form.invalid || form.disabled"
+  ></app-btn-large>
+</form>
