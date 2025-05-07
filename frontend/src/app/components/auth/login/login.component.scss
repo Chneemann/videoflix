@@ -49,3 +49,17 @@
     }
   }
 }
+
+@media screen and (max-width: 400px) {
+  .footer {
+    a {
+      font-size: 16px;
+    }
+    .footer-content {
+      p,
+      a {
+        font-size: 16px;
+      }
+    }
+  }
+}

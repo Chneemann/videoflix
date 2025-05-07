@@ -52,3 +52,18 @@
     margin: 0 0 0 4px;
   }
 }
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 400px) {
+  .btn {
+    padding: 9px 18px;
+    border-radius: 18px;
+    p {
+      font-size: 16px;
+    }
+    .icon {
+      height: 20px;
+    }
+  }
+}

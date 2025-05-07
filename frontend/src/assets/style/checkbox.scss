@@ -15,9 +15,10 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  font-size: 18px;
   cursor: pointer;
   a {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     text-decoration: none;
     cursor: pointer;
@@ -75,4 +76,15 @@
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+/*------------- RESPONSIVE -------------*/
+
+@media screen and (max-width: 400px) {
+  .container {
+    font-size: 15px;
+    a {
+      font-size: 15px;
+    }
+  }
 }
