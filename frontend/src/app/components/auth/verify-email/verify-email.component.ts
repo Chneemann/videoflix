@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ErrorService } from '../../../services/error.service';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-verify-email',
@@ -11,13 +12,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './verify-email.component.html',
   styleUrl: './verify-email.component.scss',
 })
-export class VerifyEmailComponent {
-  verified: boolean = false;
+export class VerifyEmailComponent implements OnInit {
+  verificationSuccess: boolean = false;
 
-  authData = {
+  verificationParams: { email: string; token: string } = {
     email: '',
     token: '',
-    send: false,
   };
 
   /**
@@ -26,56 +26,64 @@ export class VerifyEmailComponent {
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
-    public errorService: ErrorService
+    private errorService: ErrorService
   ) {}
 
   /**
-   * Lifecycle hook that is called after data-bound properties are initialized.
-   * Subscribes to query parameters and triggers email verification.
+   * Initializes the component and triggers the email verification process.
    */
-  ngOnInit(): void {
-    this.handleQueryParams();
+  async ngOnInit(): Promise<void> {
+    await this.initVerification();
   }
 
   /**
-   * Subscribes to the query parameters from the route and extracts authentication data.
-   * Then triggers the email verification process.
+   * Coordinates the overall email verification process by handling query parameters
+   * and calling the verification API if valid data is present.
    */
-  private handleQueryParams(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.extractAuthParams(params);
-      this.verifyEmail();
-    });
+  private async initVerification(): Promise<void> {
+    await this.handleQueryParams();
+    if (this.verificationParams.email && this.verificationParams.token) {
+      await this.verifyEmail();
+    }
   }
 
   /**
-   * Extracts the 'email' and 'token' parameters from the query and assigns them to authData.
+   * Retrieves and processes query parameters from the current route.
+   * Extracts the necessary authentication data for email verification.
+   */
+  private async handleQueryParams(): Promise<void> {
+    const params = await firstValueFrom(this.route.queryParams);
+    this.extractAuthParams(params);
+  }
+
+  /**
+   * Extracts the 'email' and 'token' values from the given query parameters
+   * and stores them in the verifyData object.
    *
-   * @param params The query parameters from the route.
+   * @param params The query parameters from the current route.
    */
   private extractAuthParams(params: Params): void {
-    this.authData.email = params['email'] || '';
-    this.authData.token = params['token'] || '';
+    this.verificationParams = {
+      email: params['email'] || '',
+      token: params['token'] || '',
+    };
   }
 
   /**
-   * Sends a request to verify the user's email using the extracted authentication data.
-   * Sets the appropriate flags based on the result and handles errors if any occur.
+   * Calls the AuthService to verify the user's email using the provided credentials.
+   * Updates the verification status and delegates error handling if the request fails.
    */
   private async verifyEmail(): Promise<void> {
-    const body = {
-      email: this.authData.email.toLowerCase(),
-      token: this.authData.token,
+    const body: { email: string; token: string } = {
+      email: this.verificationParams.email.toLowerCase(),
+      token: this.verificationParams.token,
     };
 
-    this.authData.send = true;
     try {
       await this.authService.verifyEmail(body);
-      this.verified = true;
-      this.errorService.clearError();
+      this.verificationSuccess = true;
     } catch (error) {
-      this.authData.send = false;
-      this.verified = false;
+      this.verificationSuccess = false;
       this.errorService.handleError(error);
     }
   }
