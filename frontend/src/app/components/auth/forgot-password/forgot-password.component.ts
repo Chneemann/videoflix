@@ -21,8 +21,8 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './forgot-password.component.scss',
 })
 export class ForgotPasswordComponent implements OnInit {
-  emailSendSuccess: boolean = false;
-  passwordChangeSuccess: boolean = false;
+  emailSentSuccessfully: boolean = false;
+  passwordChangedSuccessfully: boolean = false;
   hasVerificationParams: boolean = false;
 
   verificationParams: { email: string; token: string } = {
@@ -82,7 +82,7 @@ export class ForgotPasswordComponent implements OnInit {
    * @param success A boolean indicating whether the request was successful.
    */
   submittedChangeEmail(success: boolean): void {
-    this.emailSendSuccess = success;
+    this.emailSentSuccessfully = success;
   }
 
   /**
@@ -92,6 +92,15 @@ export class ForgotPasswordComponent implements OnInit {
    * @param success A boolean indicating whether the password change was successful.
    */
   submittedChangePassword(success: boolean): void {
-    this.passwordChangeSuccess = success;
+    this.passwordChangedSuccessfully = success;
+  }
+
+  get successMessage(): string {
+    if (this.emailSentSuccessfully) {
+      return 'If the email you entered exists on our server, you will receive a message with instructions on how to reset your password.';
+    } else if (this.passwordChangedSuccessfully) {
+      return 'Password change successful. You can now log in with your new password.';
+    }
+    return '';
   }
 }
