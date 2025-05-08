@@ -17,7 +17,7 @@ import { ErrorService } from '../../../../services/error.service';
   styleUrl: './password-request.component.scss',
 })
 export class PasswordRequestComponent {
-  @Input() queryData!: { email: string; token: string };
+  @Input() verificationParams!: { email: string; token: string };
 
   @Output() submittedChangePassword = new EventEmitter<boolean>();
 
@@ -84,8 +84,8 @@ export class PasswordRequestComponent {
     password: string;
   } {
     return {
-      email: this.queryData.email,
-      token: this.queryData.token,
+      email: this.verificationParams.email,
+      token: this.verificationParams.token,
       password: this.form.value.password,
     };
   }
