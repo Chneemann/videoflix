@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BtnLargeComponent } from '../../../../shared/components/buttons/btn-large/btn-large.component';
 import {
   FormBuilder,
@@ -7,27 +7,28 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ErrorService } from '../../../../services/error.service';
 import { AuthService } from '../../../../services/auth.service';
-import { emailFormatValidator } from '../../../../validators/email-format.validator';
+import { ErrorService } from '../../../../services/error.service';
 
 @Component({
-  selector: 'app-email-request',
+  selector: 'app-password-request',
   imports: [BtnLargeComponent, FormsModule, ReactiveFormsModule],
-  templateUrl: './email-request.component.html',
-  styleUrl: './email-request.component.scss',
+  templateUrl: './password-request.component.html',
+  styleUrl: './password-request.component.scss',
 })
-export class EmailRequestComponent implements OnInit {
-  @Output() submittedChangeEmail = new EventEmitter<boolean>();
+export class PasswordRequestComponent {
+  @Input() queryData!: { email: string; token: string };
+
+  @Output() submittedChangePassword = new EventEmitter<boolean>();
 
   form: FormGroup = new FormGroup({});
 
   /**
-   * Initializes the EmailRequestComponent with FormBuilder, AuthService, and ErrorService.
+   * Initializes the PasswordRequestComponent with FormBuilder, AuthService, and ErrorService.
    */
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    public authService: AuthService,
     private errorService: ErrorService
   ) {}
 
@@ -40,8 +41,8 @@ export class EmailRequestComponent implements OnInit {
   }
 
   /**
-   * Handles the form submission process.
-   * Validates the form, sends a forgot-password request,
+   * Handles the form submission for password change.
+   * Validates the form, sends a password change request,
    * and emits a submission event on success.
    *
    * @returns A Promise that resolves when the process is complete.
@@ -52,7 +53,7 @@ export class EmailRequestComponent implements OnInit {
       this.form.disable();
 
       try {
-        await this.authService.forgotPassword(body);
+        await this.authService.changePassword(body);
         this.emitFormSubmitted();
       } catch (error) {
         this.errorService.handleError(error);
@@ -67,18 +68,25 @@ export class EmailRequestComponent implements OnInit {
    */
   private createForm(): void {
     this.form = this.fb.group({
-      email: ['', [Validators.required, emailFormatValidator()]],
+      password: ['', Validators.required],
+      passwordConfirm: ['', Validators.required],
     });
   }
 
   /**
    * Constructs the request payload from the form values.
    *
-   * @returns An object containing the normalized email address.
+   * @returns An object containing the email, token, and password.
    */
-  private createFormRequestBody(): { email: string } {
+  private createFormRequestBody(): {
+    email: string;
+    token: string;
+    password: string;
+  } {
     return {
-      email: this.form.value.email.toLowerCase(),
+      email: this.queryData.email,
+      token: this.queryData.token,
+      password: this.form.value.password,
     };
   }
 
@@ -86,6 +94,6 @@ export class EmailRequestComponent implements OnInit {
    * Emits an event indicating that the form was successfully submitted.
    */
   private emitFormSubmitted(): void {
-    this.submittedChangeEmail.emit(true);
+    this.submittedChangePassword.emit(true);
   }
 }

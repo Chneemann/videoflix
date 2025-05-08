@@ -6,22 +6,25 @@ import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ErrorService } from '../../../services/error.service';
 import { EmailRequestComponent } from './email-request/email-request.component';
+import { PasswordRequestComponent } from './password-request/password-request.component';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
   imports: [
     CommonModule,
-    BtnLargeComponent,
     FormsModule,
     RouterLink,
     EmailRequestComponent,
+    PasswordRequestComponent,
   ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
 })
 export class ForgotPasswordComponent implements OnInit {
-  sendEmailSuccess: boolean = false;
+  emailSendSuccess: boolean = false;
+  passwordChangeSuccess: boolean = false;
+
   queryEmail: boolean = false;
   queryEmailSuccess: boolean = false;
 
@@ -29,8 +32,12 @@ export class ForgotPasswordComponent implements OnInit {
     email: '',
     token: '',
     password: '',
-    passwordConfirm: '',
     send: false,
+  };
+
+  queryData = {
+    email: '',
+    token: '',
   };
 
   /**
@@ -50,8 +57,12 @@ export class ForgotPasswordComponent implements OnInit {
     this.handleQueryParams();
   }
 
-  submittedChange(value: boolean): void {
-    this.sendEmailSuccess = value;
+  submittedChangeEmail(success: boolean): void {
+    this.emailSendSuccess = success;
+  }
+
+  submittedChangePassword(success: boolean): void {
+    this.passwordChangeSuccess = success;
   }
 
   /**
@@ -60,8 +71,7 @@ export class ForgotPasswordComponent implements OnInit {
   private handleQueryParams(): void {
     this.route.queryParams.subscribe((params) => {
       this.extractAuthParams(params);
-      this.queryEmailSuccess = params['pw-change'] || '';
-      if (this.authData.email && this.authData.token) {
+      if (this.queryData.email && this.queryData.token) {
         this.queryEmail = true;
       }
     });
@@ -73,8 +83,8 @@ export class ForgotPasswordComponent implements OnInit {
    * @param params The query parameters from the URL.
    */
   private extractAuthParams(params: Params): void {
-    this.authData.email = params['email'] || '';
-    this.authData.token = params['token'] || '';
+    this.queryData.email = params['email'] || '';
+    this.queryData.token = params['token'] || '';
   }
 
   /**
@@ -120,11 +130,11 @@ export class ForgotPasswordComponent implements OnInit {
     this.authData.send = true;
     try {
       await this.authService.forgotPassword(body);
-      this.sendEmailSuccess = true;
+      this.emailSendSuccess = true;
       this.errorService.clearError();
     } catch (error) {
       this.authData.send = false;
-      this.sendEmailSuccess = false;
+      this.emailSendSuccess = false;
       this.errorService.handleError(error);
     }
   }
