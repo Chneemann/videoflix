@@ -4,20 +4,25 @@
 @use "./../../../../assets/style/auth-layout.scss" as *;
 
 .headline {
-  p:nth-child(1) {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  max-width: 90%;
+  gap: 12px;
+
+  .title {
     font-size: 48px;
     font-weight: 700;
-    padding: 12px;
   }
-  p:nth-child(2) {
+
+  .subtitle {
     font-size: 24px;
     font-weight: 500;
-    padding: 12px;
   }
-  p:nth-child(3) {
+
+  .note {
     font-size: 18px;
     font-weight: 400;
-    padding: 12px;
   }
 }
 
@@ -26,24 +31,29 @@ form {
   position: relative;
   width: 500px;
   padding: 24px;
+
   input {
-    width: 65%;
-    padding: 12px 18px;
+    width: 100%;
+    padding: 12px 24px !important;
     margin: 8px 0;
-    color: $white;
     border: 2px solid $white;
     border-radius: 24px;
-    font-size: 18px;
     &::placeholder {
       color: rgba($white, 0.6);
     }
   }
+
   .error-border {
     border: 2px solid $red;
   }
+
+  app-btn-large {
+    margin-left: 24px;
+    width: 230px;
+  }
 }
 
-.error-msg {
+.error-container {
   position: absolute;
   bottom: 0;
   padding: 6px;
@@ -56,28 +66,36 @@ form {
   form {
     flex-direction: column;
     width: 90%;
+
     input {
       width: 100%;
     }
+
+    app-btn-large {
+      margin-left: 0;
+      width: fit-content;
+    }
   }
 
-  .error-msg {
+  .error-container {
     position: relative;
     padding: 0;
     height: 12px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
   }
 }
 
 @media screen and (max-width: 500px) {
   .headline {
-    p:nth-child(1) {
+    .title {
       font-size: 36px;
     }
-    p:nth-child(2) {
+
+    .subtitle {
       font-size: 20px;
     }
-    p:nth-child(3) {
+
+    .note {
       font-size: 16px;
     }
   }

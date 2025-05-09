@@ -1,79 +1,76 @@
 import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  NgForm,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { BtnLargeComponent } from '../../../shared/components/buttons/btn-large/btn-large.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from '../../../services/error.service';
 import { AuthService } from '../../../services/auth.service';
+import { emailFormatValidator } from '../../../validators/email-format.validator';
 
 @Component({
   selector: 'app-landing-page',
   standalone: true,
-  imports: [CommonModule, BtnLargeComponent, FormsModule],
+  imports: [CommonModule, BtnLargeComponent, FormsModule, ReactiveFormsModule],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.scss',
 })
 export class LandingPageComponent {
-  authData = {
-    email: '',
-    send: false,
-  };
+  form: FormGroup = new FormGroup({});
 
   /**
-   * Initializes the LandingPageComponent with Router, AuthService, and ErrorService.
+   * Initializes the LandingPageComponent with Router, FormBuilder, AuthService, and ErrorService.
    */
   constructor(
     private router: Router,
+    private fb: FormBuilder,
     private authService: AuthService,
     public errorService: ErrorService
   ) {}
 
   /**
-   * Validates the given email address.
-   * Converts to lowercase before checking against the regex.
-   *
-   * @param emailValue The email address to validate.
-   * @returns True if the email format is valid, false otherwise.
+   * Initializes the component by setting up necessary data.
    */
-  isUserEmailValid(emailValue: string): boolean {
-    const emailRegex = /^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(emailValue.toLowerCase());
+  ngOnInit(): void {
+    this.createForm();
   }
 
   /**
-   * Handles form submission.
-   * If the form is valid, checks for duplicate email addresses.
-   *
-   * @param ngForm The submitted form.
-   * @param emailInput The input field for the email.
+   * Initializes the form with required fields and validators.
    */
-  async onSubmit(ngForm: NgForm, emailInput: any): Promise<void> {
-    if (ngForm.submitted && ngForm.form.valid) {
-      await this.checkDuplicatesEmail();
-    } else {
-      emailInput.control.markAsTouched();
-    }
+  private createForm(): void {
+    this.form = this.fb.group({
+      email: ['', [Validators.required, emailFormatValidator()]],
+    });
   }
 
   /**
-   * Checks whether the entered email already exists.
-   * Navigates to the registration page if it's available.
-   * Handles UI state and errors accordingly.
+   * Handles the submission of the registration form.
+   * Validates the form, sends a check if user already exists request,
+   * and navigates to the registration page if the user does not exist.
+   *
+   * @returns A Promise that resolves when the registration process is complete.
    */
-  private async checkDuplicatesEmail(): Promise<void> {
-    const email = this.authData.email.trim().toLowerCase();
-    if (!email) return;
+  async onSubmit(): Promise<void> {
+    if (this.form.invalid) return;
 
-    this.authData.send = true;
+    this.form.disable();
+    const email = this.form.value.email?.toLowerCase().trim();
 
     try {
       await this.authService.checkAuthUserEmail({ email });
-      this.errorService.clearError();
-      this.router.navigate(['/register'], { queryParams: { email: email } });
+      this.router.navigate(['/register'], { queryParams: { email } });
+      this.form.reset();
     } catch (error) {
       this.errorService.handleError(error);
     } finally {
-      this.authData.send = false;
+      this.form.enable();
     }
   }
 }
