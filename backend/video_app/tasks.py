@@ -1,7 +1,4 @@
-import shutil
-import subprocess
-import ffmpeg
-import os
+import shutil, subprocess, ffmpeg, os
 from django.conf import settings
  
 def convert_video_to_hls(source, resolution, model_id):
@@ -59,11 +56,9 @@ def create_thumbnails(instance, model_id):
         os.makedirs(thumbnail_dir)
 
     try:
-        # Generate the image thumbnails
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_1080p_path, vf='scale=1920:-1', vframes=1).run(overwrite_output=True)
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_480_path, vf='scale=720:-1', vframes=1).run(overwrite_output=True)
         
-        # Create the 10-second video thumbnail
         create_video_thumbnail(video_file_path, thumbnail_dir, base_filename)
 
     except ffmpeg._run.Error as e:
@@ -82,7 +77,7 @@ def create_video_thumbnail(video_file_path, thumbnail_dir, base_filename):
             video_thumbnail_path, 
             vf='scale=1280:-1', 
             vcodec='libx264', 
-            an=None  # Disable audio
+            an=None
         ).run(overwrite_output=True)
 
     except ffmpeg._run.Error as e:

@@ -15,9 +15,9 @@ import os
 @permission_classes([IsAuthenticated])
 def video_list(request):
     """
-    List all videos
+    List all videos with is_available=True
     """
-    videos = Video.objects.all()
+    videos = Video.objects.filter(is_available=True)
     serializer = VideoSerializer(videos, many=True)
     return Response(serializer.data)
 

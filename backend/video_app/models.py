@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 from datetime import date
 from .class_assets import VIDEO_GENRES
-import uuid
 
 class Video(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,default=1)
@@ -12,6 +11,7 @@ class Video(models.Model):
     genre = models.CharField(max_length=20, choices=VIDEO_GENRES, blank=True, null=True)
     file_path = models.FileField(upload_to='videos/', blank=True, null=True)
     file_name = models.CharField(max_length=50, blank=True, null=True)
+    is_available = models.BooleanField(default=False)
 
     def __str__(self):
         return f'({self.id}) {self.title}'

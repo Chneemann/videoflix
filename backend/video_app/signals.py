@@ -2,9 +2,7 @@ from .models import Video
 from .tasks import convert_video_to_hls, create_thumbnails, delete_original_video
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
-import os
-import django_rq
-import shutil
+import os, shutil, django_rq
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):
@@ -14,12 +12,16 @@ def video_post_save(sender, instance, created, **kwargs):
     - Convert video to different resolutions (HLS)
     - Delete original video
     """
-    if not created:
+    if not created and instance.is_available:
         return
 
     if instance.file_path and instance.file_name:
         try:
             create_thumbnails(instance, instance.id)
+            
+            if not instance.is_available:
+                instance.is_available = True
+                instance.save(update_fields=['is_available'])
 
             queue = django_rq.get_queue("default", autocommit=True)
             resolutions = ["1280x720", "640x360", "1920x1080"]

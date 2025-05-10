@@ -1,5 +1,4 @@
-import os
-import uuid
+import os, uuid
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from .models import Video
