@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from datetime import date
 from .class_assets import VIDEO_GENRES
-import os
+import uuid
 
 class Video(models.Model):
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,default=1)
@@ -15,11 +15,3 @@ class Video(models.Model):
 
     def __str__(self):
         return f'({self.id}) {self.title}'
-    
-    def save(self, *args, **kwargs):
-        if self.file_path and not self.file_name:
-            file_path = self.file_path.path
-            base_filename, _ = os.path.splitext(os.path.basename(file_path))
-            self.file_name = base_filename
-        super().save(*args, **kwargs)
-    

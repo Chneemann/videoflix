@@ -1,25 +1,21 @@
+from django.forms import ValidationError
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializer import VideoSerializer
 from .models import Video
+from .services import validate_video_file, save_video_file, create_video_record
 from .class_assets import VIDEO_GENRES
-from django.core.cache.backends.base import DEFAULT_TIMEOUT 
-from django.views.decorators.cache import cache_page 
 from django.conf import settings
-from rest_framework.parsers import MultiPartParser, FormParser
 from django.http import JsonResponse
+from django.db import transaction
 import os
 
-CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
-
-# Create your views here.
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-#@cache_page(CACHE_TTL)
 def video_list(request):
     """
-    List all videos.
+    List all videos
     """
     videos = Video.objects.all()
     serializer = VideoSerializer(videos, many=True)
@@ -61,13 +57,21 @@ def check_video_resolutions(request, id):
 @permission_classes([IsAuthenticated])
 def video_upload(request):
     """
-    Handle the upload of a video file.
+    Handles the upload of a video file:
     """
-    parser_classes = (MultiPartParser, FormParser)
-    if request.method == 'POST':
-        serializer = VideoSerializer(data=request.data)
-        if serializer.is_valid():
-            creator = request.user
-            serializer.save(creator=creator)
-            return Response(serializer.data, status=201)
-        return Response({"error": "Invalid data", "details": serializer.errors}, status=400)
+    uploaded_file = request.FILES.get('file_path')
+    
+    error = validate_video_file(uploaded_file)
+    if error:
+        return Response({'error': error}, status=400)
+
+    try:
+        short_name, file_path = save_video_file(uploaded_file)
+        with transaction.atomic():
+            video = create_video_record(request.data, request.user, short_name, file_path)
+        return Response(VideoSerializer(video).data, status=201)
+
+    except ValidationError as ve:
+        return Response({'error': f'Validation Error: {str(ve)}'}, status=400)
+    except Exception as e:
+        return Response({'error': f'Error while saving video file: {str(e)}'}, status=500)

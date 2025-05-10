@@ -3,14 +3,14 @@ import subprocess
 import ffmpeg
 import os
 from django.conf import settings
-
+ 
 def convert_video_to_hls(source, resolution, model_id):
     """
     Converts a video to the HLS format
     """
     resolution_after_x = resolution.split('x')[1] if 'x' in resolution else resolution
 
-    target_dir = os.path.join(os.path.dirname(source), str(model_id))
+    target_dir = os.path.join(settings.VIDEO_DIR, str(model_id))
     os.makedirs(target_dir, exist_ok=True)
 
     base_filename = os.path.basename(source).split(".")[0]

@@ -9,21 +9,28 @@ import shutil
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created, **kwargs):
     """
-    Generates a thumbnail, enqueues tasks to convert the video to different resolutions, and schedules the deletion of the original video file.
+    Signal handler for processing a video after saving:
+    - Create thumbnails
+    - Convert video to different resolutions (HLS)
+    - Delete original video
     """
-    if created:
-        queue = django_rq.get_queue("default", autocommit=True)
+    if not created:
+        return
+
+    if instance.file_path and instance.file_name:
+        try:
+            create_thumbnails(instance, instance.id)
+
+            queue = django_rq.get_queue("default", autocommit=True)
+            resolutions = ["1280x720", "640x360", "1920x1080"]
+            for resolution in resolutions:
+                queue.enqueue(convert_video_to_hls, instance.file_path.path, resolution, instance.id)
+
+            queue.enqueue(delete_original_video, instance.file_path.path)
         
-        #Create thumbnail
-        create_thumbnails(instance, instance.id)
-        
-        #Convert video
-        for resolution in ["1280x720", "640x360", "1920x1080"]:
-            queue.enqueue(convert_video_to_hls, instance.file_path.path, resolution, instance.id)
-            
-        #Delete the original video file
-        queue.enqueue(delete_original_video, instance.file_path.path)
-        
+        except Exception as e:
+            print(f"Video ID video processing error {instance.id}: {e}")
+
 @receiver(post_delete, sender=Video)
 def auto_delete_file_on_delete(sender, instance, **kwargs):
     """

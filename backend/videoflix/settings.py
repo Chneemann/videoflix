@@ -107,8 +107,6 @@ RQ_QUEUES = {
     }
 }
 
-CACHE_TTL = 60 * 15
-
 WSGI_APPLICATION = 'videoflix.wsgi.application'
 
 # Media
@@ -117,7 +115,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 MEDIA_URL = '/media/'
 
-THUMBNAIL_DIR = MEDIA_ROOT / 'thumbnails'
+THUMBNAIL_DIR = str(MEDIA_ROOT / 'thumbnails')
+
+VIDEO_DIR = str(MEDIA_ROOT / 'videos')
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
