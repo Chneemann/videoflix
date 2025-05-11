@@ -1,10 +1,9 @@
-from django.forms import ValidationError
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializer import VideoSerializer
+from .serializer import VideoSerializer, VideoUploadSerializer
 from .models import Video
-from .services import validate_video_file, save_video_file, create_video_record
+from .services import save_video_file, create_video_record
 from .class_assets import VIDEO_GENRES
 from django.conf import settings
 from django.http import JsonResponse
@@ -51,7 +50,7 @@ def check_video_resolutions(request, id):
         video_file_path = os.path.join(video_dir, video_file_name)
         result[res] = os.path.exists(video_file_path)
 
-    return JsonResponse(result)
+    return Response(result)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -59,19 +58,16 @@ def video_upload(request):
     """
     Handles the upload of a video file:
     """
-    uploaded_file = request.FILES.get('file_path')
-    
-    error = validate_video_file(uploaded_file)
-    if error:
-        return Response({'error': error}, status=400)
+    serializer = VideoUploadSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=400)
+
+    uploaded_file = serializer.validated_data['file_path']
+    short_name, file_path = save_video_file(uploaded_file)
 
     try:
-        short_name, file_path = save_video_file(uploaded_file)
         with transaction.atomic():
-            video = create_video_record(request.data, request.user, short_name, file_path)
+            video = create_video_record(serializer.validated_data, request.user, short_name, file_path)
         return Response(VideoSerializer(video).data, status=201)
-
-    except ValidationError as ve:
-        return Response({'error': f'Validation Error: {str(ve)}'}, status=400)
     except Exception as e:
-        return Response({'error': f'Error while saving video file: {str(e)}'}, status=500)
+        return Response({'error': f'Error while saving video: {str(e)}'}, status=500)
