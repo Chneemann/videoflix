@@ -40,11 +40,12 @@ export class HeroBannerComponent implements OnChanges {
   @Output() refreshChange = new EventEmitter<Video[]>();
   @Output() videosChange = new EventEmitter<any[]>();
   @Output() favoriteVideoChange = new EventEmitter<any[]>();
+  @Output() watchedVideoChange = new EventEmitter<any[]>();
 
   isVideoLoaded: boolean = false;
-  videoUrl: string = '';
+  previewClipUrl: string = '';
   thumbnailUrl: string = '';
-  playUrl: string = '';
+  videoUrl: string = '';
   environmentBaseUrl: string = environment.baseUrl;
 
   availableResolutions: string[];
@@ -94,9 +95,9 @@ export class HeroBannerComponent implements OnChanges {
     if (this.currentVideo) {
       const videoId = this.currentVideo.id;
       const fileName = this.currentVideo.file_name;
-      this.playUrl = `${this.environmentBaseUrl}/media/videos/${videoId}/${fileName}`;
+      this.videoUrl = `${this.environmentBaseUrl}/media/videos/${videoId}/${fileName}`;
       this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${videoId}/${fileName}_1080p.jpg`;
-      this.videoUrl = `${this.environmentBaseUrl}/media/thumbnails/${videoId}/${fileName}_video-thumbnail.mp4`;
+      this.previewClipUrl = `${this.environmentBaseUrl}/media/thumbnails/${videoId}/${fileName}_preview-clip.mp4`;
     }
   }
 
@@ -156,15 +157,7 @@ export class HeroBannerComponent implements OnChanges {
     this.watchedVideos = this.watchedVideos.includes(videoId)
       ? this.watchedVideos.filter((id) => id !== videoId)
       : [...this.watchedVideos, videoId];
-    this.updateWatchedVideos();
-  }
-
-  /**
-   * Updates the watched videos list on the server.
-   */
-  private updateWatchedVideos(): void {
-    const body = { watched_videos: this.watchedVideos };
-    this.userService.updateWatchedVideos(body);
+    this.watchedVideoChange.emit(this.watchedVideos);
   }
 
   /**

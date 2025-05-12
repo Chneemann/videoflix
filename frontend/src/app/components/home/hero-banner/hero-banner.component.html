@@ -18,7 +18,7 @@
     @if (currentVideo) {
     <video
       #videoElement
-      [src]="videoUrl"
+      [src]="previewClipUrl"
       poster="{{ thumbnailUrl }}"
       autoplay
       muted
@@ -60,7 +60,7 @@
         [imgPath]="'play'"
         [imgReverse]="true"
         [disabled]="!isAnyResolutionAvailable()"
-        (click)="playVideoId(playUrl, currentVideo)"
+        (click)="playVideoId(videoUrl, currentVideo)"
       ></app-btn-large>
       <div class="favorite-img" (click)="toggleLikeVideo(currentVideo)">
         @if(checkLikeVideos(currentVideo)) {

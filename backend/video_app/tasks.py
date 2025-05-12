@@ -59,17 +59,17 @@ def create_thumbnails(instance, model_id):
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_1080p_path, vf='scale=1920:-1', vframes=1).run(overwrite_output=True)
         ffmpeg.input(video_file_path, ss=1).output(thumbnail_480_path, vf='scale=720:-1', vframes=1).run(overwrite_output=True)
         
-        create_video_thumbnail(video_file_path, thumbnail_dir, base_filename)
+        create_video_preview_clip(video_file_path, thumbnail_dir, base_filename)
 
     except ffmpeg._run.Error as e:
         error_message = e.stderr.decode() if e.stderr else "Unknown ffmpeg error"
         print(f"An error has occurred: {error_message}")
 
-def create_video_thumbnail(video_file_path, thumbnail_dir, base_filename):
+def create_video_preview_clip(video_file_path, thumbnail_dir, base_filename):
     """
-    Creates a 10-second video thumbnail from a video file without audio.
+    Creates a 10-second silent video preview clip from a video file.
     """
-    video_thumbnail_filename = base_filename + '_video-thumbnail.mp4'
+    video_thumbnail_filename = base_filename + '_preview-clip.mp4'
     video_thumbnail_path = os.path.join(thumbnail_dir, video_thumbnail_filename)
 
     try:
