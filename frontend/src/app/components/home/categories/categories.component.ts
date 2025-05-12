@@ -22,8 +22,8 @@ import { GenreService } from '../../../services/genre.service';
 export class CategoriesComponent implements AfterViewInit {
   @Input() videos: Video[] = [];
   @Input() currentVideo: Video | null = null;
-  @Input() favoriteVideos: any[] = [];
-  @Input() watchedVideos: any[] = [];
+  @Input() favoriteVideos: number[] = [];
+  @Input() watchedVideos: number[] = [];
 
   @Output() currentVideoId = new EventEmitter<number>();
 
@@ -74,8 +74,9 @@ export class CategoriesComponent implements AfterViewInit {
    * @returns An array of favorite videos
    */
   getFavoriteVideos(): Video[] {
-    return this.videos.filter((video) =>
-      this.favoriteVideos.includes(video.id)
+    return this.videos.filter(
+      (video) =>
+        video.id !== undefined && this.favoriteVideos.includes(video.id)
     );
   }
 

@@ -9,9 +9,11 @@
         alt=""
       />
     </div>
-    <div *ngIf="watchedVideos.includes(video.id)" class="watched">
+    @if (getWatchedVideos()) {
+    <div class="watched">
       <img src="./assets/img/open-eye.svg" alt="" />
     </div>
+    }
   </div>
   }
 

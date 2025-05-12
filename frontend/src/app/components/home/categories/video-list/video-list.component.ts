@@ -13,7 +13,7 @@ import { Video } from '../../../../interfaces/video.interface';
 export class VideoListComponent {
   @Input() videos: Video[] = [];
   @Input() currentVideo: Video | null = null;
-  @Input() watchedVideos: any[] = [];
+  @Input() watchedVideos: number[] = [];
   @Input() videoCategory: string = '';
 
   @Output() currentVideoId = new EventEmitter<number>();
@@ -27,6 +27,16 @@ export class VideoListComponent {
   getThumbnailUrl(videoId: number | undefined, fileName: string): string {
     const id = videoId ?? 0;
     return `${environment.baseUrl}/media/thumbnails/${id}/${fileName}_480p.jpg`;
+  }
+
+  /**
+   * Filters and returns all watched videos.
+   * @returns An array of watched videos.
+   */
+  getWatchedVideos(): Video[] {
+    return this.videos.filter(
+      (video) => video.id !== undefined && this.watchedVideos.includes(video.id)
+    );
   }
 
   /**

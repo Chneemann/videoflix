@@ -7,7 +7,11 @@ import { VideoService } from '../../../services/video.service';
 import { LoadingDialogComponent } from '../../../shared/components/loading-dialog/loading-dialog.component';
 import { Video } from '../../../interfaces/video.interface';
 import { GenreService } from '../../../services/genre.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpEventType,
+} from '@angular/common/http';
 
 @Component({
   selector: 'app-upload-video',
@@ -144,8 +148,12 @@ export class UploadVideoComponent {
    * Handles upload errors and resets UI state.
    * @param err - The error from the upload observable
    */
-  private handleUploadError(err: any): void {
-    this.errorService.handleError(err);
+  private handleUploadError(err: unknown): void {
+    if (err instanceof HttpErrorResponse) {
+      this.errorService.handleError(err);
+    } else {
+      console.error('An unknown error occurred during upload:', err);
+    }
     this.uploadProgress = null;
     this.videoData.send = false;
   }

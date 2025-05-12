@@ -38,9 +38,9 @@ export class HeroBannerComponent implements OnChanges {
     [resolution: string]: boolean;
   }>();
   @Output() refreshChange = new EventEmitter<Video[]>();
-  @Output() videosChange = new EventEmitter<any[]>();
-  @Output() favoriteVideoChange = new EventEmitter<any[]>();
-  @Output() watchedVideoChange = new EventEmitter<any[]>();
+  @Output() videosChange = new EventEmitter<Video[]>();
+  @Output() favoriteVideoChange = new EventEmitter<number[]>();
+  @Output() watchedVideoChange = new EventEmitter<number[]>();
 
   isVideoLoaded: boolean = false;
   previewClipUrl: string = '';
