@@ -1,5 +1,5 @@
 export interface Video {
-  id?: number;
+  id: number;
   creator: number;
   created_at: string;
   title: string;

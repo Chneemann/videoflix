@@ -1,15 +1,6 @@
-<section
-  [ngClass]="{
-    fullVh: !isWideScreen
-  }"
->
-  <div
-    class="video-banner"
-    [ngClass]="{
-      fullVhBanner: !isWideScreen
-    }"
-  >
-    <!-- Fallback image is displayed before the video is loaded -->
+<section [class.fullVh]="!isWideScreen">
+  <div class="video-banner" [class.fullVhBanner]="!isWideScreen">
+    <!-- Fallback image -->
     @if (!isVideoLoaded) {
     <img [src]="thumbnailUrl" class="fallback-image" />
     }
@@ -19,31 +10,23 @@
     <video
       #videoElement
       [src]="previewClipUrl"
-      poster="{{ thumbnailUrl }}"
+      [poster]="thumbnailUrl"
       autoplay
       muted
       loop
       playsinline
-      class="video-banner"
       (canplay)="onVideoLoad()"
       (error)="onVideoError()"
     ></video>
     }
   </div>
 
-  @if (currentVideo !== null) {
-  <div
-    class="content"
-    [ngClass]="{
-      fullVhContent: !isWideScreen
-    }"
-  >
+  @if (currentVideo) {
+  <div class="content" [class.fullVhContent]="!isWideScreen">
     <div class="title">{{ currentVideo.title }}</div>
     <div
       class="description hide-scrollbar"
-      [ngClass]="{
-        fullVhDescription: !isWideScreen
-      }"
+      [class.fullVhDescription]="!isWideScreen"
     >
       {{ currentVideo.description }}
     </div>
@@ -59,25 +42,30 @@
         [value]="'Play'"
         [imgPath]="'play'"
         [imgReverse]="true"
-        [disabled]="!isAnyResolutionAvailable()"
+        [disabled]="!isAnyResolutionAvailable"
         (click)="playVideoId(videoUrl, currentVideo)"
       ></app-btn-large>
-      <div class="favorite-img" (click)="toggleLikeVideo(currentVideo)">
-        @if(checkLikeVideos(currentVideo)) {
+
+      <!-- Favorite button -->
+      @let isLiked = checkLikeVideos(currentVideo);
+      <div
+        class="favorite-img"
+        (click)="toggleVideoStatus(currentVideo.id, 'favorite')"
+      >
         <img
-          class="filled"
-          src="./../../../../assets/img/favorite-filled.svg"
-          alt=""
+          [src]="
+            isLiked
+              ? './assets/img/favorite-filled.svg'
+              : './assets/img/favorite-outlined.svg'
+          "
+          [class.filled]="isLiked"
+          [class.outlined]="!isLiked"
+          alt="favorite"
         />
-        } @else {
-        <img
-          class="outlined"
-          src="./../../../../assets/img/favorite-outlined.svg"
-          alt=""
-        />
-        }
       </div>
-      @if (!isAnyResolutionAvailable()) {
+
+      <!-- Loading indicator -->
+      @if (!isAnyResolutionAvailable) {
       <p>
         (The video is being converted)
         <a (click)="refreshPage()">Refresh</a>

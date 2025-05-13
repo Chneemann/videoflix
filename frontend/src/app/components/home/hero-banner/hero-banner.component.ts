@@ -16,6 +16,7 @@ import { BtnSmallComponent } from '../../../shared/components/buttons/btn-small/
 import { UserService } from '../../../services/user.service';
 import { ResolutionService } from '../../../services/resolution.service';
 import { Video } from '../../../interfaces/video.interface';
+import { firstValueFrom, timeInterval } from 'rxjs';
 
 @Component({
   selector: 'app-hero-banner',
@@ -51,6 +52,8 @@ export class HeroBannerComponent implements OnChanges {
   availableResolutions: string[];
   videoIsUploaded: { [resolution: string]: boolean };
 
+  private readonly PLAYBACK_SPEED = 0.5;
+
   /**
    * Initializes the HeroBannerComponent with the VideoService, ResolutionService and UserService.
    * Gets the available resolutions and video upload status.
@@ -74,30 +77,27 @@ export class HeroBannerComponent implements OnChanges {
   }
 
   /**
-   * Loads the resolution status of the video, sets the video speed and updates the video URLs.
-   * @param changes SimpleChanges object containing the changed input properties.
+   * Lifecycle hook called when the component's input properties have changed.
+   * Updates the video details if the current video has changed.
+   * @param changes The changes to the component's input properties.
    */
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['currentVideo'] && this.currentVideo !== null) {
-      const videoId = this.currentVideo.id;
-      if (videoId) {
-        this.loadVideoResolutionStatus(videoId);
-        setTimeout(() => this.setVideoSpeed(), 0);
-        this.updateVideoUrls();
-      }
+    if (changes['currentVideo']) {
+      this.updateVideoDetails(this.currentVideo);
     }
   }
 
   /**
-   * Updates the URLs for the video, thumbnail, and video thumbnail.
+   * Updates the video details, resolution status, and playback speed
+   * for the hero banner component based on the given video.
+   * @param video The video to update the hero banner component with.
    */
-  private updateVideoUrls(): void {
-    if (this.currentVideo) {
-      const videoId = this.currentVideo.id;
-      const fileName = this.currentVideo.file_name;
-      this.videoUrl = `${this.environmentBaseUrl}/media/videos/${videoId}/${fileName}`;
-      this.thumbnailUrl = `${this.environmentBaseUrl}/media/thumbnails/${videoId}/${fileName}_1080p.jpg`;
-      this.previewClipUrl = `${this.environmentBaseUrl}/media/thumbnails/${videoId}/${fileName}_preview-clip.mp4`;
+  private updateVideoDetails(video: Video | null): void {
+    if (video) {
+      const videoId = video.id;
+      this.loadVideoResolutionStatus(videoId);
+      this.updateVideoUrls();
+      this.setVideoSpeed();
     }
   }
 
@@ -105,22 +105,62 @@ export class HeroBannerComponent implements OnChanges {
    * Loads the resolution status of the video.
    */
   private loadVideoResolutionStatus(videoId: number): void {
-    this.videoService
-      .isVideoResolutionUploaded(videoId)
-      .subscribe((resolutions) => {
+    firstValueFrom(this.videoService.isVideoResolutionUploaded(videoId))
+      .then((resolutions) => {
         this.videoIsUploaded = resolutions;
         this.videoIsUploadedChange.emit(this.videoIsUploaded);
+      })
+      .catch((error) => {
+        console.error('Error loading the video resolution:', error);
       });
+  }
+
+  /**
+   * Updates the URLs for the video, thumbnail, and preview clip
+   * based on the current video. Sets the appropriate media paths
+   * for the video player and displays.
+   */
+  private updateVideoUrls(): void {
+    if (this.currentVideo) {
+      const { id, file_name } = this.currentVideo;
+      this.videoUrl = this.getVideoMediaPath('video', id, file_name);
+      this.thumbnailUrl = this.getVideoMediaPath('thumbnail', id, file_name);
+      this.previewClipUrl = this.getVideoMediaPath('preview', id, file_name);
+    }
+  }
+
+  /**
+   * Generates a URL for a video, thumbnail, or preview clip given the type, id, and file name.
+   * @param type The type of media to generate the URL for.
+   * @param id The id of the video.
+   * @param file The file name of the video.
+   * @returns A URL pointing to the desired media.
+   */
+  private getVideoMediaPath(
+    type: 'video' | 'thumbnail' | 'preview',
+    id: number,
+    file: string
+  ): string {
+    switch (type) {
+      case 'video':
+        return `${this.environmentBaseUrl}/media/videos/${id}/${file}`;
+      case 'thumbnail':
+        return `${this.environmentBaseUrl}/media/thumbnails/${id}/${file}_1080p.jpg`;
+      case 'preview':
+        return `${this.environmentBaseUrl}/media/thumbnails/${id}/${file}_preview-clip.mp4`;
+    }
   }
 
   /**
    * Sets the playback rate of the video.
    */
   private setVideoSpeed(): void {
-    if (this.videoElementRef) {
-      const videoElement = this.videoElementRef.nativeElement;
-      videoElement.playbackRate = 0.5;
-    }
+    setInterval(() => {
+      const videoElement = this.videoElementRef?.nativeElement;
+      if (videoElement) {
+        videoElement.playbackRate = this.PLAYBACK_SPEED;
+      }
+    });
   }
 
   /**
@@ -138,26 +178,40 @@ export class HeroBannerComponent implements OnChanges {
   }
 
   /**
-   * Toggles the like status of the video.
+   * Plays the video and marks it as watched.
    */
-  toggleLikeVideo(video: Video): void {
-    if (video.id !== undefined) {
-      const videoId = video.id;
-      this.favoriteVideos = this.favoriteVideos.includes(videoId)
-        ? this.favoriteVideos.filter((id) => id !== videoId)
-        : [...this.favoriteVideos, videoId];
+  playVideoId(videoPath: string, video: Video): void {
+    this.playVideo.emit(videoPath);
+    this.toggleVideoStatus(video.id, 'watched');
+  }
+
+  /**
+   * Toggles the status of a video (favorite or watched) and emits the updated
+   * favoriteVideos or watchedVideos array.
+   * @param videoId The id of the video to toggle the status for.
+   * @param statusType The type of status to toggle ('favorite' or 'watched').
+   */
+  toggleVideoStatus(videoId: number, statusType: 'favorite' | 'watched'): void {
+    if (statusType === 'favorite') {
+      this.favoriteVideos = this.toggleArrayItem(this.favoriteVideos, videoId);
       this.favoriteVideoChange.emit(this.favoriteVideos);
+    } else if (statusType === 'watched') {
+      this.watchedVideos = this.toggleArrayItem(this.watchedVideos, videoId);
+      this.watchedVideoChange.emit(this.watchedVideos);
     }
   }
 
   /**
-   * Toggles the watched status of the video.
+   * Toggles the presence of an item in an array, returning a new array.
+   *
+   * @param array The array to modify.
+   * @param id The item to toggle.
+   * @returns A new array with the item toggled.
    */
-  toggleWatchedVideo(videoId: number): void {
-    this.watchedVideos = this.watchedVideos.includes(videoId)
-      ? this.watchedVideos.filter((id) => id !== videoId)
-      : [...this.watchedVideos, videoId];
-    this.watchedVideoChange.emit(this.watchedVideos);
+  private toggleArrayItem(array: number[], id: number): number[] {
+    return array.includes(id)
+      ? array.filter((item) => item !== id)
+      : [...array, id];
   }
 
   /**
@@ -165,13 +219,6 @@ export class HeroBannerComponent implements OnChanges {
    */
   checkLikeVideos(video: Video): boolean {
     return video.id !== undefined && this.favoriteVideos.includes(video.id);
-  }
-
-  /**
-   * Checks if any resolution is available.
-   */
-  isAnyResolutionAvailable(): boolean {
-    return Object.values(this.videoIsUploaded).some((available) => available);
   }
 
   /**
@@ -189,12 +236,9 @@ export class HeroBannerComponent implements OnChanges {
   }
 
   /**
-   * Plays the video and marks it as watched.
+   * Checks if any of the video resolutions are available to watch.
    */
-  playVideoId(videoPath: string, video: Video): void {
-    if (video.id !== undefined) {
-      this.playVideo.emit(videoPath);
-      this.toggleWatchedVideo(video.id);
-    }
+  get isAnyResolutionAvailable(): boolean {
+    return Object.values(this.videoIsUploaded).some((available) => available);
   }
 }
