@@ -1,11 +1,17 @@
 from rest_framework import serializers
 from video_app.class_assets import VIDEO_GENRES
-from .models import Video
+from .models import Video, VideoProgress
 
 class VideoSerializer(serializers.ModelSerializer):
   class Meta:
     model = Video
     fields = "__all__"
+
+class VideoProgressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VideoProgress
+        fields = ['id', 'user', 'video', 'position', 'updated_at']
+        read_only_fields = ['id', 'user', 'updated_at']
 
 class VideoUploadSerializer(serializers.ModelSerializer):
     class Meta:

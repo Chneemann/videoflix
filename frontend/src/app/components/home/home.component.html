@@ -70,7 +70,10 @@
         <img src="./../../../../assets/img/logo_ci.svg" alt="Logo" />
       </div>
     </div>
-    <app-video-player [playVideo]="playVideo"></app-video-player>
+    <app-video-player
+      [playVideo]="playVideo"
+      [currentVideo]="currentVideo"
+    ></app-video-player>
   </div>
   } } @if (!isLoading && videos.length === 0) {
   <!-- If the database is empty -->

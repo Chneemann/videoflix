@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
 import { ResolutionService } from '../../../services/resolution.service';
 import Hls from 'hls.js';
+import { VideoProgressService } from '../../../services/video-progress.service';
+import { Video } from '../../../interfaces/video.interface';
 
 @Component({
   selector: 'app-video-player',
@@ -11,6 +13,7 @@ import Hls from 'hls.js';
 })
 export class VideoPlayerComponent implements OnInit, OnDestroy {
   @Input() playVideo: string = '';
+  @Input() currentVideo: Video | null = null;
 
   private hls: Hls | null = null;
   private videoElement: HTMLVideoElement | null = null;
@@ -18,49 +21,84 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   private defaultResolution: string;
 
   /**
-   * Initializes the VideoPlayerComponent with the ElementRef and ResolutionService.
+   * Initializes the VideoPlayerComponent with the ElementRef, ResolutionService and VideoProgressService.
    * Get the default resolution.
    */
   constructor(
     private elementRef: ElementRef,
-    private resolutionService: ResolutionService
+    private resolutionService: ResolutionService,
+    private videoProgressService: VideoProgressService
   ) {
     this.defaultResolution = this.resolutionService.getDefaultResolution();
   }
 
   /**
-   * Angular lifecycle hook: Called once the component is initialized.
-   * Initializes the video player with the default resolution.
+   * Lifecycle hook: Called once the component is initialized.
+   * Sets up the player and starts tracking video progress.
    */
   ngOnInit(): void {
-    this.initializePlayer();
+    this.setupPlayer();
   }
 
   /**
    * Angular lifecycle hook: Called once the component is about to be destroyed.
-   * Cleans up HLS resources.
+   * Cleans up HLS resources and stops tracking video progress.
    */
   ngOnDestroy(): void {
     this.hls?.destroy();
+    this.videoProgressService.stopTracking();
   }
 
   /**
-   * Initializes the video player and loads the default resolution.
+   * Sets up the video player by initializing the video element, retrieving resolution URLs,
+   * and obtaining the initial playback position for the current video. It also starts tracking
+   * the video's playback progress and updates the video's screen dimensions.
    */
-  private initializePlayer(): void {
+  private setupPlayer(): void {
     this.videoElement = this.elementRef.nativeElement.querySelector('video');
     if (!this.playVideo || !this.videoElement) return;
 
     this.resolutionUrls = this.getResolutionUrls();
     const defaultUrl = this.resolutionUrls[this.defaultResolution];
 
-    if (Hls.isSupported()) {
-      this.initHlsPlayer(defaultUrl);
-    } else if (this.videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-      this.initNativePlayer(defaultUrl);
-    }
+    this.videoProgressService
+      .getInitialProgress(this.currentVideo!.id)
+      .then((startTime) => {
+        this.initPlayer(defaultUrl, startTime);
+        this.videoProgressService.startTracking(
+          this.videoElement!,
+          this.currentVideo!.id
+        );
+      });
 
     this.updateScreenDimensions();
+  }
+
+  /**
+   * Initializes the video player using HLS.js if supported, or falls back to native HTML5 support.
+   * @param url - The URL of the video stream to load.
+   * @param startTime - The initial playback position of the video in seconds.
+   */
+  private initPlayer(url: string, startTime: number): void {
+    if (!this.videoElement) return;
+
+    if (Hls.isSupported()) {
+      this.hls = new Hls();
+      this.hls.loadSource(url);
+      this.hls.attachMedia(this.videoElement);
+      this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if (this.videoElement) {
+          this.videoElement.currentTime = startTime;
+          this.videoElement.play();
+        }
+      });
+    } else if (this.videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+      this.videoElement.src = url;
+      this.videoElement.addEventListener('canplay', () => {
+        this.videoElement!.currentTime = startTime;
+        this.videoElement!.play();
+      });
+    }
   }
 
   /**

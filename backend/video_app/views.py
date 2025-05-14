@@ -1,8 +1,9 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .serializer import VideoSerializer, VideoUploadSerializer
-from .models import Video
+from .serializer import VideoProgressSerializer, VideoSerializer, VideoUploadSerializer
+from .models import Video, VideoProgress
 from .services import save_video_file, create_video_record
 from .class_assets import VIDEO_GENRES
 from django.conf import settings
@@ -71,3 +72,33 @@ def video_upload(request):
         return Response(VideoSerializer(video).data, status=201)
     except Exception as e:
         return Response({'error': f'Error while saving video: {str(e)}'}, status=500)
+    
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def video_progress_view(request, video_id):
+    """
+    GET: Get last watched position of a video for the current user.
+    POST: Update the current watching position for the user.
+    """
+    video = get_object_or_404(Video, id=video_id)
+
+    if request.method == 'GET':
+        try:
+            progress = VideoProgress.objects.get(user=request.user, video=video)
+            serializer = VideoProgressSerializer(progress)
+            return Response(serializer.data)
+        except VideoProgress.DoesNotExist:
+            return Response({'position': 0.0})
+
+    elif request.method == 'POST':
+        position = request.data.get('position')
+        if position is None:
+            return Response({'error': 'No position provided'}, status=400)
+
+        progress, _ = VideoProgress.objects.update_or_create(
+            user=request.user,
+            video=video,
+            defaults={'position': position}
+        )
+        serializer = VideoProgressSerializer(progress)
+        return Response(serializer.data)

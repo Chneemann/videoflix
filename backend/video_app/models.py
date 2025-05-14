@@ -15,3 +15,25 @@ class Video(models.Model):
 
     def __str__(self):
         return f'({self.id}) {self.title}'
+
+
+class VideoProgress(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='video_progress'
+    )
+    video = models.ForeignKey(
+        'Video',
+        on_delete=models.CASCADE,
+        related_name='progress_entries'
+    )
+    position = models.FloatField(default=0.0) 
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'video')
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f'{self.user} - {self.video} @ {round(self.position, 1)}s'

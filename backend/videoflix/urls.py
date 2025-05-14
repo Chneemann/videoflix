@@ -25,6 +25,7 @@ urlpatterns = [
     path('video/upload/', video_views.video_upload, name='video_upload'),
     path('video/genres/', video_views.genre_list, name='genre_list'),
     path('video/<int:id>/', video_views.check_video_resolutions, name='check_video_resolutions'),
+    path('video/progress/<int:video_id>', video_views.video_progress_view, name='video-progress'),   
     
     # Users URLs
     path('users/', user_views.user_list, name='user_list'),
