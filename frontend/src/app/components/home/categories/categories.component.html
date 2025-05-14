@@ -8,7 +8,7 @@
       [videos]="recentVideos()"
       [currentVideo]="currentVideo"
       [watchedVideos]="watchedVideos"
-      (currentVideoId)="openCurrentVideo($event)"
+      (videoSelected)="openCurrentVideo($event)"
     ></app-video-list>
   </div>
   }
@@ -21,7 +21,7 @@
       [videos]="getFavoriteVideos()"
       [currentVideo]="currentVideo"
       [watchedVideos]="watchedVideos"
-      (currentVideoId)="openCurrentVideo($event)"
+      (videoSelected)="openCurrentVideo($event)"
     ></app-video-list>
   </div>
   }
@@ -40,7 +40,7 @@
       [videos]="getAllVideos(genre.code)"
       [currentVideo]="currentVideo"
       [watchedVideos]="watchedVideos"
-      (currentVideoId)="openCurrentVideo($event)"
+      (videoSelected)="openCurrentVideo($event)"
     ></app-video-list>
   </div>
   } } } @else {

@@ -14,9 +14,8 @@ export class VideoListComponent {
   @Input() videos: Video[] = [];
   @Input() currentVideo: Video | null = null;
   @Input() watchedVideos: number[] = [];
-  @Input() videoCategory: string = '';
 
-  @Output() currentVideoId = new EventEmitter<number>();
+  @Output() videoSelected = new EventEmitter<number>();
 
   /**
    * Get the URL of the thumbnail image for the given videoId and fileName.
@@ -24,50 +23,50 @@ export class VideoListComponent {
    * @param fileName The name of the video file.
    * @returns The URL of the thumbnail image.
    */
-  getThumbnailUrl(videoId: number | undefined, fileName: string): string {
-    const id = videoId ?? 0;
-    return `${environment.baseUrl}/media/thumbnails/${id}/${fileName}_480p.jpg`;
+  getThumbnailUrl(videoId: number, fileName: string): string {
+    return `${environment.baseUrl}/media/thumbnails/${videoId}/${fileName}_480p.jpg`;
   }
 
   /**
-   * Set the current video based on the given videoId and emit the videoId.
-   * @param videoId The id of the video to set as the current video.
+   * Sets the given video as the currently active video and emits its ID to the parent component.
+   * @param videoId The ID of the video to be marked as current.
    */
-  openCurrentVideo(videoId: number | undefined) {
-    if (videoId !== undefined) {
-      const video = this.videos.find((v) => v.id === videoId);
-      if (video) {
-        this.currentVideo = video;
-        this.currentVideoId.emit(videoId);
-      }
+  openCurrentVideo(videoId: number): void {
+    const video = this.videos.find((v) => v.id === videoId);
+    if (video) {
+      this.currentVideo = video;
+      this.videoSelected.emit(video.id);
     }
   }
 
   /**
-   * Scrolls the video container to the left by a fixed amount when the scroll-left button is clicked.
-   * @param event The mouse event triggered by clicking the scroll-left button.
+   * Scrolls the video container to the left when the left scroll button is clicked.
+   * @param event Mouse click event from the left scroll button.
    */
-  scrollLeft(event: MouseEvent) {
+  scrollLeft(event: MouseEvent): void {
+    this.scrollContainer(event, -217);
+  }
+
+  /**
+   * Scrolls the video container to the right when the right scroll button is clicked.
+   * @param event Mouse click event from the right scroll button.
+   */
+  scrollRight(event: MouseEvent): void {
+    this.scrollContainer(event, 217);
+  }
+
+  /**
+   * Adjusts the horizontal scroll position of the video container.
+   * @param event Mouse event triggered by the scroll button.
+   * @param offset Amount in pixels to scroll (positive for right, negative for left).
+   */
+  private scrollContainer(event: MouseEvent, offset: number): void {
     const button = event.target as HTMLElement;
     const container = button
       .closest('.category')
       ?.querySelector('.videos') as HTMLElement;
     if (container) {
-      container.scrollLeft -= 217;
-    }
-  }
-
-  /**
-   * Scrolls the video container to the right by a fixed amount when the scroll-right button is clicked.
-   * @param event The mouse event triggered by clicking the scroll-right button.
-   */
-  scrollRight(event: MouseEvent) {
-    const button = event.target as HTMLElement;
-    const container = button
-      .closest('.category')
-      ?.querySelector('.videos') as HTMLElement;
-    if (container) {
-      container.scrollLeft += 217;
+      container.scrollLeft += offset;
     }
   }
 }
