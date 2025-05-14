@@ -25,7 +25,7 @@ export class CategoriesComponent implements AfterViewInit {
   @Input() favoriteVideos: number[] = [];
   @Input() watchedVideos: number[] = [];
 
-  @Output() currentVideoId = new EventEmitter<number>();
+  @Output() videoSelected = new EventEmitter<Video>();
 
   environmentBaseUrl: string = environment.baseUrl;
   isScrollable: boolean = false;
@@ -50,12 +50,9 @@ export class CategoriesComponent implements AfterViewInit {
    *
    * @param videoId The ID of the video to be opened
    */
-  openCurrentVideo(videoId: number): void {
-    const video = this.videos.find((v) => v.id === videoId);
-    if (video) {
-      this.currentVideo = video;
-      this.currentVideoId.emit(videoId);
-    }
+  openCurrentVideo(video: Video): void {
+    this.currentVideo = video;
+    this.videoSelected.emit(video);
   }
 
   /**

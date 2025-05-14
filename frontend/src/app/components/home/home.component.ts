@@ -207,11 +207,8 @@ export class HomeComponent implements OnInit {
   /**
    * Sets the current video to the given video ID.
    */
-  currentVideoId(videoId: number): void {
-    const video = this.videos.find((v) => v.id === videoId);
-    if (video) {
-      this.currentVideo = video;
-    }
+  openCurrentVideo(video: Video): void {
+    this.currentVideo = video;
   }
 
   /**

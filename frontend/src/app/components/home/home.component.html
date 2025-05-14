@@ -31,7 +31,7 @@
     [currentVideo]="currentVideo"
     [favoriteVideos]="favoriteVideos"
     [watchedVideos]="watchedVideos"
-    (currentVideoId)="currentVideoId($event)"
+    (videoSelected)="openCurrentVideo($event)"
   ></app-categories>
   } @else {
   <div class="video-overlay">

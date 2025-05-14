@@ -15,7 +15,7 @@ export class VideoListComponent {
   @Input() currentVideo: Video | null = null;
   @Input() watchedVideos: number[] = [];
 
-  @Output() videoSelected = new EventEmitter<number>();
+  @Output() videoSelected = new EventEmitter<Video>();
 
   /**
    * Get the URL of the thumbnail image for the given videoId and fileName.
@@ -35,7 +35,7 @@ export class VideoListComponent {
     const video = this.videos.find((v) => v.id === videoId);
     if (video) {
       this.currentVideo = video;
-      this.videoSelected.emit(video.id);
+      this.videoSelected.emit(video);
     }
   }
 
