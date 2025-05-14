@@ -9,7 +9,7 @@
         alt=""
       />
     </div>
-    @if (getWatchedVideos()) {
+    @if (watchedVideos.includes(video.id)) {
     <div class="watched">
       <img src="./assets/img/open-eye.svg" alt="" />
     </div>

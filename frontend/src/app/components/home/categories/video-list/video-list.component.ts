@@ -30,16 +30,6 @@ export class VideoListComponent {
   }
 
   /**
-   * Filters and returns all watched videos.
-   * @returns An array of watched videos.
-   */
-  getWatchedVideos(): Video[] {
-    return this.videos.filter(
-      (video) => video.id !== undefined && this.watchedVideos.includes(video.id)
-    );
-  }
-
-  /**
    * Set the current video based on the given videoId and emit the videoId.
    * @param videoId The id of the video to set as the current video.
    */
