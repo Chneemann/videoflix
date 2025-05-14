@@ -196,8 +196,10 @@ export class HeroBannerComponent implements OnChanges {
       this.favoriteVideos = this.toggleArrayItem(this.favoriteVideos, videoId);
       this.favoriteVideoChange.emit(this.favoriteVideos);
     } else if (statusType === 'watched') {
-      this.watchedVideos = this.toggleArrayItem(this.watchedVideos, videoId);
-      this.watchedVideoChange.emit(this.watchedVideos);
+      if (!this.watchedVideos.includes(videoId)) {
+        this.watchedVideos = [...this.watchedVideos, videoId];
+        this.watchedVideoChange.emit(this.watchedVideos);
+      }
     }
   }
 

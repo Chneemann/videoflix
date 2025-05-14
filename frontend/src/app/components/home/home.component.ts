@@ -119,24 +119,6 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * Updates user's liked videos in the backend.
-   */
-  private updateLikedVideos(): void {
-    const body = {
-      liked_videos: this.favoriteVideos,
-    };
-    this.userService.updateLikedVideos(body);
-  }
-
-  /**
-   * Updates user's liked videos in the backend.
-   */
-  private updateWatchedVideos(): void {
-    const body = { watched_videos: this.watchedVideos };
-    this.userService.updateWatchedVideos(body);
-  }
-
-  /**
    * Called when favorite videos change.
    */
   onFavoriteVideoChange(favorites: number[]): void {
@@ -145,11 +127,29 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * Called when favorite videos change.
+   * Called when watched videos change.
    */
   onWatchedVideoChange(watched: number[]): void {
     this.watchedVideos = watched;
     this.updateWatchedVideos();
+  }
+
+  /**
+   * Updates user's watched videos in the backend.
+   */
+  private updateWatchedVideos(): void {
+    const body = { watched_videos: this.watchedVideos };
+    this.userService.updateWatchedVideos(body);
+  }
+
+  /**
+   * Updates user's liked videos in the backend.
+   */
+  private updateLikedVideos(): void {
+    const body = {
+      liked_videos: this.favoriteVideos,
+    };
+    this.userService.updateLikedVideos(body);
   }
 
   /**
