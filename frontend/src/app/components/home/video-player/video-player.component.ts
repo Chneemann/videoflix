@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
 import { ResolutionService } from '../../../services/resolution.service';
-import Hls from 'hls.js';
 import { VideoProgressService } from '../../../services/video-progress.service';
 import { Video } from '../../../interfaces/video.interface';
+import Hls from 'hls.js';
 
 @Component({
   selector: 'app-video-player',
@@ -16,13 +16,14 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
   @Input() currentVideo: Video | null = null;
 
   private hls: Hls | null = null;
+  private resizeObserver: ResizeObserver | null = null;
   private videoElement: HTMLVideoElement | null = null;
-  private resolutionUrls: { [key: string]: string } = {};
+
+  private availableResolutions: { [key: string]: string } = {};
   private defaultResolution: string;
 
   /**
    * Initializes the VideoPlayerComponent with the ElementRef, ResolutionService and VideoProgressService.
-   * Get the default resolution.
    */
   constructor(
     private elementRef: ElementRef,
@@ -42,36 +43,50 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
 
   /**
    * Angular lifecycle hook: Called once the component is about to be destroyed.
-   * Cleans up HLS resources and stops tracking video progress.
+   * Cleans up the player, stops tracking video progress and disconnects the resize observer.
    */
   ngOnDestroy(): void {
     this.hls?.destroy();
     this.videoProgressService.stopTracking();
+    this.resizeObserver?.disconnect();
   }
 
   /**
-   * Sets up the video player by initializing the video element, retrieving resolution URLs,
-   * and obtaining the initial playback position for the current video. It also starts tracking
-   * the video's playback progress and updates the video's screen dimensions.
+   * Sets up the video player by initializing the video element,
+   * generating resolution URLs, loading initial playback progress,
+   * and setting up resize observation.
    */
   private setupPlayer(): void {
     this.videoElement = this.elementRef.nativeElement.querySelector('video');
     if (!this.playVideo || !this.videoElement) return;
 
-    this.resolutionUrls = this.getResolutionUrls();
-    const defaultUrl = this.resolutionUrls[this.defaultResolution];
+    this.availableResolutions = this.generateResolutions();
+    const defaultUrl = this.availableResolutions[this.defaultResolution];
 
+    this.loadInitialProgress(defaultUrl);
+    this.observeResize();
+  }
+
+  /**
+   * Loads the initial playback progress for the current video and initializes the player.
+   * Starts tracking the playback progress. Falls back to start at 0 on error.
+   *
+   * @param url - The video URL to initialize the player with.
+   */
+  private loadInitialProgress(url: string): void {
     this.videoProgressService
       .getInitialProgress(this.currentVideo!.id)
       .then((startTime) => {
-        this.initPlayer(defaultUrl, startTime);
+        this.initPlayer(url, startTime);
         this.videoProgressService.startTracking(
           this.videoElement!,
           this.currentVideo!.id
         );
+      })
+      .catch((error) => {
+        console.error('Error loading the progress:', error);
+        this.initPlayer(url, 0);
       });
-
-    this.updateScreenDimensions();
   }
 
   /**
@@ -89,61 +104,43 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
       this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
         if (this.videoElement) {
           this.videoElement.currentTime = startTime;
-          this.videoElement.play();
+          this.videoElement.play().catch(console.error);
         }
       });
     } else if (this.videoElement.canPlayType('application/vnd.apple.mpegurl')) {
       this.videoElement.src = url;
       this.videoElement.addEventListener('canplay', () => {
         this.videoElement!.currentTime = startTime;
-        this.videoElement!.play();
+        this.videoElement!.play().catch(console.error);
       });
     }
   }
 
   /**
-   * Generates a mapping of available resolutions to their respective URLs.
-   * @returns An object containing resolution-URL pairs.
+   * Generates a mapping of available video resolutions to their stream URLs.
+   * @returns An object like { '720p': 'video_720p.m3u8', '1080p': 'video_1080p.m3u8' }.
    */
-  private getResolutionUrls(): { [key: string]: string } {
-    return Object.fromEntries(
-      this.resolutionService
-        .getAvailableResolutions()
-        .map((res) => [res, `${this.playVideo}_${res}.m3u8`])
-    );
-  }
-
-  /**
-   * Initializes the video player using HLS.js if supported.
-   * @param url - The URL of the video stream to load.
-   */
-  private initHlsPlayer(url: string): void {
-    if (!this.videoElement) return;
-    this.hls = new Hls();
-    this.hls.loadSource(url);
-    this.hls.attachMedia(this.videoElement);
-    this.hls.on(Hls.Events.MANIFEST_PARSED, () => this.videoElement?.play());
-  }
-
-  /**
-   * Initializes the native HTML5 video player if HLS is natively supported.
-   * @param url - The URL of the video stream to load.
-   */
-  private initNativePlayer(url: string): void {
-    if (!this.videoElement) return;
-    this.videoElement.src = url;
-    this.videoElement.addEventListener('canplay', () =>
-      this.videoElement?.play()
-    );
+  private generateResolutions(): { [key: string]: string } {
+    return this.resolutionService
+      .getAvailableResolutions()
+      .reduce((acc, res) => {
+        acc[res] = `${this.playVideo}_${res}.m3u8`;
+        return acc;
+      }, {} as { [key: string]: string });
   }
 
   /**
    * Updates the video element's dimensions to match the window size.
    */
-  private updateScreenDimensions(): void {
+  private observeResize(): void {
     if (!this.videoElement) return;
-    this.videoElement.style.width = `${window.innerWidth}px`;
-    this.videoElement.style.height = `${window.innerHeight}px`;
+    this.resizeObserver = new ResizeObserver(() => {
+      if (!this.videoElement) return;
+      const { clientWidth, clientHeight } = document.documentElement;
+      this.videoElement.style.width = `${clientWidth}px`;
+      this.videoElement.style.height = `${clientHeight}px`;
+    });
+    this.resizeObserver.observe(document.body);
   }
 
   /**
@@ -152,15 +149,20 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
    */
   public switchResolution(resolution: string): void {
     const targetUrl =
-      this.resolutionUrls[resolution] ||
-      this.resolutionUrls[this.defaultResolution];
-    if (targetUrl) {
-      this.hls
-        ? this.loadHlsSource(targetUrl)
-        : this.loadNativeSource(targetUrl);
-    } else {
+      this.availableResolutions[resolution] ||
+      this.availableResolutions[this.defaultResolution];
+    if (!targetUrl) {
       console.error(`No URL found for resolution '${resolution}'`);
+      return;
     }
+
+    if (this.hls) {
+      this.loadHlsSource(targetUrl);
+    } else {
+      this.loadNativeSource(targetUrl);
+    }
+
+    this.videoElement?.play().catch(console.error);
   }
 
   /**
@@ -168,8 +170,9 @@ export class VideoPlayerComponent implements OnInit, OnDestroy {
    * @param url - The URL of the new video stream.
    */
   private loadHlsSource(url: string): void {
-    this.hls?.loadSource(url);
-    this.hls?.attachMedia(this.videoElement!);
+    if (!this.hls || !this.videoElement) return;
+    this.hls.loadSource(url);
+    this.hls.attachMedia(this.videoElement);
   }
 
   /**
