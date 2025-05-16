@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializer import LikedVideosSerializer, WatchedVideosSerializer, UserSerializer
+from .serializer import FavoriteVideosSerializer, WatchedVideosSerializer, UserSerializer
 from .models import CustomUser
 
 @api_view(['GET', 'POST'])
@@ -47,14 +47,14 @@ def user_video_preferences(request, id):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def user_liked_videos(request, id):
+def user_favorite_videos(request, id):
     try:
         user = CustomUser.objects.get(pk=id)
     except CustomUser.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        serializer = LikedVideosSerializer(user, data=request.data, partial=True)
+        serializer = FavoriteVideosSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

@@ -4,13 +4,13 @@ from .models import CustomUser
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = CustomUser
-    fields = ["id", "username", "email", "liked_videos", "watched_videos"]
+    fields = ["id", "username", "email", "favorite_videos", "watched_videos"]
     
 
-class LikedVideosSerializer(serializers.ModelSerializer):
+class FavoriteVideosSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['liked_videos']
+        fields = ['favorite_videos']
         
 class WatchedVideosSerializer(serializers.ModelSerializer):
     class Meta:

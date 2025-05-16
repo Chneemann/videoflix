@@ -96,13 +96,13 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * Loads the user's liked and watched video IDs.
+   * Loads the user's favorites and watched video IDs.
    */
   private async loadUserVideoPreferences(): Promise<void> {
     try {
-      const { liked_videos, watched_videos } =
+      const { favorite_videos, watched_videos } =
         await this.userService.getUserVideoPreferences();
-      this.favoriteVideos = liked_videos;
+      this.favoriteVideos = favorite_videos;
       this.watchedVideos = watched_videos;
     } catch (error) {
       console.error('Failed to load user video preferences:', error);
@@ -123,7 +123,7 @@ export class HomeComponent implements OnInit {
    */
   onFavoriteVideoChange(favorites: number[]): void {
     this.favoriteVideos = favorites;
-    this.updateLikedVideos();
+    this.updateFavoriteVideos();
   }
 
   /**
@@ -143,13 +143,13 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * Updates user's liked videos in the backend.
+   * Updates user's favorite videos in the backend.
    */
-  private updateLikedVideos(): void {
+  private updateFavoriteVideos(): void {
     const body = {
-      liked_videos: this.favoriteVideos,
+      favorite_videos: this.favoriteVideos,
     };
-    this.userService.updateLikedVideos(body);
+    this.userService.updateFavoriteVideos(body);
   }
 
   /**

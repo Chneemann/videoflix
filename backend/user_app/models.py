@@ -6,7 +6,7 @@ from video_app.models import Video
 
 class CustomUser(AbstractUser):
     verify_email_token = models.CharField(max_length=20, blank=True, null=True)
-    liked_videos = models.ManyToManyField(Video, related_name='liked_by_users', blank=True)
+    favorite_videos = models.ManyToManyField(Video, related_name='favorite_by_users', blank=True)
     watched_videos = models.ManyToManyField(Video, related_name='watched_by_users', blank=True)
     
     def save(self, *args, **kwargs):

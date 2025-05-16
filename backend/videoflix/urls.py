@@ -30,7 +30,7 @@ urlpatterns = [
     # Users URLs
     path('users/', user_views.users_list, name='users_list'),
     path('users/<int:id>/video-prefs/', user_views.user_video_preferences, name='user_video_preferences'),
-    path('users/<int:id>/liked/', user_views.user_liked_videos, name='user_favorite_videos'),
+    path('users/<int:id>/favorites/', user_views.user_favorite_videos, name='user_favorite_videos'),
     path('users/<int:id>/watched/', user_views.user_watched_videos, name='user_watched_videos'),
     
     # Authentication URLs
