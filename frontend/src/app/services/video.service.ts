@@ -4,6 +4,7 @@ import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { ResolutionService } from './resolution.service';
 import { Video } from '../interfaces/video.interface';
+import { HttpEvent } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -37,23 +38,13 @@ export class VideoService {
   }
 
   /**
-   * Fetch a video by its video URL
+   * Uploads a video file to the server with progress tracking.
    *
-   * @param videoUrl the ID of the video to fetch
-   * @returns a promise resolving to the video object
+   * @param formData The FormData object representing the video to upload.
+   * @returns An Observable emitting HttpEvent objects (e.g., progress, response).
    */
-  getVideoFiles(videoUrl: number): Promise<any> {
-    return firstValueFrom(this.apiService.get(`/${videoUrl}`, true));
-  }
-
-  /**
-   * Upload a video to the server
-   *
-   * @param formData the FormData object representing the video to upload
-   * @returns a promise resolved when the upload is successful
-   */
-  uploadVideoWithProgress(formData: FormData): Observable<any> {
-    return this.apiService.postWithProgress<any>(
+  uploadVideoWithProgress(formData: FormData): Observable<HttpEvent<any>> {
+    return this.apiService.postWithUploadEvents<any>(
       '/video/upload/',
       formData,
       true,

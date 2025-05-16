@@ -28,11 +28,11 @@ urlpatterns = [
     path('video/progress/<int:video_id>', video_views.video_progress_view, name='video-progress'),   
     
     # Users URLs
-    path('users/', user_views.user_list, name='user_list'),
-    path('users/<int:id>/', user_views.user_detail, name='user_detail'),
-    path('users/liked/<int:id>/', user_views.user_liked_detail, name='user_liked_detail'),
-    path('users/watched/<int:id>/', user_views.user_watched_detail, name='user_watched_detail'),
-
+    path('users/', user_views.users_list, name='users_list'),
+    path('users/<int:id>/video-prefs/', user_views.user_video_preferences, name='user_video_preferences'),
+    path('users/<int:id>/liked/', user_views.user_liked_videos, name='user_favorite_videos'),
+    path('users/<int:id>/watched/', user_views.user_watched_videos, name='user_watched_videos'),
+    
     # Authentication URLs
     path('auth/', AuthView.as_view(), name='auth_view'),
     path('auth/login/', LoginView.as_view(), name='login'),

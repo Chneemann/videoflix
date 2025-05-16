@@ -7,7 +7,7 @@ from .models import CustomUser
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-def user_list(request):
+def users_list(request):
   
   if request.method == 'GET':
     user = CustomUser.objects.all()
@@ -23,7 +23,7 @@ def user_list(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
-def user_detail(request, id):
+def user_video_preferences(request, id):
   
     try:
       user = CustomUser.objects.get(pk=id)
@@ -47,7 +47,7 @@ def user_detail(request, id):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def user_liked_detail(request, id):
+def user_liked_videos(request, id):
     try:
         user = CustomUser.objects.get(pk=id)
     except CustomUser.DoesNotExist:
@@ -62,7 +62,7 @@ def user_liked_detail(request, id):
       
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def user_watched_detail(request, id):
+def user_watched_videos(request, id):
     try:
         user = CustomUser.objects.get(pk=id)
     except CustomUser.DoesNotExist:

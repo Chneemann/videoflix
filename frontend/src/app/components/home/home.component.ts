@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
   private async loadUserVideoPreferences(): Promise<void> {
     try {
       const { liked_videos, watched_videos } =
-        await this.userService.getLikedAndWatchedVideos();
+        await this.userService.getUserVideoPreferences();
       this.favoriteVideos = liked_videos;
       this.watchedVideos = watched_videos;
     } catch (error) {

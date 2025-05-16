@@ -46,16 +46,16 @@ export class ApiService {
   }
 
   /**
-   * Sends a POST request to the specified endpoint with a request body.
+   * Sends a POST request to the specified endpoint with upload event tracking.
    *
-   * @template T The expected type of the response.
+   * @template T The expected type of the final response body.
    * @param endpoint The API endpoint to send the request to.
-   * @param body The request payload to send.
+   * @param body The request payload (e.g., FormData for file upload).
    * @param auth Whether to include authentication headers. Defaults to false.
-   * @param options Additional options for the request.
-   * @returns An Observable of type HttpEvent<T>.
+   * @param options Additional HTTP options (e.g., observe, reportProgress).
+   * @returns An Observable emitting HttpEvent<T> objects.
    */
-  postWithProgress<T>(
+  postWithUploadEvents<T>(
     endpoint: string,
     body: any,
     auth: boolean = false,

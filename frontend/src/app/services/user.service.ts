@@ -20,9 +20,9 @@ export class UserService {
    *   - `liked_videos`: a list of video IDs liked by the current user
    *   - `watched_videos`: a list of video IDs watched by the current user
    */
-  getLikedAndWatchedVideos(): Promise<any> {
+  getUserVideoPreferences(): Promise<any> {
     return firstValueFrom(
-      this.apiService.get(`/users/${this.currentUserId}/`, true)
+      this.apiService.get(`/user/${this.currentUserId}/video-prefs/`, true)
     );
   }
 
@@ -35,7 +35,7 @@ export class UserService {
   updateLikedVideos(likedVideos: any): Promise<any> {
     return firstValueFrom(
       this.apiService.put(
-        `/users/liked/${this.currentUserId}/`,
+        `/user/${this.currentUserId}/liked/`,
         likedVideos,
         true
       )
@@ -51,7 +51,7 @@ export class UserService {
   updateWatchedVideos(watchedVideos: any): Promise<any> {
     return firstValueFrom(
       this.apiService.put(
-        `/users/watched/${this.currentUserId}/`,
+        `/user/${this.currentUserId}/watched/`,
         watchedVideos,
         true
       )
