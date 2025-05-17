@@ -12,6 +12,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from user_app.models import CustomUser
 from django.db.models import Q
+from django.utils.timezone import now
 
 class LoginView(APIView):
     serializer_class = LoginSerializer
@@ -27,7 +28,12 @@ class LoginView(APIView):
             if user:
                 if not user.is_active:
                     return Response({'error': 'Account is inactive, please check your mails'}, status=status.HTTP_403_FORBIDDEN)
+            
+                user.last_login = now()
+                user.save(update_fields=['last_login'])
+                
                 return self._create_token_response(user)
+            
             return Response({'error': 'Unable to login with provided credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
           
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
